@@ -20,6 +20,10 @@ import {
   Heart,
   Car,
   Map,
+  Bell,
+  MapPin,
+  Users,
+  Eye,
 } from 'lucide-react'
 
 export default function Home() {
@@ -188,58 +192,131 @@ export default function Home() {
           </Link>
         </div>
 
-        {/* Emergency Hotlines Quick Access - Glass Card with Emergency Bar */}
-        <div className="card-glass category-bar category-bar-emergency p-4 mb-4">
-          <h2 className="text-headline mb-3 flex items-center gap-2">
+        {/* How It Works - Simple 3-step explanation */}
+        <div className="card-glass p-4 mb-4">
+          <h2 className="text-headline mb-4 text-center">{t.howItWorks}</h2>
+          <div className="grid grid-cols-3 gap-3">
+            <div className="text-center">
+              <div className="w-12 h-12 mx-auto rounded-full bg-[#DC2626]/10 flex items-center justify-center mb-2">
+                <Eye className="h-6 w-6 text-[#DC2626]" strokeWidth={2} />
+              </div>
+              <div className="text-caption font-bold text-[#DC2626]">1. {t.step1Title}</div>
+              <p className="text-[11px] text-muted-foreground mt-1">{t.step1Desc}</p>
+            </div>
+            <div className="text-center">
+              <div className="w-12 h-12 mx-auto rounded-full bg-[#FF8C42]/10 flex items-center justify-center mb-2">
+                <Bell className="h-6 w-6 text-[#FF8C42]" strokeWidth={2} />
+              </div>
+              <div className="text-caption font-bold text-[#FF8C42]">2. {t.step2Title}</div>
+              <p className="text-[11px] text-muted-foreground mt-1">{t.step2Desc}</p>
+            </div>
+            <div className="text-center">
+              <div className="w-12 h-12 mx-auto rounded-full bg-[#84CC16]/10 flex items-center justify-center mb-2">
+                <Users className="h-6 w-6 text-[#84CC16]" strokeWidth={2} />
+              </div>
+              <div className="text-caption font-bold text-[#84CC16]">3. {t.step3Title}</div>
+              <p className="text-[11px] text-muted-foreground mt-1">{t.step3Desc}</p>
+            </div>
+          </div>
+          <div className="mt-4 pt-3 border-t border-border/30 flex items-center justify-center gap-2 text-small text-muted-foreground">
+            <Lock className="h-4 w-4" />
+            <span><strong className="text-foreground">{t.privacyFirst}:</strong> {t.privacyDesc}</span>
+          </div>
+        </div>
+
+        {/* Emergency Hotlines - Structured with explanations */}
+        <div className="card-glass p-4 mb-4">
+          <div className="flex items-center gap-2 mb-1">
+            <span className="px-2 py-0.5 bg-[#DC2626] text-white text-[10px] font-bold rounded-full tracking-wide">
+              {t.badgeHotlines}
+            </span>
+          </div>
+          <h2 className="text-headline mb-1 flex items-center gap-2">
             <Phone className="h-5 w-5 text-[#DC2626]" strokeWidth={2} />
             {t.emergencyHotlines}
           </h2>
-          <div className="grid grid-cols-2 gap-2">
+          <p className="text-small text-muted-foreground mb-3">{t.callFree247}</p>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
             {[
-              { name: t.iceDetaineeLocator, phone: '1-888-351-4024', color: 'text-[#DC2626]' },
-              { name: t.unitedWeDream, phone: '1-844-363-1423', color: 'text-[#DC2626]' },
-              { name: t.traffickingHotline, phone: '1-888-373-7888', color: 'text-[#FF8C42]' },
-              { name: t.crisisLine, phone: '988', color: 'text-[#00A6B4]' },
+              { name: t.iceDetaineeLocator, desc: t.iceDetaineeDesc, phone: '1-888-351-4024', color: 'bg-[#DC2626]' },
+              { name: t.unitedWeDream, desc: t.unitedWeDreamDesc, phone: '1-844-363-1423', color: 'bg-[#DC2626]' },
+              { name: t.traffickingHotline, desc: t.traffickingDesc, phone: '1-888-373-7888', color: 'bg-[#FF8C42]' },
+              { name: t.crisisLine, desc: t.crisisDesc, phone: '988', color: 'bg-[#00A6B4]' },
             ].map((hotline) => (
               <a
                 key={hotline.phone}
                 href={`tel:${hotline.phone.replace(/\D/g, '')}`}
-                className="flex items-center justify-between p-3 rounded-[8px] bg-background/50 hover:bg-background press-scale min-h-[48px]"
+                className="flex items-start gap-3 p-3 rounded-[12px] bg-background/50 hover:bg-background press-scale border border-border/30"
               >
-                <span className="text-small font-medium truncate">{hotline.name}</span>
-                <span className={`font-bold text-caption ${hotline.color}`}>{hotline.phone}</span>
+                <div className={`w-10 h-10 rounded-full ${hotline.color} flex items-center justify-center flex-shrink-0`}>
+                  <Phone className="h-5 w-5 text-white" strokeWidth={2} />
+                </div>
+                <div className="flex-1 min-w-0">
+                  <div className="font-semibold text-small">{hotline.name}</div>
+                  <div className="text-[11px] text-muted-foreground">{hotline.desc}</div>
+                  <div className="font-bold text-caption text-primary mt-1">{hotline.phone}</div>
+                </div>
               </a>
             ))}
           </div>
         </div>
 
-        {/* Quick Rights Reminder - Glass Card with Lime Bar */}
-        <div className="card-glass category-bar category-bar-lime p-4 mb-4 border-[#84CC16]/20">
+        {/* Quick Rights Reminder - Structured Q&A style */}
+        <div className="card-glass p-4 mb-4">
+          <div className="flex items-center gap-2 mb-1">
+            <span className="px-2 py-0.5 bg-[#84CC16] text-white text-[10px] font-bold rounded-full tracking-wide">
+              {t.badgeRights}
+            </span>
+          </div>
           <h2 className="text-headline mb-3 flex items-center gap-2">
             <Shield className="h-5 w-5 text-[#84CC16]" strokeWidth={2} />
             {t.knowRights}
           </h2>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div className="space-y-1">
-              <p className="text-small font-semibold text-[#84CC16]">{t.youCanSay}</p>
-              <ul className="text-small space-y-0.5 text-muted-foreground">
-                <li>• {t.rightSilent}</li>
-                <li>• {t.rightLawyer}</li>
-                <li>• {t.rightNoEntry}</li>
+            <div className="p-3 rounded-[12px] bg-[#84CC16]/10 border border-[#84CC16]/20">
+              <p className="text-small font-bold text-[#84CC16] mb-2 flex items-center gap-2">
+                <Shield className="h-4 w-4" />
+                {t.youCanSay}
+              </p>
+              <ul className="text-small space-y-1.5">
+                <li className="flex items-start gap-2">
+                  <span className="text-[#84CC16] mt-0.5">✓</span>
+                  <span>{t.rightSilent}</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <span className="text-[#84CC16] mt-0.5">✓</span>
+                  <span>{t.rightLawyer}</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <span className="text-[#84CC16] mt-0.5">✓</span>
+                  <span>{t.rightNoEntry}</span>
+                </li>
               </ul>
             </div>
-            <div className="space-y-1">
-              <p className="text-small font-semibold text-[#DC2626]">{t.never}</p>
-              <ul className="text-small space-y-0.5 text-muted-foreground">
-                <li>• {t.neverOpenDoor}</li>
-                <li>• {t.neverSign}</li>
-                <li>• {t.neverLie}</li>
+            <div className="p-3 rounded-[12px] bg-[#DC2626]/10 border border-[#DC2626]/20">
+              <p className="text-small font-bold text-[#DC2626] mb-2 flex items-center gap-2">
+                <AlertTriangle className="h-4 w-4" />
+                {t.never}
+              </p>
+              <ul className="text-small space-y-1.5">
+                <li className="flex items-start gap-2">
+                  <span className="text-[#DC2626] mt-0.5">✗</span>
+                  <span>{t.neverOpenDoor}</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <span className="text-[#DC2626] mt-0.5">✗</span>
+                  <span>{t.neverSign}</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <span className="text-[#DC2626] mt-0.5">✗</span>
+                  <span>{t.neverLie}</span>
+                </li>
               </ul>
             </div>
           </div>
           <Link
             href="/rights"
-            className="inline-flex items-center text-small text-[#00A6B4] hover:underline mt-3 font-semibold"
+            className="inline-flex items-center text-small text-[#00A6B4] hover:underline mt-4 font-semibold"
           >
             {t.learnMore} <ChevronRight className="h-4 w-4 ml-1" />
           </Link>

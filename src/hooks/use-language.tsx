@@ -127,6 +127,36 @@ export const commonTranslations = {
     unitedWeDream: 'United We Dream',
     traffickingHotline: 'Trafficking Hotline',
     crisisLine: 'Crisis Line',
+
+    // Hotline descriptions
+    iceDetaineeDesc: 'Find someone in ICE custody',
+    unitedWeDreamDesc: 'Report enforcement activity',
+    traffickingDesc: 'Help for trafficking victims',
+    crisisDesc: 'Mental health support',
+    callFree247: 'Free 24/7 hotline',
+
+    // How it works
+    howItWorks: 'How ICEwhistle Works',
+    step1Title: 'Report',
+    step1Desc: 'See ICE? Tap to alert your community instantly',
+    step2Title: 'Alert',
+    step2Desc: 'Nearby users receive anonymous notifications',
+    step3Title: 'Protect',
+    step3Desc: 'Communities can prepare and stay safe',
+    privacyFirst: 'Privacy First',
+    privacyDesc: 'No accounts, no tracking. All data stays on your device.',
+
+    // Section badges
+    badgeEmergency: 'EMERGENCY',
+    badgeReport: 'REPORT',
+    badgeResources: 'RESOURCES',
+    badgeRights: 'KNOW YOUR RIGHTS',
+    badgeHotlines: 'CALL NOW',
+
+    // Language labels
+    langEnglish: 'English',
+    langSpanish: 'Español',
+    langPortuguese: 'Português',
   },
   es: {
     // Home page - Emergency buttons
@@ -208,6 +238,36 @@ export const commonTranslations = {
     unitedWeDream: 'United We Dream',
     traffickingHotline: 'Línea de Tráfico',
     crisisLine: 'Línea de Crisis',
+
+    // Hotline descriptions
+    iceDetaineeDesc: 'Encontrar a alguien bajo custodia de ICE',
+    unitedWeDreamDesc: 'Reportar actividad de inmigración',
+    traffickingDesc: 'Ayuda para víctimas de tráfico',
+    crisisDesc: 'Apoyo de salud mental',
+    callFree247: 'Línea gratuita 24/7',
+
+    // How it works
+    howItWorks: 'Cómo Funciona ICEwhistle',
+    step1Title: 'Reportar',
+    step1Desc: '¿Ves a ICE? Toca para alertar a tu comunidad',
+    step2Title: 'Alertar',
+    step2Desc: 'Usuarios cercanos reciben notificaciones anónimas',
+    step3Title: 'Proteger',
+    step3Desc: 'Las comunidades pueden prepararse y mantenerse seguras',
+    privacyFirst: 'Privacidad Primero',
+    privacyDesc: 'Sin cuentas, sin rastreo. Todos los datos quedan en tu dispositivo.',
+
+    // Section badges
+    badgeEmergency: 'EMERGENCIA',
+    badgeReport: 'REPORTAR',
+    badgeResources: 'RECURSOS',
+    badgeRights: 'TUS DERECHOS',
+    badgeHotlines: 'LLAMAR AHORA',
+
+    // Language labels
+    langEnglish: 'English',
+    langSpanish: 'Español',
+    langPortuguese: 'Português',
   },
   pt: {
     // Home page - Emergency buttons
@@ -289,5 +349,35 @@ export const commonTranslations = {
     unitedWeDream: 'United We Dream',
     traffickingHotline: 'Linha de Tráfico',
     crisisLine: 'Linha de Crise',
+
+    // Hotline descriptions
+    iceDetaineeDesc: 'Encontrar alguém sob custódia do ICE',
+    unitedWeDreamDesc: 'Reportar atividade de imigração',
+    traffickingDesc: 'Ajuda para vítimas de tráfico',
+    crisisDesc: 'Apoio de saúde mental',
+    callFree247: 'Linha gratuita 24/7',
+
+    // How it works
+    howItWorks: 'Como o ICEwhistle Funciona',
+    step1Title: 'Reportar',
+    step1Desc: 'Viu ICE? Toque para alertar sua comunidade',
+    step2Title: 'Alertar',
+    step2Desc: 'Usuários próximos recebem notificações anônimas',
+    step3Title: 'Proteger',
+    step3Desc: 'Comunidades podem se preparar e ficar seguras',
+    privacyFirst: 'Privacidade Primeiro',
+    privacyDesc: 'Sem contas, sem rastreamento. Todos os dados ficam no seu dispositivo.',
+
+    // Section badges
+    badgeEmergency: 'EMERGÊNCIA',
+    badgeReport: 'REPORTAR',
+    badgeResources: 'RECURSOS',
+    badgeRights: 'SEUS DIREITOS',
+    badgeHotlines: 'LIGAR AGORA',
+
+    // Language labels
+    langEnglish: 'English',
+    langSpanish: 'Español',
+    langPortuguese: 'Português',
   },
 }

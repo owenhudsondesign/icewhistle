@@ -62,24 +62,25 @@ export function AppHeader({ showBack, backHref = '/', title, subtitle }: AppHead
             )}
           </div>
           <div className="flex items-center gap-2">
-            {/* Language Buttons - Soft Transit Design */}
-            <div className="flex rounded-[8px] overflow-hidden border border-border/50">
+            {/* Language Buttons - Prominent with full names */}
+            <div className="flex rounded-[12px] overflow-hidden border border-border/50 bg-muted/30">
               {([
-                { code: 'en' as const, label: 'EN' },
-                { code: 'es' as const, label: 'ES' },
-                { code: 'pt' as const, label: 'PT' },
-              ]).map(({ code, label }) => (
+                { code: 'en' as const, label: 'EN', name: 'English' },
+                { code: 'es' as const, label: 'ES', name: 'Español' },
+                { code: 'pt' as const, label: 'PT', name: 'Português' },
+              ]).map(({ code, label, name }) => (
                 <button
                   key={code}
                   onClick={() => setLanguage(code)}
-                  className={`px-3 py-2 text-caption font-semibold transition-all min-h-[40px] min-w-[44px] ${
+                  className={`px-3 py-1.5 transition-all min-h-[44px] min-w-[52px] flex flex-col items-center justify-center ${
                     language === code
                       ? 'bg-[#00A6B4] text-white'
                       : 'hover:bg-muted text-foreground'
                   }`}
-                  aria-label={code === 'en' ? 'English' : code === 'es' ? 'Español' : 'Português'}
+                  aria-label={name}
                 >
-                  {label}
+                  <span className="text-caption font-bold">{label}</span>
+                  <span className={`text-[10px] ${language === code ? 'text-white/80' : 'text-muted-foreground'}`}>{name}</span>
                 </button>
               ))}
             </div>
