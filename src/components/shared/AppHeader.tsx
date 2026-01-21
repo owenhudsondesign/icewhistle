@@ -3,7 +3,7 @@
 import Link from 'next/link'
 import Image from 'next/image'
 import { Button } from '@/components/ui/button'
-import { Moon, Sun, ChevronLeft } from 'lucide-react'
+import { Moon, Sun, ChevronLeft, Heart } from 'lucide-react'
 import { useTheme } from '@/hooks/use-theme'
 import { useLanguage, Language } from '@/hooks/use-language'
 
@@ -84,6 +84,14 @@ export function AppHeader({ showBack, backHref = '/', title, subtitle }: AppHead
                 </button>
               ))}
             </div>
+            {/* Support Link - Subtle */}
+            <Link
+              href="/support"
+              className="h-10 w-10 rounded-[8px] border border-border/50 flex items-center justify-center hover:bg-muted/50 transition-colors press-scale"
+              aria-label="Support"
+            >
+              <Heart className="h-4 w-4 text-muted-foreground" strokeWidth={2} />
+            </Link>
             {/* Dark Mode Toggle - Bondi accent */}
             <Button
               variant="outline"
