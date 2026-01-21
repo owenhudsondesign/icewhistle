@@ -49,8 +49,8 @@ export function useLanguage() {
 export const commonTranslations = {
   en: {
     // Home page - Emergency buttons
-    iceNear: 'ICE Is Near Me',
-    iceNearSub: 'At home or in public',
+    iceNear: 'Report ICE Near Me',
+    iceNearSub: 'Alert your community',
     trafficStop: 'Traffic Stop',
     trafficStopSub: 'Driver or passenger',
     someoneTaken: 'Someone Was Taken',
@@ -130,8 +130,8 @@ export const commonTranslations = {
   },
   es: {
     // Home page - Emergency buttons
-    iceNear: 'ICE Cerca de Mí',
-    iceNearSub: 'En casa o en público',
+    iceNear: 'Reportar ICE Cerca',
+    iceNearSub: 'Alerta a tu comunidad',
     trafficStop: 'Control de Tráfico',
     trafficStopSub: 'Conductor o pasajero',
     someoneTaken: 'Alguien Fue Detenido',
@@ -211,8 +211,8 @@ export const commonTranslations = {
   },
   pt: {
     // Home page - Emergency buttons
-    iceNear: 'ICE Perto de Mim',
-    iceNearSub: 'Em casa ou em público',
+    iceNear: 'Reportar ICE Perto',
+    iceNearSub: 'Alerte sua comunidade',
     trafficStop: 'Blitz de Trânsito',
     trafficStopSub: 'Motorista ou passageiro',
     someoneTaken: 'Alguém Foi Levado',
