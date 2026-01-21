@@ -28,34 +28,38 @@ const printableResources = [
   {
     title: 'Red Card / Tarjeta Roja (ILRC)',
     description: 'Wallet card explaining your rights - available in 39 languages',
-    filename: 'red-card.pdf',
-    url: 'https://ilrc.org/red-cards',
+    url: 'https://www.ilrc.org/red-cards',
     external: true,
   },
   {
-    title: 'Know Your Rights Card (English)',
-    description: 'Pocket-sized card with essential rights information',
-    filename: 'kyr-card-en.pdf',
+    title: 'Know Your Rights (ACLU)',
+    description: 'Comprehensive rights information when encountering immigration agents',
+    url: 'https://www.aclu.org/know-your-rights/immigrants-rights',
+    external: true,
   },
   {
-    title: 'Tarjeta de Derechos (Español)',
-    description: 'Tarjeta de bolsillo con información esencial sobre sus derechos',
-    filename: 'kyr-card-es.pdf',
+    title: 'Conozca Sus Derechos (NILC)',
+    description: 'Guía completa de derechos en español',
+    url: 'https://www.nilc.org/get-involved/community-education-resources/know-your-rights/',
+    external: true,
   },
   {
-    title: 'Family Emergency Plan Template',
-    description: 'Printable worksheet to help organize your emergency plan',
-    filename: 'emergency-plan-template.pdf',
+    title: 'Family Preparedness Plan (ILRC)',
+    description: 'Worksheet to prepare your family for emergencies',
+    url: 'https://www.ilrc.org/family-preparedness-plan',
+    external: true,
   },
   {
-    title: 'Warrant Comparison Guide',
-    description: 'Visual guide to identify judicial vs. administrative warrants (I-200, I-205)',
-    filename: 'warrant-guide.pdf',
+    title: 'ICE Warrant Guide (CLINIC)',
+    description: 'How to identify judicial vs. administrative warrants',
+    url: 'https://www.cliniclegal.org/resources/enforcement-and-detention/ice-warrants',
+    external: true,
   },
   {
-    title: 'Power of Attorney Template',
-    description: 'Template for designating emergency childcare and financial authority',
-    filename: 'poa-template.pdf',
+    title: 'Power of Attorney Info (Informed Immigrant)',
+    description: 'Guide to designating emergency childcare authority',
+    url: 'https://www.informedimmigrant.com/guides/power-of-attorney/',
+    external: true,
   },
 ]
 
@@ -347,7 +351,7 @@ export default function ResourcesPage() {
         </h2>
         <div className="grid gap-4 sm:grid-cols-2">
           {printableResources.map((resource) => (
-            <Card key={resource.filename}>
+            <Card key={resource.url}>
               <CardContent className="flex items-center justify-between p-4">
                 <div className="flex-1 mr-4">
                   <h3 className="font-medium">{resource.title}</h3>
@@ -356,24 +360,14 @@ export default function ResourcesPage() {
                   </p>
                 </div>
                 <Button variant="outline" size="icon" asChild>
-                  {resource.external ? (
-                    <a
-                      href={resource.url}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      aria-label={`Download ${resource.title}`}
-                    >
-                      <ExternalLink className="h-4 w-4" />
-                    </a>
-                  ) : (
-                    <a
-                      href={`/kyr-cards/${resource.filename}`}
-                      download
-                      aria-label={`Download ${resource.title}`}
-                    >
-                      <Download className="h-4 w-4" />
-                    </a>
-                  )}
+                  <a
+                    href={resource.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label={`View ${resource.title}`}
+                  >
+                    <ExternalLink className="h-4 w-4" />
+                  </a>
                 </Button>
               </CardContent>
             </Card>

@@ -398,9 +398,6 @@ export default function RightsPage() {
         <Button variant="outline" asChild size="lg">
           <Link href="/resources">Get Printable Cards</Link>
         </Button>
-        <Button variant="outline" asChild size="lg">
-          <Link href="/plan">Create Emergency Plan</Link>
-        </Button>
       </div>
     </div>
   )
