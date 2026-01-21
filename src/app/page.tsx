@@ -328,6 +328,14 @@ export default function Home() {
             <Lock className="h-4 w-4" />
             <span>{t.noTracking}</span>
           </div>
+          <div className="mt-3 pt-3 border-t border-border/30">
+            <Link
+              href="/support"
+              className="text-xs text-muted-foreground hover:text-foreground transition-colors"
+            >
+              {t.supportTool}
+            </Link>
+          </div>
         </div>
       </main>
 

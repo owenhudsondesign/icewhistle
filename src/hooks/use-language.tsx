@@ -157,6 +157,31 @@ export const commonTranslations = {
     langEnglish: 'English',
     langSpanish: 'Español',
     langPortuguese: 'Português',
+
+    // Support
+    supportTool: 'Support this free tool',
+
+    // Support page
+    supportTitle: 'Support this tool',
+    supportIntro: 'This tool is free, ad-free, and available to everyone.',
+    supportMission: 'It is maintained as a public resource to help people understand their rights, share timely information, and access community support during ICE encounters. No account is required, and no usage data is tracked.',
+    howSupportUsed: 'How support is used',
+    supportHelps: 'Community support helps cover:',
+    supportHosting: 'Website hosting and infrastructure',
+    supportTranslation: 'Accessibility and multilingual translation',
+    supportMaintenance: 'Ongoing maintenance and updates',
+    supportLegal: 'Occasional legal and content review',
+    supportTransparency: 'Contributors may receive modest stipends for maintenance or translation work. These expenses are reported transparently. Any surplus funds may be redistributed to aligned community organizations or mutual aid efforts.',
+    privacyTrust: 'Privacy & trust',
+    donationsOptional: 'Donations are optional',
+    donationsSecure: 'Donations are processed securely by OpenCollective',
+    noStoreDonorInfo: 'This site does not collect or store donor information',
+    accessNeverGated: 'Access to resources is never gated by payment',
+    supportClosing: 'Support is one way to help keep this tool available and sustainable — but the information here will always remain free.',
+    donationsProcessed: 'Donations are processed by OpenCollective. This site does not handle payments or collect donor data.',
+    preferDirect: 'Prefer to donate directly on OpenCollective?',
+    openInOC: 'Open in OpenCollective',
+    supportInfrastructure: 'Your donation supports infrastructure, not data collection.',
   },
   es: {
     // Home page - Emergency buttons
@@ -268,6 +293,31 @@ export const commonTranslations = {
     langEnglish: 'English',
     langSpanish: 'Español',
     langPortuguese: 'Português',
+
+    // Support
+    supportTool: 'Apoya esta herramienta gratuita',
+
+    // Support page
+    supportTitle: 'Apoya esta herramienta',
+    supportIntro: 'Esta herramienta es gratuita, sin anuncios y disponible para todos.',
+    supportMission: 'Se mantiene como un recurso público para ayudar a las personas a entender sus derechos, compartir información oportuna y acceder al apoyo comunitario durante encuentros con ICE. No se requiere cuenta y no se rastrea ningún dato de uso.',
+    howSupportUsed: 'Cómo se usa el apoyo',
+    supportHelps: 'El apoyo comunitario ayuda a cubrir:',
+    supportHosting: 'Alojamiento web e infraestructura',
+    supportTranslation: 'Accesibilidad y traducción multilingüe',
+    supportMaintenance: 'Mantenimiento y actualizaciones continuas',
+    supportLegal: 'Revisión legal y de contenido ocasional',
+    supportTransparency: 'Los colaboradores pueden recibir modestos estipendios por trabajo de mantenimiento o traducción. Estos gastos se reportan de manera transparente. Los fondos excedentes pueden redistribuirse a organizaciones comunitarias alineadas o esfuerzos de ayuda mutua.',
+    privacyTrust: 'Privacidad y confianza',
+    donationsOptional: 'Las donaciones son opcionales',
+    donationsSecure: 'Las donaciones se procesan de forma segura por OpenCollective',
+    noStoreDonorInfo: 'Este sitio no recopila ni almacena información de donantes',
+    accessNeverGated: 'El acceso a los recursos nunca está condicionado al pago',
+    supportClosing: 'Apoyar es una forma de ayudar a mantener esta herramienta disponible y sostenible — pero la información aquí siempre será gratuita.',
+    donationsProcessed: 'Las donaciones son procesadas por OpenCollective. Este sitio no maneja pagos ni recopila datos de donantes.',
+    preferDirect: '¿Prefieres donar directamente en OpenCollective?',
+    openInOC: 'Abrir en OpenCollective',
+    supportInfrastructure: 'Tu donación apoya infraestructura, no recolección de datos.',
   },
   pt: {
     // Home page - Emergency buttons
@@ -379,5 +429,30 @@ export const commonTranslations = {
     langEnglish: 'English',
     langSpanish: 'Español',
     langPortuguese: 'Português',
+
+    // Support
+    supportTool: 'Apoie esta ferramenta gratuita',
+
+    // Support page
+    supportTitle: 'Apoie esta ferramenta',
+    supportIntro: 'Esta ferramenta é gratuita, sem anúncios e disponível para todos.',
+    supportMission: 'É mantida como um recurso público para ajudar as pessoas a entender seus direitos, compartilhar informações oportunas e acessar apoio comunitário durante encontros com o ICE. Nenhuma conta é necessária e nenhum dado de uso é rastreado.',
+    howSupportUsed: 'Como o apoio é usado',
+    supportHelps: 'O apoio da comunidade ajuda a cobrir:',
+    supportHosting: 'Hospedagem e infraestrutura do site',
+    supportTranslation: 'Acessibilidade e tradução multilíngue',
+    supportMaintenance: 'Manutenção e atualizações contínuas',
+    supportLegal: 'Revisão legal e de conteúdo ocasional',
+    supportTransparency: 'Colaboradores podem receber modestos estipêndios por trabalho de manutenção ou tradução. Essas despesas são reportadas de forma transparente. Fundos excedentes podem ser redistribuídos para organizações comunitárias alinhadas ou esforços de ajuda mútua.',
+    privacyTrust: 'Privacidade e confiança',
+    donationsOptional: 'Doações são opcionais',
+    donationsSecure: 'Doações são processadas de forma segura pelo OpenCollective',
+    noStoreDonorInfo: 'Este site não coleta nem armazena informações de doadores',
+    accessNeverGated: 'O acesso aos recursos nunca é condicionado ao pagamento',
+    supportClosing: 'Apoiar é uma forma de ajudar a manter esta ferramenta disponível e sustentável — mas as informações aqui sempre serão gratuitas.',
+    donationsProcessed: 'Doações são processadas pelo OpenCollective. Este site não processa pagamentos nem coleta dados de doadores.',
+    preferDirect: 'Prefere doar diretamente no OpenCollective?',
+    openInOC: 'Abrir no OpenCollective',
+    supportInfrastructure: 'Sua doação apoia infraestrutura, não coleta de dados.',
   },
 }
