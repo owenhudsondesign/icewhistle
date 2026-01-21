@@ -162,6 +162,7 @@ const organizationCategories = [
     ],
   },
   {
+    id: 'bond',
     title: 'Bond Funds',
     icon: Building,
     description: 'Help paying immigration bonds (avg. $8,176)',
@@ -380,7 +381,7 @@ export default function ResourcesPage() {
         <h2 className="text-2xl font-semibold mb-4">Organization Directory</h2>
         <div className="grid gap-6 sm:grid-cols-2">
           {organizationCategories.map((category) => (
-            <Card key={category.title}>
+            <Card key={category.title} id={category.id}>
               <CardHeader>
                 <CardTitle className="flex items-center gap-2 text-lg">
                   <category.icon className="h-5 w-5 text-primary" />
