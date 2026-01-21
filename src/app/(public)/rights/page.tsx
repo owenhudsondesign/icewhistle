@@ -23,8 +23,25 @@ import {
 } from 'lucide-react'
 
 export const metadata: Metadata = {
-  title: 'Know Your Rights | ICEwhistle',
-  description: 'Learn about your constitutional rights during encounters with immigration enforcement',
+  title: 'Know Your Rights with ICE - 4th Amendment, Warrants & More',
+  description: 'Know your rights during ICE encounters: Can ICE enter my home? Do I have to show ID to ICE? ICE warrant vs judicial warrant explained. 4th Amendment rights. Red card immigration. Mis derechos con inmigración.',
+  keywords: [
+    'know your rights ICE',
+    'immigrant rights card',
+    'red card immigration',
+    '4th amendment ICE',
+    'do I have to show ID to ICE',
+    'can ICE enter my home',
+    'ICE warrant vs judicial warrant',
+    'constitutional rights immigrants',
+    'right to remain silent ICE',
+    'mis derechos con inmigración',
+    'derechos constitucionales inmigrantes',
+  ],
+  openGraph: {
+    title: 'Know Your Rights with ICE | ICEwhistle',
+    description: 'Your constitutional rights during ICE encounters. Can ICE enter your home? ICE warrant vs judicial warrant. 4th Amendment protection.',
+  },
 }
 
 const coreRights = [

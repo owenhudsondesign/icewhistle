@@ -20,8 +20,25 @@ import {
 } from 'lucide-react'
 
 export const metadata: Metadata = {
-  title: 'Resources | ICEwhistle',
-  description: 'Legal resources, printable materials, emergency contacts, and support organizations',
+  title: 'Immigration Emergency Hotlines & Legal Resources',
+  description: 'ICE hotline numbers, immigration emergency hotline, find someone in ICE detention (1-888-351-4024), immigration lawyer near me, free legal aid. Red card, family preparedness. Ayuda legal inmigración gratis.',
+  keywords: [
+    'ICE hotline',
+    'immigration emergency hotline',
+    'ICE detainee locator',
+    'find someone in ICE detention',
+    'immigration lawyer near me',
+    'ayuda legal inmigración gratis',
+    'red card immigration',
+    'immigrant rights card',
+    'family preparedness plan',
+    'bond funds immigration',
+    'legal aid immigration free',
+  ],
+  openGraph: {
+    title: 'Immigration Emergency Hotlines & Legal Resources | ICEwhistle',
+    description: 'Emergency hotlines, ICE detainee locator, immigration lawyers, free legal aid. Find someone in ICE detention.',
+  },
 }
 
 const printableResources = [

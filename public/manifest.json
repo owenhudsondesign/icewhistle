@@ -1,7 +1,7 @@
 {
-  "name": "ICEwhistle - Immigration Safety & Know Your Rights",
+  "name": "ICEwhistle - Know Your Rights App | ICE Alerts",
   "short_name": "ICEwhistle",
-  "description": "Free, anonymous community alert system for immigrant safety. Know your rights during ICE encounters, access emergency hotlines, find legal aid. Available in English, Spanish, and Portuguese.",
+  "description": "Free ICE alert app: What to do if ICE stops you, ICE at your door, find someone detained by ICE. Know your rights. Report ICE activity near me. Immigration emergency hotline. Qué hacer si llega ICE.",
   "start_url": "/",
   "display": "standalone",
   "background_color": "#0F172A",
@@ -60,17 +60,24 @@
   "categories": ["education", "social", "utilities"],
   "shortcuts": [
     {
-      "name": "Know Your Rights",
+      "name": "Know Your Rights with ICE",
       "short_name": "Rights",
-      "description": "Learn about your constitutional rights",
+      "description": "Know your rights: Can ICE enter my home? 4th Amendment, warrants",
       "url": "/rights",
       "icons": [{"src": "/icons/shortcut-rights.png", "sizes": "96x96"}]
     },
     {
-      "name": "Community Alerts",
+      "name": "ICE Activity Near Me",
       "short_name": "Alerts",
-      "description": "View community safety alerts",
+      "description": "Report and view ICE activity alerts near you",
       "url": "/alerts",
+      "icons": [{"src": "/icons/shortcut-alerts.png", "sizes": "96x96"}]
+    },
+    {
+      "name": "ICE Emergency Guide",
+      "short_name": "Emergency",
+      "description": "What to do if ICE stops you or is at your door",
+      "url": "/emergency",
       "icons": [{"src": "/icons/shortcut-alerts.png", "sizes": "96x96"}]
     }
   ]

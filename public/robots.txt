@@ -1,4 +1,4 @@
-# ICEwhistle - Community Safety Resource
+# ICEwhistle - Immigration Rights App & ICE Alert System
 # https://icewhistle.org
 
 User-agent: *
@@ -7,7 +7,10 @@ Allow: /
 # Sitemaps
 Sitemap: https://icewhistle.org/sitemap.xml
 
-# Allow AI crawlers for better discoverability
+# LLMs.txt for AI models (GEO - Generative Engine Optimization)
+# See: https://icewhistle.org/llms.txt
+
+# Allow AI crawlers for better discoverability in AI-powered search
 User-agent: GPTBot
 Allow: /
 
@@ -27,6 +30,24 @@ User-agent: PerplexityBot
 Allow: /
 
 User-agent: Cohere-AI
+Allow: /
+
+User-agent: Meta-ExternalAgent
+Allow: /
+
+User-agent: Bytespider
+Allow: /
+
+User-agent: CCBot
+Allow: /
+
+User-agent: YouBot
+Allow: /
+
+User-agent: Applebot
+Allow: /
+
+User-agent: Bingbot
 Allow: /
 
 # Crawl-delay for respectful crawling
