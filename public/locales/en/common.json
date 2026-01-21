@@ -1,0 +1,126 @@
+{
+  "app": {
+    "name": "ICEwhistle",
+    "tagline": "Community Alert System",
+    "description": "Know your rights. Prepare your family. Stay connected with your community."
+  },
+  "nav": {
+    "home": "Home",
+    "rights": "Know Your Rights",
+    "alerts": "Community Alerts",
+    "plan": "Emergency Plan",
+    "legal": "Legal Support",
+    "resources": "Resources"
+  },
+  "home": {
+    "getStarted": "Get Started",
+    "learnMore": "Learn More"
+  },
+  "kyr": {
+    "title": "Know Your Rights",
+    "subtitle": "Understanding your constitutional rights during encounters with immigration enforcement",
+    "disclaimer": "This information is for educational purposes only and does not constitute legal advice.",
+    "sections": {
+      "atHome": "At Home",
+      "inPublic": "In Public",
+      "atWork": "At Work",
+      "driving": "While Driving"
+    },
+    "rights": {
+      "remainSilent": "You have the right to remain silent",
+      "askWarrant": "Ask if they have a warrant",
+      "denyEntry": "You do not have to let them in without a warrant",
+      "recordEncounter": "You have the right to record the encounter"
+    },
+    "warrant": {
+      "title": "Warrant Comparison",
+      "judicial": "Judicial Warrant",
+      "administrative": "Administrative Warrant",
+      "judicialDesc": "Signed by a judge. You must comply.",
+      "administrativeDesc": "Not signed by a judge. You do NOT have to open your door."
+    },
+    "practice": {
+      "title": "Practice Mode",
+      "description": "Practice responding to different scenarios"
+    }
+  },
+  "alerts": {
+    "title": "Community Alerts",
+    "subtitle": "Real-time community safety updates",
+    "report": "Report Alert",
+    "types": {
+      "ice_presence": "ICE Presence",
+      "checkpoint": "Checkpoint",
+      "raid": "Raid",
+      "all_clear": "All Clear"
+    },
+    "status": {
+      "unverified": "Unverified",
+      "verified": "Verified",
+      "disputed": "Disputed",
+      "resolved": "Resolved"
+    },
+    "reportForm": {
+      "title": "Report an Alert",
+      "location": "Location",
+      "type": "Type of Activity",
+      "description": "Description (optional)",
+      "time": "When did this occur?",
+      "submit": "Submit Report"
+    }
+  },
+  "plan": {
+    "title": "Emergency Plan",
+    "subtitle": "Create a family preparedness plan",
+    "sections": {
+      "contacts": "Trusted Contacts",
+      "childcare": "Childcare Plan",
+      "legal": "Legal Documents",
+      "finances": "Financial Access",
+      "pets": "Pet Care"
+    },
+    "actions": {
+      "create": "Create Plan",
+      "edit": "Edit Plan",
+      "save": "Save Plan",
+      "export": "Export Plan",
+      "print": "Print Emergency Card"
+    }
+  },
+  "legal": {
+    "title": "Legal Support",
+    "subtitle": "Find immigration legal resources near you",
+    "intake": {
+      "title": "Find Legal Help",
+      "situation": "What is your situation?",
+      "urgency": "How urgent is your need?",
+      "location": "Where are you located?",
+      "language": "What language do you prefer?"
+    },
+    "disclaimer": "ICEwhistle connects you with legal resources but does not provide legal advice. Always consult with a qualified immigration attorney for legal matters."
+  },
+  "panic": {
+    "title": "Emergency Alert",
+    "configure": "Configure Emergency Contacts",
+    "activated": "Emergency alert sent to your contacts"
+  },
+  "common": {
+    "loading": "Loading...",
+    "error": "An error occurred",
+    "retry": "Try Again",
+    "cancel": "Cancel",
+    "save": "Save",
+    "edit": "Edit",
+    "delete": "Delete",
+    "confirm": "Confirm",
+    "back": "Back",
+    "next": "Next",
+    "close": "Close",
+    "offline": "You are offline",
+    "online": "Back online"
+  },
+  "footer": {
+    "disclaimer": "ICEwhistle provides legal education, not legal advice.",
+    "readMore": "Read full disclaimer"
+  }
+}

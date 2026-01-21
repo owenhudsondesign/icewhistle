@@ -1,0 +1,161 @@
+// prisma/schema.prisma
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// Anonymous user sessions (no PII required)
+model Session {
+  id            String    @id @default(cuid())
+  createdAt     DateTime  @default(now())
+  lastActiveAt  DateTime  @updatedAt
+  deviceHash    String?   // Hashed device fingerprint for continuity
+  preferences   Json?     // Language, notification settings, etc.
+
+  plans         Plan[]
+  documents     Document[]
+  alerts        Alert[]   @relation("ReportedAlerts")
+}
+
+// Emergency preparedness plans
+model Plan {
+  id                  String    @id @default(cuid())
+  sessionId           String
+  session             Session   @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+
+  encryptedData       Bytes     // E2E encrypted plan content
+  encryptionNonce     Bytes
+
+  createdAt           DateTime  @default(now())
+  updatedAt           DateTime  @updatedAt
+  lastReviewedAt      DateTime?
+
+  trustedContacts     TrustedContact[]
+}
+
+model TrustedContact {
+  id            String    @id @default(cuid())
+  planId        String
+  plan          Plan      @relation(fields: [planId], references: [id], onDelete: Cascade)
+
+  encryptedData Bytes     // Name, phone, email, role - all encrypted
+  nonce         Bytes
+  accessLevel   String    // "emergency_only", "full_access"
+
+  createdAt     DateTime  @default(now())
+}
+
+// Encrypted document storage (metadata only - files in Supabase Storage)
+model Document {
+  id              String    @id @default(cuid())
+  sessionId       String
+  session         Session   @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+
+  encryptedName   Bytes     // Encrypted filename
+  nonce           Bytes
+  storagePath     String    // Supabase Storage path (file itself is E2E encrypted)
+  fileType        String    // MIME type
+  fileSize        Int
+
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+}
+
+// Community alerts (anonymized)
+model Alert {
+  id              String    @id @default(cuid())
+
+  // Location (intentionally imprecise for privacy - rounded to ~100m)
+  latitude        Float
+  longitude       Float
+  address         String?   // Optional address for context
+  neighborhood    String?   // General area name
+
+  // Content
+  alertType       String    // "ice_raid", "ice_checkpoint", "ice_vehicle", "ice_transit", "ice_workplace", "ice_residence", "unconfirmed", "all_clear"
+  description     String?
+
+  // Verification
+  status          String    @default("unverified") // "unverified", "verified", "disputed", "resolved", "expired"
+  verificationCount Int     @default(0)            // Number of confirmations from other users
+
+  // Timestamps
+  reportedAt      DateTime  @default(now())
+  occurredAt      DateTime
+  resolvedAt      DateTime?
+  expiresAt       DateTime  // Auto-expire after 8 hours
+
+  // Anonymous reporter reference (optional - no tracking required)
+  reporterSessionId String?
+  reporterSession   Session?  @relation("ReportedAlerts", fields: [reporterSessionId], references: [id], onDelete: SetNull)
+
+  // Track which anonymous sessions have verified (hashed for privacy)
+  verifierHashes  String[]  @default([])
+
+  @@index([latitude, longitude])
+  @@index([status, reportedAt])
+  @@index([alertType])
+  @@index([expiresAt])
+}
+
+// Legal resource directory (public data)
+model LegalResource {
+  id              String    @id @default(cuid())
+
+  name            String
+  organizationType String   // "attorney", "legal_aid", "bond_fund", "advocacy"
+
+  // Service area
+  jurisdictions   String[]  // State/county codes
+  languages       String[]
+
+  // Case types
+  caseTypes       String[]  // "asylum", "daca", "detention", "deportation_defense"
+
+  // Contact (public info)
+  website         String?
+  phone           String?
+  email           String?
+  intakeUrl       String?
+
+  // Availability
+  acceptingCases  Boolean   @default(true)
+  proBonoAvailable Boolean  @default(false)
+
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+  verifiedAt      DateTime?
+
+  @@index([jurisdictions])
+  @@index([caseTypes])
+}
+
+// Volunteer network (for rapid response)
+model Volunteer {
+  id              String    @id @default(cuid())
+
+  encryptedProfile Bytes    // Name, contact - encrypted
+  nonce           Bytes
+
+  roles           String[]  // "legal_observer", "driver", "translator", "childcare"
+  languages       String[]
+
+  // Service area (approximate)
+  serviceAreaLat  Float
+  serviceAreaLng  Float
+  serviceRadiusMi Float     @default(10)
+
+  // Availability
+  isActive        Boolean   @default(true)
+  availabilityJson Json?    // Weekly schedule
+
+  createdAt       DateTime  @default(now())
+  lastActiveAt    DateTime  @updatedAt
+
+  @@index([serviceAreaLat, serviceAreaLng])
+}

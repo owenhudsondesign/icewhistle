@@ -1,0 +1,126 @@
+{
+  "app": {
+    "name": "ICEwhistle",
+    "tagline": "Sistema de Alertas Comunitarias",
+    "description": "Conozca sus derechos. Prepare a su familia. Manténgase conectado con su comunidad."
+  },
+  "nav": {
+    "home": "Inicio",
+    "rights": "Conozca Sus Derechos",
+    "alerts": "Alertas Comunitarias",
+    "plan": "Plan de Emergencia",
+    "legal": "Apoyo Legal",
+    "resources": "Recursos"
+  },
+  "home": {
+    "getStarted": "Comenzar",
+    "learnMore": "Más Información"
+  },
+  "kyr": {
+    "title": "Conozca Sus Derechos",
+    "subtitle": "Entendiendo sus derechos constitucionales durante encuentros con agentes de inmigración",
+    "disclaimer": "Esta información es solo para propósitos educativos y no constituye asesoramiento legal.",
+    "sections": {
+      "atHome": "En Casa",
+      "inPublic": "En Público",
+      "atWork": "En el Trabajo",
+      "driving": "Mientras Conduce"
+    },
+    "rights": {
+      "remainSilent": "Tiene derecho a permanecer en silencio",
+      "askWarrant": "Pregunte si tienen una orden judicial",
+      "denyEntry": "No tiene que dejarlos entrar sin una orden judicial",
+      "recordEncounter": "Tiene derecho a grabar el encuentro"
+    },
+    "warrant": {
+      "title": "Comparación de Órdenes",
+      "judicial": "Orden Judicial",
+      "administrative": "Orden Administrativa",
+      "judicialDesc": "Firmada por un juez. Debe cumplir.",
+      "administrativeDesc": "No firmada por un juez. NO tiene que abrir la puerta."
+    },
+    "practice": {
+      "title": "Modo de Práctica",
+      "description": "Practique cómo responder en diferentes situaciones"
+    }
+  },
+  "alerts": {
+    "title": "Alertas Comunitarias",
+    "subtitle": "Actualizaciones de seguridad comunitaria en tiempo real",
+    "report": "Reportar Alerta",
+    "types": {
+      "ice_presence": "Presencia de ICE",
+      "checkpoint": "Punto de Control",
+      "raid": "Redada",
+      "all_clear": "Todo Despejado"
+    },
+    "status": {
+      "unverified": "Sin Verificar",
+      "verified": "Verificado",
+      "disputed": "Disputado",
+      "resolved": "Resuelto"
+    },
+    "reportForm": {
+      "title": "Reportar una Alerta",
+      "location": "Ubicación",
+      "type": "Tipo de Actividad",
+      "description": "Descripción (opcional)",
+      "time": "¿Cuándo ocurrió esto?",
+      "submit": "Enviar Reporte"
+    }
+  },
+  "plan": {
+    "title": "Plan de Emergencia",
+    "subtitle": "Cree un plan de preparación familiar",
+    "sections": {
+      "contacts": "Contactos de Confianza",
+      "childcare": "Plan de Cuidado de Niños",
+      "legal": "Documentos Legales",
+      "finances": "Acceso Financiero",
+      "pets": "Cuidado de Mascotas"
+    },
+    "actions": {
+      "create": "Crear Plan",
+      "edit": "Editar Plan",
+      "save": "Guardar Plan",
+      "export": "Exportar Plan",
+      "print": "Imprimir Tarjeta de Emergencia"
+    }
+  },
+  "legal": {
+    "title": "Apoyo Legal",
+    "subtitle": "Encuentre recursos legales de inmigración cerca de usted",
+    "intake": {
+      "title": "Encontrar Ayuda Legal",
+      "situation": "¿Cuál es su situación?",
+      "urgency": "¿Qué tan urgente es su necesidad?",
+      "location": "¿Dónde está ubicado?",
+      "language": "¿Qué idioma prefiere?"
+    },
+    "disclaimer": "ICEwhistle lo conecta con recursos legales pero no proporciona asesoramiento legal. Siempre consulte con un abogado de inmigración calificado para asuntos legales."
+  },
+  "panic": {
+    "title": "Alerta de Emergencia",
+    "configure": "Configurar Contactos de Emergencia",
+    "activated": "Alerta de emergencia enviada a sus contactos"
+  },
+  "common": {
+    "loading": "Cargando...",
+    "error": "Ocurrió un error",
+    "retry": "Intentar de Nuevo",
+    "cancel": "Cancelar",
+    "save": "Guardar",
+    "edit": "Editar",
+    "delete": "Eliminar",
+    "confirm": "Confirmar",
+    "back": "Atrás",
+    "next": "Siguiente",
+    "close": "Cerrar",
+    "offline": "Está sin conexión",
+    "online": "Conexión restaurada"
+  },
+  "footer": {
+    "disclaimer": "ICEwhistle proporciona educación legal, no asesoramiento legal.",
+    "readMore": "Leer descargo completo"
+  }
+}
