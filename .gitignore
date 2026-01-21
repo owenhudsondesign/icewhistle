@@ -41,3 +41,15 @@ public/workbox-*.js.map
 
 # Vercel
 .vercel/
+
+# Capacitor
+ios/App/App/public/
+ios/App/Pods/
+ios/DerivedData/
+ios/*.xcworkspace/xcuserdata/
+android/app/src/main/assets/public/
+android/.gradle/
+android/app/build/
+android/build/
+android/local.properties
+*.keystore
