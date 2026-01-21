@@ -1,25 +1,23 @@
 import { Metadata } from 'next'
 
 export const metadata: Metadata = {
-  title: 'ICE Activity Near Me - Live Community Alerts Map',
-  description: 'Report and view real-time ICE activity alerts near you. Anonymous ICE sighting reports, ICE raid alerts, checkpoint warnings. Free ICE tracker app for community safety. Reportar actividad de ICE cerca de mí.',
+  title: 'Community Updates Near Me - Live Safety Alerts',
+  description: 'View and share community safety updates in your area. Anonymous community reports, checkpoint information, and safety alerts. Free community safety resource. Actualizaciones de la comunidad cerca de mí.',
   keywords: [
-    'ICE activity near me',
-    'ICE alerts',
-    'ICE sighting app',
-    'ICE tracker app',
-    'ICE raid alerts',
-    'report ICE activity',
-    'ICE checkpoint alerts',
-    'immigration enforcement alerts',
+    'community updates near me',
+    'community safety alerts',
+    'immigration community updates',
+    'community reports',
+    'safety information',
+    'immigration checkpoint info',
+    'community safety resource',
     'rapid response immigration',
-    'alerta de ICE',
-    'redada de ICE',
-    'actividad de ICE cerca de mí',
+    'actualizaciones de la comunidad',
+    'información de seguridad',
   ],
   openGraph: {
-    title: 'ICE Activity Near Me - Live Alerts | ICEwhistle',
-    description: 'Real-time community alerts for ICE activity. Report raids, checkpoints, and ICE sightings anonymously. Free ICE tracker app.',
+    title: 'Community Updates Near Me | ICEwhistle',
+    description: 'Community safety updates and information sharing. View reports and stay informed. Free community safety resource.',
   },
 }
 

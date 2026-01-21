@@ -33,13 +33,12 @@ export const metadata: Metadata = {
     'do I have to show ID to ICE',
     'can ICE enter my home',
     'ICE warrant vs judicial warrant',
-    // Tool/App Keywords
-    'ICE tracker app',
-    'ICE alert app',
+    // Tool/App Keywords (App Store compliant)
+    'community safety app',
     'immigration emergency app',
-    'ICE sighting app',
+    'community updates immigration',
     'rapid response immigration app',
-    'notifica app alternative',
+    'immigration rights resource',
     // Location + Crisis Keywords
     'ICE activity near me',
     'immigration lawyer near me',
@@ -48,7 +47,7 @@ export const metadata: Metadata = {
     // Spanish Keywords
     'qué hacer si llega ICE',
     'mis derechos con inmigración',
-    'app para alertar ICE',
+    'actualizaciones de la comunidad',
     'redada de ICE qué hacer',
     'ayuda legal inmigración gratis',
     // Long-Tail / FAQ-Style
@@ -59,13 +58,11 @@ export const metadata: Metadata = {
     'how long can ICE hold you',
     // Original keywords
     'immigration rights',
-    'ICE alerts',
+    'community alerts',
     'know your rights',
     'immigrant safety',
     'derechos de inmigrantes',
-    'alerta de ICE',
     'constitutional rights',
-    'deportation defense',
   ],
   authors: [{ name: 'ICEwhistle Community' }],
   creator: 'ICEwhistle',
@@ -118,7 +115,7 @@ export const metadata: Metadata = {
       'pt-BR': 'https://icewhistle.org',
     },
   },
-  category: 'public safety',
+  category: 'reference',
 }
 
 export const viewport: Viewport = {
@@ -133,10 +130,10 @@ const jsonLd = {
   '@context': 'https://schema.org',
   '@type': 'WebApplication',
   name: 'ICEwhistle',
-  alternateName: ['ICE Alert App', 'Immigration Rights App', 'ICE Tracker App'],
-  description: 'Free immigration rights app: What to do if ICE stops you, ICE at your door, find someone detained by ICE. Know your rights with ICE. Report ICE activity near me. Qué hacer si llega ICE.',
+  alternateName: ['Know Your Rights App', 'Immigration Rights App', 'Community Safety App'],
+  description: 'Free immigration rights app: What to do if ICE stops you, ICE at your door, find someone detained by ICE. Know your rights with ICE. Community updates near you. Qué hacer si llega ICE.',
   url: 'https://icewhistle.org',
-  applicationCategory: 'UtilitiesApplication',
+  applicationCategory: 'ReferenceApplication',
   operatingSystem: 'Any',
   offers: {
     '@type': 'Offer',
@@ -147,14 +144,14 @@ const jsonLd = {
   isAccessibleForFree: true,
   audience: {
     '@type': 'Audience',
-    audienceType: 'Immigrant communities, legal aid workers, community organizers, rapid response networks',
+    audienceType: 'Immigrant communities, legal aid workers, community organizers',
   },
   potentialAction: {
     '@type': 'SearchAction',
     target: 'https://icewhistle.org/search?q={search_term_string}',
     'query-input': 'required name=search_term_string',
   },
-  keywords: 'ICE alert app, immigration rights app, know your rights ICE, ICE tracker, what to do if ICE stops you, ICE at my door, find someone detained by ICE, qué hacer si llega ICE',
+  keywords: 'immigration rights app, know your rights ICE, community safety, what to do if ICE stops you, ICE at my door, find someone detained by ICE, qué hacer si llega ICE',
 }
 
 const organizationJsonLd = {

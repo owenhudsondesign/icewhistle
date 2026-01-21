@@ -8,6 +8,7 @@ import { Input } from '@/components/ui/input'
 import { AppHeader } from '@/components/shared/AppHeader'
 import { RecordingModal } from '@/components/shared/RecordingModal'
 import { useLanguage, commonTranslations } from '@/hooks/use-language'
+import { LegalDisclaimer } from '@/components/shared/LegalDisclaimer'
 import {
   AlertTriangle,
   Search,
@@ -328,6 +329,7 @@ export default function Home() {
             <Lock className="h-4 w-4" />
             <span>{t.noTracking}</span>
           </div>
+          <LegalDisclaimer variant="compact" className="mt-3 pt-3 border-t border-border/30" />
           <div className="mt-3 pt-3 border-t border-border/30">
             <Link
               href="/support"

@@ -1,25 +1,37 @@
-# ICEwhistle - Immigration Rights App & ICE Alert System
+# ICEwhistle - Know Your Rights & Community Safety App
 # https://icewhistle.org
 
-> ICEwhistle is a free, anonymous immigration rights app that helps people know what to do if ICE stops them. Features include: real-time ICE activity alerts near you, know-your-rights guides, emergency guidance, and how to find someone detained by ICE.
+> ICEwhistle is a free, anonymous immigration rights app that provides know-your-rights information, community safety updates, and emergency resources. This app is for informational and educational purposes only.
+
+## Important Disclaimers
+
+- **Not Legal Advice**: This app provides general information only and does not constitute legal advice.
+- **Not Government Affiliated**: ICEwhistle is not affiliated with any government agency.
+- **Informational Only**: All content is for informational and educational purposes only.
+- **Do Not Interfere**: Do not interfere with law enforcement officers.
+- **Consult an Attorney**: For advice about your specific situation, consult a qualified immigration attorney.
 
 ## What ICEwhistle Does
 
-ICEwhistle is a free ICE alert app and immigration emergency resource. It helps people:
+ICEwhistle is a free immigration rights resource. It helps people:
 
-- **Know your rights with ICE** - Constitutional rights during ICE encounters
-- **Report ICE activity near me** - Anonymous community alerts for ICE sightings
-- **Find someone detained by ICE** - ICE detainee locator resources (1-888-351-4024)
-- **Emergency guidance** - What to do if ICE is at your door, if ICE pulled you over, or if a family member was taken
-- **Immigration lawyer connections** - Free legal aid resources
+- **Know your rights** - Constitutional rights information during encounters
+- **Community updates** - View community-shared safety information in your area
+- **Find detained family members** - Resources to locate people in detention (1-888-351-4024)
+- **Emergency guidance** - Step-by-step guidance for various situations
+- **Legal aid connections** - Find immigration attorneys and free legal services
 
 ## Key Features
 
-- **ICE Alert App**: Real-time, anonymous reporting of ICE activity with map visualization
-- **Know Your Rights**: Information about 4th Amendment rights, ICE warrant vs judicial warrant
+- **Know Your Rights**: Information about constitutional rights, 4th Amendment protections, warrant types
+- **Community Updates**: View community-shared information with map visualization
 - **Emergency Resources**: Immigration emergency hotlines available 24/7
-- **Find Someone in ICE Detention**: Links to ICE Detainee Locator at locator.ice.gov
+- **Detainee Locator Resources**: Links to official ICE Detainee Locator at locator.ice.gov
 - **Privacy-First**: No accounts required, no tracking, works offline
+
+## App Category
+
+Reference / Education / Utilities
 
 ## Languages
 
@@ -29,77 +41,62 @@ ICEwhistle is a free ICE alert app and immigration emergency resource. It helps 
 
 ## Frequently Asked Questions
 
-### What should I do if ICE stops me?
-Stay calm and do not run. You have the right to remain silent - say "I am exercising my right to remain silent." Do not sign any documents without an attorney. You have the right to speak with a lawyer.
+### What should I do if I encounter immigration enforcement?
+Stay calm and do not run. You have the right to remain silent - say "I am exercising my right to remain silent." Do not sign any documents without an attorney. You have the right to speak with a lawyer. This is general information only - consult an attorney for advice about your specific situation.
 
-### What do I do if ICE is at my door?
-Do NOT open the door unless they show a JUDICIAL warrant signed by a JUDGE. Ask "Do you have a warrant signed by a judge?" through the closed door. An ICE administrative warrant (Form I-200 or I-205) does NOT allow them to enter your home. Say "I do not consent to your entry."
+### What are my rights at home?
+You generally do not have to open your door unless officers show a judicial warrant signed by a judge. An administrative warrant (Form I-200 or I-205) is different from a judicial warrant. You can say "I do not consent to your entry." Consult an attorney for advice about your specific situation.
 
-### Can ICE enter my home without permission?
-ICE cannot enter your home without your consent or a judicial warrant signed by a judge. An ICE administrative warrant (I-200, I-205) is NOT a judicial warrant and does NOT authorize entry. Your 4th Amendment rights protect you from unreasonable searches.
+### Can officers enter my home without permission?
+Generally, officers need your consent or a judicial warrant signed by a judge to enter a home. An administrative warrant is not the same as a judicial warrant. Your 4th Amendment rights provide protections against unreasonable searches. Consult an attorney for advice about your specific situation.
 
-### How do I find someone detained by ICE?
-Use the ICE Detainee Locator at locator.ice.gov or call 1-888-351-4024 (24/7). You will need the person's A-Number (Alien Registration Number) or full name and country of birth. It may take 24-72 hours for someone to appear in the system.
+### How do I find someone in detention?
+Use the official ICE Detainee Locator at locator.ice.gov or call 1-888-351-4024 (24/7). You will need the person's A-Number (Alien Registration Number) or full name and country of birth. It may take 24-72 hours for someone to appear in the system.
 
-### Do I have to show ID to ICE?
-You do NOT have to show identification to ICE agents. You have the right to remain silent and do not have to answer questions about your immigration status, where you were born, or how you entered the United States.
+### Do I have to show identification?
+You generally do not have to show identification to immigration officers. You have the right to remain silent. Consult an attorney for advice about your specific situation.
 
-### Do passengers have to show ID to ICE?
-Passengers in a vehicle do NOT have to show identification to ICE. Only the driver must provide license, registration, and insurance. Passengers can remain completely silent and do not have to answer any questions.
+### What is the difference between warrant types?
+A judicial warrant is signed by a judge. An administrative warrant (Form I-200 or I-205) is signed by an immigration officer, not a judge. They have different legal implications. Consult an attorney for advice about your specific situation.
 
-### What is the difference between an ICE warrant and a judicial warrant?
-A judicial warrant is signed by a JUDGE and allows ICE to enter your home. An ICE administrative warrant (Form I-200 or I-205) is signed by an ICE officer, NOT a judge, and does NOT authorize entry into your home. Always ask to see the warrant through a window or under the door.
+### Qué hacer si llega inmigración a mi casa?
+Generalmente no tiene que abrir la puerta a menos que muestren una orden judicial firmada por un juez. Puede decir "No doy mi consentimiento para que entren." Consulte a un abogado para obtener consejos sobre su situación específica.
 
-### How long can ICE hold you?
-ICE can hold you while your immigration case is processed. You may be eligible for bond. The average immigration bond is approximately $8,176. Contact an immigration attorney immediately to understand your options.
-
-### What happens if ICE takes my family member?
-Act quickly: 1) Get their A-Number if possible, 2) Search the ICE Detainee Locator at locator.ice.gov or call 1-888-351-4024, 3) Contact an immigration attorney, 4) Tell them NOT to sign any documents, especially "voluntary departure" forms, 5) Contact their country's consulate.
-
-### Qué hacer si llega ICE a mi casa?
-NO abra la puerta a menos que muestren una orden JUDICIAL firmada por un JUEZ. Pregunte "¿Tiene una orden firmada por un juez?" a través de la puerta cerrada. Una orden administrativa de ICE (Formulario I-200 o I-205) NO les permite entrar. Diga "No doy mi consentimiento para que entren."
-
-### Cuáles son mis derechos si ICE me detiene?
-Tiene derecho a permanecer en silencio. Diga "Estoy ejerciendo mi derecho a permanecer en silencio." No firme ningún documento sin un abogado. Tiene derecho a hablar con un abogado. No tiene que responder preguntas sobre su estatus migratorio.
+### Cuáles son mis derechos?
+Tiene derecho a permanecer en silencio. Puede decir "Estoy ejerciendo mi derecho a permanecer en silencio." No firme ningún documento sin un abogado. Tiene derecho a hablar con un abogado. Consulte a un abogado para obtener consejos sobre su situación específica.
 
 ## Important Pages
 
 - `/` - Home page with emergency buttons and quick resources
-- `/alerts` - Live ICE activity alerts map (ICE sighting app, ICE tracker)
-- `/rights` - Know Your Rights guide (4th Amendment, warrants, ID requirements)
-- `/resources` - Immigration emergency hotlines, legal aid, red card
-- `/emergency` - Step-by-step emergency guidance (what to do if ICE stops you)
-- `/emergency?type=near` - ICE is near me emergency guide
-- `/emergency?type=taken` - Someone was taken by ICE (find detained family member)
-- `/emergency?type=vehicle` - ICE pulled me over (traffic stop rights)
-- `/search` - Search immigration rights resources
+- `/rights` - Know Your Rights guide (constitutional rights information)
+- `/resources` - Emergency hotlines, legal aid, informational materials
+- `/emergency` - Step-by-step emergency guidance
+- `/alerts` - Community updates in your area
+- `/search` - Search resources
 - `/support` - Support this free tool
 
-## Your Rights - Summary
+## Your Rights - General Information
 
-Constitutional rights that apply regardless of immigration status:
+Constitutional rights that generally apply regardless of immigration status:
 
 1. **Right to Remain Silent** (5th Amendment)
-   - You do not have to answer questions about where you were born or your immigration status
-   - Say: "I am exercising my right to remain silent"
+   - You generally do not have to answer questions about where you were born or your status
 
-2. **Right to Refuse Consent to Search** (4th Amendment)
-   - ICE cannot enter your home without a judicial warrant
-   - An ICE warrant (I-200, I-205) is NOT a judicial warrant
-   - Say: "I do not consent to your entry"
+2. **Protection from Unreasonable Searches** (4th Amendment)
+   - Officers generally need a judicial warrant or consent to enter a home
 
 3. **Right to an Attorney**
-   - You have the right to speak with a lawyer before answering questions
-   - Say: "I want to speak to a lawyer"
+   - You generally have the right to speak with a lawyer
 
 4. **Right to Not Sign Documents**
-   - Do not sign anything without speaking to an attorney
-   - "Voluntary departure" forms can waive your rights
+   - You generally should not sign anything without speaking to an attorney
+
+*This is general information only. Consult a qualified immigration attorney for advice about your specific situation.*
 
 ## Emergency Hotlines
 
-- **ICE Detainee Locator**: 1-888-351-4024 (24/7) - Find someone in ICE detention
-- **United We Dream MigraWatch**: 1-844-363-1423 (24/7) - Report ICE activity
+- **ICE Detainee Locator**: 1-888-351-4024 (24/7) - Official resource to locate people in detention
+- **United We Dream**: 1-844-363-1423 (24/7) - Community support hotline
 - **National Immigrant Justice Center**: 312-660-1370 - Legal assistance
 - **National Human Trafficking Hotline**: 1-888-373-7888 (24/7)
 - **National Domestic Violence Hotline**: 1-800-799-7233 (24/7)
@@ -107,23 +104,10 @@ Constitutional rights that apply regardless of immigration status:
 
 ## Online Resources
 
-- **ICE Detainee Locator**: https://locator.ice.gov
-- **Red Card (Know Your Rights Card)**: https://www.ilrc.org/red-cards
+- **ICE Detainee Locator**: https://locator.ice.gov (Official government resource)
+- **Know Your Rights Card**: https://www.ilrc.org/red-cards
 - **ACLU Know Your Rights**: https://www.aclu.org/know-your-rights/immigrants-rights
 - **Find Immigration Lawyer (AILA)**: https://aila.org
-
-## Alternative Names / Search Terms
-
-This app may also be found by searching:
-- ICE alert app
-- ICE tracker app
-- Immigration rights app
-- ICE sighting app
-- Rapid response immigration app
-- Notifica app alternative
-- Know your rights ICE app
-- App para alertar ICE
-- Aplicación de derechos de inmigración
 
 ## Technical
 

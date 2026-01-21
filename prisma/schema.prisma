@@ -159,3 +159,68 @@ model Volunteer {
 
   @@index([serviceAreaLat, serviceAreaLng])
 }
+
+// Feature flags for platform-specific feature gating (App Store compliance)
+model FeatureFlag {
+  id              String    @id @default(cuid())
+
+  key             String    @unique // "reporting_submit_enabled_ios", "push_enabled", etc.
+  enabled         Boolean   @default(true)
+  description     String?
+
+  // Platform targeting
+  platforms       String[]  @default(["web", "ios", "android"]) // Empty = all platforms
+
+  // Percentage rollout (0-100)
+  rolloutPercent  Int       @default(100)
+
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+
+  @@index([key])
+}
+
+// Push notification subscriptions for mobile (App Store compliant)
+model PushSubscription {
+  id              String    @id @default(cuid())
+
+  // Device info (minimal PII)
+  platform        String    // "ios", "android"
+  pushToken       String    @unique // Expo push token
+
+  // Location preference (coarse - ZIP or geohash only, not precise)
+  zip             String?   // US ZIP code for location-based alerts
+  geohashLowPrecision String? // Alternative: low-precision geohash
+
+  // Preferences
+  language        String    @default("en")
+  alertsEnabled   Boolean   @default(true)
+  quietHoursStart String?   // "22:00" format (local time)
+  quietHoursEnd   String?   // "07:00" format (local time)
+
+  // Status
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+  disabledAt      DateTime? // Soft delete for opt-out
+
+  @@index([zip])
+  @@index([geohashLowPrecision])
+  @@index([alertsEnabled])
+}
+
+// Moderation actions for community reports (App Store compliance - moderated content)
+model ModerationAction {
+  id              String    @id @default(cuid())
+
+  alertId         String
+  action          String    // "approve", "reject", "flag", "escalate"
+  reason          String?
+
+  // Moderator info (anonymized for privacy)
+  moderatorHash   String    // Hashed moderator identifier
+
+  createdAt       DateTime  @default(now())
+
+  @@index([alertId])
+  @@index([action])
+}
