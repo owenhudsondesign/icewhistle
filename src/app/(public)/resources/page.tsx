@@ -130,6 +130,7 @@ const emergencyHotlines = [
 
 const organizationCategories = [
   {
+    id: 'legal',
     title: 'Legal Aid Organizations',
     icon: Scale,
     description: 'Free and low-cost legal help',
@@ -496,7 +497,7 @@ export default function ResourcesPage() {
           </p>
           <div className="flex flex-wrap justify-center gap-4">
             <Button asChild>
-              <Link href="/legal">Find Legal Support</Link>
+              <Link href="#legal">Find Legal Support</Link>
             </Button>
             <Button variant="outline" asChild>
               <Link href="/rights">Know Your Rights</Link>
