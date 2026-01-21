@@ -242,9 +242,9 @@ export function OnboardingFlow({ onComplete, onSkip }: OnboardingFlowProps) {
               </Button>
 
               <div className="flex justify-center gap-4 text-xs text-muted-foreground">
-                <a href="/privacy" className="hover:underline">{t.privacyPolicy}</a>
+                <a href="/privacy" target="_blank" rel="noopener noreferrer" className="hover:underline text-primary">{t.privacyPolicy}</a>
                 <span>•</span>
-                <a href="/terms" className="hover:underline">{t.terms}</a>
+                <a href="/terms" target="_blank" rel="noopener noreferrer" className="hover:underline text-primary">{t.terms}</a>
               </div>
             </CardContent>
           </>

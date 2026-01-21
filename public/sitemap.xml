@@ -102,4 +102,20 @@
     <xhtml:link rel="alternate" hreflang="es" href="https://icewhistle.org/support"/>
     <xhtml:link rel="alternate" hreflang="pt" href="https://icewhistle.org/support"/>
   </url>
+
+  <!-- Privacy Policy -->
+  <url>
+    <loc>https://icewhistle.org/privacy</loc>
+    <lastmod>2026-01-21</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.4</priority>
+  </url>
+
+  <!-- Terms of Service -->
+  <url>
+    <loc>https://icewhistle.org/terms</loc>
+    <lastmod>2026-01-21</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.4</priority>
+  </url>
 </urlset>
