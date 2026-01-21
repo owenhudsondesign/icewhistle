@@ -12,7 +12,6 @@ import {
   AlertTriangle,
   Search,
   Phone,
-  MapPin,
   Shield,
   Building,
   Scale,
@@ -26,7 +25,6 @@ import {
 export default function Home() {
   const router = useRouter()
   const [searchQuery, setSearchQuery] = useState('')
-  const [location, setLocation] = useState('')
   const [showRecordingModal, setShowRecordingModal] = useState(false)
   const { language } = useLanguage()
 
@@ -49,12 +47,7 @@ export default function Home() {
   }
 
   const navigateToEmergency = (type: 'near' | 'taken' | 'vehicle') => {
-    const params = new URLSearchParams()
-    params.set('type', type)
-    if (location.trim()) {
-      params.set('location', location)
-    }
-    router.push(`/emergency?${params.toString()}`)
+    router.push(`/emergency?type=${type}`)
   }
 
   const handleContinueAfterRecording = () => {
@@ -157,20 +150,6 @@ export default function Home() {
               {t.search}
             </Button>
           </form>
-        </div>
-
-        {/* Location Input (Optional) - Glass Card */}
-        <div className="card-glass p-4 mb-4">
-          <div className="flex items-center gap-3">
-            <MapPin className="h-5 w-5 text-[#00A6B4] flex-shrink-0" />
-            <Input
-              type="text"
-              placeholder={t.locationPlaceholder}
-              value={location}
-              onChange={(e) => setLocation(e.target.value)}
-              className="h-10 rounded-[8px] border-0 bg-background/50"
-            />
-          </div>
         </div>
 
         {/* Secondary Bento - Resources - Glass Cards with Category Bars */}
