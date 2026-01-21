@@ -13,6 +13,7 @@ import {
   Shield,
   Heart,
   Lock,
+  ExternalLink,
 } from 'lucide-react'
 
 export default function SupportPage() {
@@ -106,20 +107,32 @@ export default function SupportPage() {
 
         {/* Donation section */}
         <div className="border-t pt-8">
-          <p className="text-xs text-muted-foreground text-center mb-6">
+          <p className="text-xs text-muted-foreground text-center mb-4">
             {t.donationsProcessed}
           </p>
 
-          {/* OpenCollective link */}
+          {/* OpenCollective iframe */}
+          <div className="rounded-lg overflow-hidden border mb-4">
+            <iframe
+              src="https://opencollective.com/embed/icewhistle-app/donate"
+              style={{ width: '100%', minHeight: '400px', border: 'none' }}
+              title="Donate to ICEwhistle via OpenCollective"
+            />
+          </div>
+
+          {/* Alternative: External link */}
           <div className="text-center">
-            <Button size="lg" asChild className="bg-[#00A6B4] hover:bg-[#00A6B4]/90">
+            <p className="text-xs text-muted-foreground mb-3">
+              {t.preferDirect}
+            </p>
+            <Button variant="outline" size="sm" asChild>
               <a
                 href="https://opencollective.com/icewhistle-app"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="inline-flex items-center gap-2"
               >
-                <Heart className="h-5 w-5" />
+                <ExternalLink className="h-4 w-4" />
                 {t.openInOC}
               </a>
             </Button>
