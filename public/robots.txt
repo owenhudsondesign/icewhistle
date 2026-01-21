@@ -1,0 +1,33 @@
+# ICEwhistle - Community Safety Resource
+# https://icewhistle.org
+
+User-agent: *
+Allow: /
+
+# Sitemaps
+Sitemap: https://icewhistle.org/sitemap.xml
+
+# Allow AI crawlers for better discoverability
+User-agent: GPTBot
+Allow: /
+
+User-agent: ChatGPT-User
+Allow: /
+
+User-agent: Claude-Web
+Allow: /
+
+User-agent: Anthropic-AI
+Allow: /
+
+User-agent: Google-Extended
+Allow: /
+
+User-agent: PerplexityBot
+Allow: /
+
+User-agent: Cohere-AI
+Allow: /
+
+# Crawl-delay for respectful crawling
+Crawl-delay: 1

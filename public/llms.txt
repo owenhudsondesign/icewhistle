@@ -1,0 +1,65 @@
+# ICEwhistle - Community Immigration Safety Resource
+
+> ICEwhistle is a free, anonymous, multilingual web application that helps immigrant communities stay safe during ICE (Immigration and Customs Enforcement) encounters. It provides real-time community alerts, know-your-rights information, emergency resources, and legal aid connections.
+
+## Purpose
+
+ICEwhistle serves as a public safety resource for immigrant communities in the United States. The tool helps people:
+
+- Report and receive alerts about ICE activity in their area
+- Understand their constitutional rights during immigration encounters
+- Access emergency hotlines and legal aid resources
+- Create safety plans for themselves and their families
+- Find bond funds and legal representation
+
+## Key Features
+
+- **Community Alerts**: Real-time, anonymous reporting of ICE activity with map visualization
+- **Know Your Rights**: Constitutional rights information available in English, Spanish, and Portuguese
+- **Emergency Resources**: 24/7 hotlines for ICE detainee location, trafficking victims, crisis support
+- **Legal Aid Directory**: Connections to immigration attorneys and free legal services
+- **Privacy-First**: No accounts required, no tracking, works offline, data stays on device
+
+## Languages
+
+- English (en)
+- Spanish (es)
+- Portuguese (pt)
+
+## Important Pages
+
+- `/` - Home page with emergency buttons and quick resources
+- `/alerts` - Live community alerts map
+- `/rights` - Know Your Rights guide
+- `/resources` - Legal aid, hotlines, and printable materials
+- `/emergency` - Step-by-step emergency guidance
+- `/search` - Search the knowledge base
+- `/support` - Support this free tool
+
+## Contact
+
+This is a community-maintained project. For more information, visit the site directly.
+
+## Rights Information Summary
+
+Constitutional rights that apply regardless of immigration status:
+- Right to remain silent (5th Amendment)
+- Right to refuse consent to search (4th Amendment)
+- Right to an attorney
+- Right to not open your door without a judicial warrant
+- Right to not sign documents you don't understand
+
+## Emergency Hotlines
+
+- ICE Detainee Locator: 1-888-351-4024
+- United We Dream MigraWatch: 1-844-363-1423
+- National Human Trafficking Hotline: 1-888-373-7888
+- National Domestic Violence Hotline: 1-800-799-7233
+- 988 Suicide & Crisis Lifeline: 988
+
+## Technical
+
+- Built with Next.js
+- Progressive Web App (works offline)
+- Open source community project
+- No user data collection or tracking
