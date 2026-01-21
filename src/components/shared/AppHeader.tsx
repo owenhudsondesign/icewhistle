@@ -22,7 +22,8 @@ export function AppHeader({ showBack, backHref = '/', title, subtitle }: AppHead
     <header className="sticky top-0 z-50 glass-subtle border-b">
       <div className="container mx-auto px-4 py-3">
         <div className="flex items-center justify-between">
-          <div className="flex items-center gap-2">
+          {/* Left - Logo/Back */}
+          <div className="flex items-center gap-2 flex-1">
             {showBack && (
               <Link href={backHref}>
                 <Button variant="ghost" size="icon" className="h-10 w-10 rounded-[8px] press-scale">
@@ -61,8 +62,9 @@ export function AppHeader({ showBack, backHref = '/', title, subtitle }: AppHead
               </Link>
             )}
           </div>
-          <div className="flex items-center gap-2">
-            {/* Language Buttons - Prominent with full names */}
+
+          {/* Center - Language Buttons */}
+          <div className="flex justify-center">
             <div className="flex rounded-[12px] overflow-hidden border border-border/50 bg-muted/30">
               {([
                 { code: 'en' as const, label: 'EN', name: 'English' },
@@ -84,6 +86,10 @@ export function AppHeader({ showBack, backHref = '/', title, subtitle }: AppHead
                 </button>
               ))}
             </div>
+          </div>
+
+          {/* Right - Support & Dark Mode */}
+          <div className="flex items-center gap-2 flex-1 justify-end">
             {/* Support Link - Subtle */}
             <Link
               href="/support"
@@ -92,7 +98,7 @@ export function AppHeader({ showBack, backHref = '/', title, subtitle }: AppHead
             >
               <Heart className="h-4 w-4 text-muted-foreground" strokeWidth={2} />
             </Link>
-            {/* Dark Mode Toggle - Bondi accent */}
+            {/* Dark Mode Toggle */}
             <Button
               variant="outline"
               size="icon"
