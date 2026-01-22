@@ -23,9 +23,9 @@ export function AppHeader({ showBack, backHref = '/', title, subtitle }: AppHead
   return (
     <header className="sticky top-0 z-50 glass-subtle border-b">
       <div className="container mx-auto px-4 py-3">
-        <div className="flex items-center justify-between">
+        <div className="flex items-center justify-between gap-2">
           {/* Left - Logo/Back */}
-          <div className="flex items-center gap-2 flex-1">
+          <div className="flex items-center gap-2 sm:flex-1 flex-shrink-0">
             {showBack && (
               <Link href={backHref}>
                 <Button variant="ghost" size="icon" className="h-10 w-10 rounded-[8px] press-scale">
@@ -50,7 +50,7 @@ export function AppHeader({ showBack, backHref = '/', title, subtitle }: AppHead
                   alt="ICEwhistle"
                   width={140}
                   height={32}
-                  className="h-8 w-auto dark:block hidden"
+                  className="h-6 sm:h-8 w-auto dark:block hidden"
                   priority
                 />
                 <Image
@@ -58,7 +58,7 @@ export function AppHeader({ showBack, backHref = '/', title, subtitle }: AppHead
                   alt="ICEwhistle"
                   width={140}
                   height={32}
-                  className="h-8 w-auto dark:hidden block"
+                  className="h-6 sm:h-8 w-auto dark:hidden block"
                   priority
                 />
               </Link>
@@ -76,14 +76,14 @@ export function AppHeader({ showBack, backHref = '/', title, subtitle }: AppHead
                 <button
                   key={code}
                   onClick={() => setLanguage(code)}
-                  className={`px-2 sm:px-3 py-1 sm:py-1.5 transition-all min-h-[36px] sm:min-h-[44px] min-w-[36px] sm:min-w-[52px] flex flex-col items-center justify-center ${
+                  className={`px-1.5 sm:px-3 py-1 sm:py-1.5 transition-all min-h-[32px] sm:min-h-[44px] min-w-[32px] sm:min-w-[52px] flex flex-col items-center justify-center ${
                     language === code
                       ? 'bg-[#00A6B4] text-white'
                       : 'hover:bg-muted text-foreground'
                   }`}
                   aria-label={name}
                 >
-                  <span className="text-xs sm:text-caption font-bold">{label}</span>
+                  <span className="text-[11px] sm:text-caption font-bold">{label}</span>
                   <span className={`hidden sm:block text-[10px] ${language === code ? 'text-white/80' : 'text-muted-foreground'}`}>{name}</span>
                 </button>
               ))}
@@ -91,7 +91,7 @@ export function AppHeader({ showBack, backHref = '/', title, subtitle }: AppHead
           </div>
 
           {/* Right - Desktop: Support & Dark Mode, Mobile: Hamburger */}
-          <div className="flex items-center gap-2 flex-1 justify-end">
+          <div className="flex items-center gap-2 sm:flex-1 justify-end flex-shrink-0">
             {/* Desktop - Show both buttons */}
             <div className="hidden sm:flex items-center gap-2">
               <Link
