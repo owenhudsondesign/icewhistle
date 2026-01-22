@@ -15,8 +15,43 @@ let secondaryStream: MediaStream | null = null
 let primaryChunks: Blob[] = []
 let secondaryChunks: Blob[] = []
 let timerInterval: NodeJS.Timeout | null = null
+let detectedMimeType: string = ''
+
+// Detect if running on iOS Safari
+function isIOSSafari(): boolean {
+  if (typeof navigator === 'undefined') return false
+  const ua = navigator.userAgent
+  const isIOS = /iPad|iPhone|iPod/.test(ua) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1)
+  const isSafari = /^((?!chrome|android).)*safari/i.test(ua)
+  return isIOS || isSafari
+}
 
 function getMimeType(type: RecordingType): string {
+  // iOS Safari only supports mp4
+  if (isIOSSafari()) {
+    if (type === 'video') {
+      // Try various mp4 formats for iOS
+      const mp4Types = [
+        'video/mp4;codecs=avc1.42E01E,mp4a.40.2',
+        'video/mp4;codecs=avc1',
+        'video/mp4',
+      ]
+      for (const mimeType of mp4Types) {
+        if (MediaRecorder.isTypeSupported(mimeType)) {
+          return mimeType
+        }
+      }
+      // Let browser choose on iOS
+      return ''
+    }
+    // Audio for iOS
+    if (MediaRecorder.isTypeSupported('audio/mp4')) {
+      return 'audio/mp4'
+    }
+    return ''
+  }
+
+  // Non-iOS: prefer webm
   if (type === 'video') {
     if (MediaRecorder.isTypeSupported('video/webm;codecs=vp9')) {
       return 'video/webm;codecs=vp9'
@@ -43,7 +78,20 @@ function getMimeType(type: RecordingType): string {
 
 function createRecorder(stream: MediaStream, chunks: Blob[], mimeType: string): MediaRecorder {
   const options = mimeType ? { mimeType } : undefined
-  const recorder = new MediaRecorder(stream, options)
+  let recorder: MediaRecorder
+
+  try {
+    recorder = new MediaRecorder(stream, options)
+  } catch (e) {
+    // If specified mimeType fails, let browser choose
+    console.warn('Failed to create MediaRecorder with mimeType:', mimeType, e)
+    recorder = new MediaRecorder(stream)
+  }
+
+  // Store the actual mimeType being used
+  detectedMimeType = recorder.mimeType || mimeType || 'video/mp4'
+  console.log('MediaRecorder using mimeType:', detectedMimeType)
+
   recorder.ondataavailable = (e) => {
     if (e.data.size > 0) {
       chunks.push(e.data)
@@ -168,10 +216,20 @@ export const recordingManager = {
         }
       }
 
+      // Determine the correct mimeType - use detected, then recorder's, then platform default
+      const getActualMimeType = (recorder: MediaRecorder): string => {
+        if (recorder.mimeType) return recorder.mimeType
+        if (detectedMimeType) return detectedMimeType
+        // Fallback based on platform
+        return isIOSSafari() ? 'video/mp4' : 'video/webm'
+      }
+
       if (primaryRecorder && primaryRecorder.state !== 'inactive') {
-        const primaryMimeType = primaryRecorder.mimeType || 'video/webm'
+        const primaryMimeType = getActualMimeType(primaryRecorder)
+        console.log('Stopping primary recorder with mimeType:', primaryMimeType)
         primaryRecorder.onstop = () => {
           primaryBlob = new Blob(primaryChunks, { type: primaryMimeType })
+          console.log('Primary blob created:', primaryBlob.type, primaryBlob.size)
           primaryStopped = true
           checkCompletion()
         }
@@ -182,7 +240,7 @@ export const recordingManager = {
       }
 
       if (secondaryRecorder && secondaryRecorder.state !== 'inactive') {
-        const secondaryMimeType = secondaryRecorder.mimeType || 'video/webm'
+        const secondaryMimeType = getActualMimeType(secondaryRecorder)
         secondaryRecorder.onstop = () => {
           secondBlob = new Blob(secondaryChunks, { type: secondaryMimeType })
           secondaryStopped = true
