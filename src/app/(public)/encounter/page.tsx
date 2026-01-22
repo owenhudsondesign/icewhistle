@@ -382,16 +382,22 @@ export default function EncounterPage() {
       }
     } catch (err: unknown) {
       const error = err as Error & { code?: number }
-      console.error('Failed to report ICE activity:', {
-        message: error?.message,
-        code: error?.code,
-        name: error?.name,
-        stack: error?.stack,
-      })
-      // Show error in alert for debugging (can remove later)
-      alert(`Location error: ${error?.message || 'Unknown error'} (code: ${error?.code || 'none'})`)
+      console.error('Failed to report ICE activity:', error)
+
+      // GeolocationPositionError codes: 1 = PERMISSION_DENIED, 2 = POSITION_UNAVAILABLE, 3 = TIMEOUT
+      if (error?.code === 1) {
+        // Permission denied - show helpful instructions
+        alert(
+          language === 'es'
+            ? 'Ubicación bloqueada. Ve a Configuración de iOS > Privacidad > Ubicación > Safari y permite el acceso.'
+            : language === 'pt'
+            ? 'Localização bloqueada. Vá para Ajustes do iOS > Privacidade > Localização > Safari e permita o acesso.'
+            : 'Location blocked. Go to iOS Settings > Privacy > Location Services > Safari and allow access. Then reload this page.'
+        )
+      }
+
       setReportStatus('error')
-      setTimeout(() => setReportStatus('idle'), 3000)
+      setTimeout(() => setReportStatus('idle'), 4000)
     }
   }
 
