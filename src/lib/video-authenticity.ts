@@ -274,21 +274,48 @@ export function generateFilenames(timestamp: Date, cameraMode: string, mimeType:
 }
 
 /**
+ * Detect iOS Safari (not in native app)
+ */
+function isIOSWebBrowser(): boolean {
+  if (typeof navigator === 'undefined') return false
+  const ua = navigator.userAgent
+  const isIOS = /iPad|iPhone|iPod/.test(ua) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1)
+  return isIOS && !Capacitor.isNativePlatform()
+}
+
+/**
  * Helper to trigger a download (web fallback)
  */
-function triggerDownload(url: string, filename: string): Promise<void> {
-  return new Promise((resolve) => {
-    const link = document.createElement('a')
-    link.href = url
-    link.download = filename
-    link.style.display = 'none'
-    document.body.appendChild(link)
-    link.click()
-    setTimeout(() => {
-      document.body.removeChild(link)
-      resolve()
-    }, 100)
-  })
+async function triggerDownload(blob: Blob, filename: string): Promise<void> {
+  // iOS Safari: Use Web Share API if available (much more reliable)
+  if (isIOSWebBrowser() && navigator.share && navigator.canShare) {
+    try {
+      const file = new File([blob], filename, { type: blob.type })
+      if (navigator.canShare({ files: [file] })) {
+        await navigator.share({
+          files: [file],
+          title: 'ICEwhistle Recording',
+        })
+        console.log('Shared via Web Share API')
+        return
+      }
+    } catch (err) {
+      console.warn('Web Share failed, trying fallback:', err)
+    }
+  }
+
+  // Standard download for other browsers
+  const url = URL.createObjectURL(blob)
+  const link = document.createElement('a')
+  link.href = url
+  link.download = filename
+  link.style.display = 'none'
+  document.body.appendChild(link)
+  link.click()
+
+  await new Promise(resolve => setTimeout(resolve, 100))
+  document.body.removeChild(link)
+  URL.revokeObjectURL(url)
 }
 
 /**
@@ -333,9 +360,7 @@ async function saveVideoToDevice(blob: Blob, filename: string): Promise<void> {
   }
 
   // Web fallback: trigger download
-  const url = URL.createObjectURL(blob)
-  await triggerDownload(url, filename)
-  URL.revokeObjectURL(url)
+  await triggerDownload(blob, filename)
 }
 
 /**
@@ -364,9 +389,7 @@ export async function saveVideoWithManifest(
   if (!Capacitor.isNativePlatform()) {
     await new Promise(resolve => setTimeout(resolve, 500))
     const manifestBlob = createManifestBlob(manifest)
-    const manifestUrl = URL.createObjectURL(manifestBlob)
-    await triggerDownload(manifestUrl, manifestFilename)
-    URL.revokeObjectURL(manifestUrl)
+    await triggerDownload(manifestBlob, manifestFilename)
   }
 
   return { manifest, videoFilename, manifestFilename }
