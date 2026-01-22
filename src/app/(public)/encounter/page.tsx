@@ -23,7 +23,12 @@ import {
   Search,
   ExternalLink,
   Download,
+  MapPin,
+  Map,
+  Loader2,
+  Check,
 } from 'lucide-react'
+import { useState } from 'react'
 
 // Translations for the encounter page
 const translations = {
@@ -107,6 +112,14 @@ const translations = {
     hotline3Desc: 'Legal help',
     hotline3Phone: '312-660-1370',
 
+    // Quick actions
+    reportHere: 'Report ICE Here',
+    reportHereDesc: 'Share location to alert neighbors',
+    viewMap: 'View Map',
+    reporting: 'Reporting...',
+    reported: 'Reported!',
+    locationError: 'Could not get location',
+
     // Footer
     fullGuide: 'Full Rights Guide',
     allResources: 'All Resources',
@@ -183,6 +196,14 @@ const translations = {
     hotline3Desc: 'Ayuda legal',
     hotline3Phone: '312-660-1370',
 
+    // Quick actions
+    reportHere: 'Reportar ICE Aquí',
+    reportHereDesc: 'Compartir ubicación para alertar vecinos',
+    viewMap: 'Ver Mapa',
+    reporting: 'Reportando...',
+    reported: '¡Reportado!',
+    locationError: 'No se pudo obtener ubicación',
+
     fullGuide: 'Guía Completa',
     allResources: 'Todos los Recursos',
   },
@@ -258,6 +279,14 @@ const translations = {
     hotline3Desc: 'Ajuda legal',
     hotline3Phone: '312-660-1370',
 
+    // Quick actions
+    reportHere: 'Reportar ICE Aqui',
+    reportHereDesc: 'Compartilhar localização para alertar vizinhos',
+    viewMap: 'Ver Mapa',
+    reporting: 'Reportando...',
+    reported: 'Reportado!',
+    locationError: 'Não foi possível obter localização',
+
     fullGuide: 'Guia Completo',
     allResources: 'Todos os Recursos',
   },
@@ -268,9 +297,51 @@ export default function EncounterPage() {
   const t = translations[language]
   const { isRecording, showSaveDialog, recordingBlob } = useRecordingStore()
   const { stopRecording, saveRecording, discardRecording } = useEnhancedRecording()
+  const [reportStatus, setReportStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle')
 
   const handleStopAndSave = async () => {
     await stopRecording()
+  }
+
+  const handleReportICE = async () => {
+    setReportStatus('loading')
+
+    try {
+      // Get fresh location directly
+      const position = await new Promise<GeolocationPosition>((resolve, reject) => {
+        navigator.geolocation.getCurrentPosition(resolve, reject, {
+          enableHighAccuracy: true,
+          timeout: 10000,
+          maximumAge: 0,
+        })
+      })
+
+      const currentLat = position.coords.latitude
+      const currentLng = position.coords.longitude
+
+      const response = await fetch('/api/alerts', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          latitude: currentLat,
+          longitude: currentLng,
+          alertType: 'ice_presence',
+          description: 'ICE activity reported via emergency page',
+        }),
+      })
+
+      if (response.ok) {
+        setReportStatus('success')
+        setTimeout(() => setReportStatus('idle'), 5000)
+      } else {
+        setReportStatus('error')
+        setTimeout(() => setReportStatus('idle'), 3000)
+      }
+    } catch (err) {
+      console.error('Failed to report:', err)
+      setReportStatus('error')
+      setTimeout(() => setReportStatus('idle'), 3000)
+    }
   }
 
   return (
@@ -314,12 +385,62 @@ export default function EncounterPage() {
         </Link>
 
         {/* Header */}
-        <div className="text-center mb-6">
+        <div className="text-center mb-4">
           <div className="inline-flex items-center justify-center w-14 h-14 rounded-full bg-[#DC2626]/20 mb-3">
             <AlertTriangle className="h-7 w-7 text-[#DC2626]" />
           </div>
           <h1 className="text-2xl font-bold text-[#DC2626] mb-1">{t.title}</h1>
           <p className="text-muted-foreground">{t.subtitle}</p>
+        </div>
+
+        {/* Quick Action Buttons */}
+        <div className="grid grid-cols-2 gap-3 mb-6">
+          <Button
+            onClick={handleReportICE}
+            disabled={reportStatus === 'loading' || reportStatus === 'success'}
+            className={`h-14 text-sm font-semibold ${
+              reportStatus === 'success'
+                ? 'bg-[#84CC16] hover:bg-[#84CC16]'
+                : reportStatus === 'error'
+                ? 'bg-[#DC2626] hover:bg-[#DC2626]/90'
+                : 'bg-[#FF8C42] hover:bg-[#FF8C42]/90'
+            } text-white`}
+          >
+            {reportStatus === 'loading' ? (
+              <>
+                <Loader2 className="h-5 w-5 mr-2 animate-spin" />
+                {t.reporting}
+              </>
+            ) : reportStatus === 'success' ? (
+              <>
+                <Check className="h-5 w-5 mr-2" />
+                {t.reported}
+              </>
+            ) : reportStatus === 'error' ? (
+              <>
+                <MapPin className="h-5 w-5 mr-2" />
+                {t.locationError}
+              </>
+            ) : (
+              <>
+                <MapPin className="h-5 w-5 mr-2" />
+                <span className="flex flex-col items-start leading-tight">
+                  <span>{t.reportHere}</span>
+                  <span className="text-[10px] font-normal opacity-80">{t.reportHereDesc}</span>
+                </span>
+              </>
+            )}
+          </Button>
+          <Button
+            asChild
+            variant="outline"
+            className="h-14 text-sm font-semibold border-2"
+          >
+            <Link href="/alerts">
+              <Map className="h-5 w-5 mr-2" />
+              {t.viewMap}
+            </Link>
+          </Button>
         </div>
 
         {/* URGENT STEPS - Priority 1 */}
