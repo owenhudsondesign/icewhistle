@@ -160,7 +160,7 @@ export default function Home() {
         <div className="grid grid-cols-3 gap-3 mb-4">
           <Link
             href="/resources#legal"
-            className="card-glass category-bar category-bar-grape p-4 flex flex-col items-center justify-center gap-2 press-scale hover:bg-accent/50"
+            className="card-glass p-4 flex flex-col items-center justify-center gap-2 press-scale hover:bg-accent/50"
           >
             <Scale className="h-8 w-8 text-[#8B5CF6]" strokeWidth={2} />
             <div className="text-center">
@@ -171,7 +171,7 @@ export default function Home() {
 
           <Link
             href="/resources"
-            className="card-glass category-bar category-bar-emergency p-4 flex flex-col items-center justify-center gap-2 press-scale hover:bg-accent/50"
+            className="card-glass p-4 flex flex-col items-center justify-center gap-2 press-scale hover:bg-accent/50"
           >
             <Phone className="h-8 w-8 text-[#DC2626]" strokeWidth={2} />
             <div className="text-center">
@@ -182,7 +182,7 @@ export default function Home() {
 
           <Link
             href="/resources#bond"
-            className="card-glass category-bar category-bar-tangerine p-4 flex flex-col items-center justify-center gap-2 press-scale hover:bg-accent/50"
+            className="card-glass p-4 flex flex-col items-center justify-center gap-2 press-scale hover:bg-accent/50"
           >
             <Heart className="h-8 w-8 text-[#FF8C42]" strokeWidth={2} />
             <div className="text-center">

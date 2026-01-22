@@ -105,10 +105,10 @@ export const commonTranslations = {
     active: 'active',
 
     // Alert types
-    raids: 'Raids',
+    raids: 'Presence',
     checkpoints: 'Checkpoints',
     vehicles: 'Vehicles',
-    raid: 'Raid',
+    raid: 'Presence',
     workplace: 'Workplace',
     residence: 'Residence',
     checkpoint: 'Checkpoint',
@@ -248,10 +248,10 @@ export const commonTranslations = {
     active: 'activas',
 
     // Alert types
-    raids: 'Redadas',
+    raids: 'Presencia',
     checkpoints: 'Puntos de Control',
     vehicles: 'Vehículos',
-    raid: 'Redada',
+    raid: 'Presencia',
     workplace: 'Trabajo',
     residence: 'Residencia',
     checkpoint: 'Control',
@@ -391,10 +391,10 @@ export const commonTranslations = {
     active: 'ativos',
 
     // Alert types
-    raids: 'Batidas',
+    raids: 'Presença',
     checkpoints: 'Postos de Controle',
     vehicles: 'Veículos',
-    raid: 'Batida',
+    raid: 'Presença',
     workplace: 'Trabalho',
     residence: 'Residência',
     checkpoint: 'Posto',

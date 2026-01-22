@@ -70,12 +70,12 @@ export const ALERT_TYPES: Record<AlertType, {
   priority: number
 }> = {
   ice_raid: {
-    label: 'ICE Raid',
-    labelEs: 'Redada de ICE',
+    label: 'ICE Presence',
+    labelEs: 'Presencia de ICE',
     icon: 'AlertTriangle',
     color: 'text-red-600',
     markerColor: '#dc2626',
-    description: 'Active ICE enforcement operation',
+    description: 'ICE activity in the area',
     priority: 1
   },
   ice_workplace: {
