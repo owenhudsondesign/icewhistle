@@ -39,7 +39,7 @@ export default function PrivacyPolicyPage() {
               <ul className="text-sm space-y-1 text-muted-foreground">
                 <li>• <strong>No account required</strong> — use the app without signing up</li>
                 <li>• <strong>No analytics or tracking</strong> — zero third-party tracking services</li>
-                <li>• <strong>Location rounded to ~100m</strong> — we never store precise GPS coordinates</li>
+                <li>• <strong>Location rounded to ~500m</strong> — we never store precise GPS coordinates</li>
                 <li>• <strong>Recordings stay on device</strong> — never uploaded anywhere</li>
                 <li>• <strong>Alerts auto-delete after 8 hours</strong></li>
               </ul>
@@ -98,7 +98,7 @@ export default function PrivacyPolicyPage() {
             </p>
             <ul className="text-muted-foreground space-y-2">
               <li>
-                <strong>Location is rounded to ~100 meters</strong> — we intentionally reduce precision
+                <strong>Location is rounded to ~500 meters</strong> — we intentionally reduce precision
                 to protect your privacy while still being useful for the community.
               </li>
               <li>

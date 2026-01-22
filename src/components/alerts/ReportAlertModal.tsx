@@ -220,7 +220,7 @@ export function ReportAlertModal({
             <Lock className="h-4 w-4 text-[#00A6B4] mt-0.5 flex-shrink-0" strokeWidth={2} />
             <p className="text-small text-muted-foreground">
               <strong className="text-foreground">Anonymous</strong> — No accounts. No tracking.
-              Location rounded to ~100m for privacy.
+              Location rounded to ~500m for privacy.
             </p>
           </div>
         </div>
@@ -283,7 +283,7 @@ export function ReportAlertModal({
                 <div>
                   <div className="text-caption font-semibold">Use my current location</div>
                   <div className="text-small text-muted-foreground">
-                    Approximate location only (~100m precision)
+                    Approximate location only (~500m precision)
                   </div>
                 </div>
               </button>

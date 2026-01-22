@@ -185,7 +185,12 @@ export function getDistanceMiles(
   return R * c
 }
 
-// Fuzzy location - round to ~0.001 degrees (~100m) for privacy
+// Fuzzy location - round to ~0.005 degrees (~500m) + random offset for privacy
+// This makes it impossible to identify a specific house or building
 export function fuzzyLocation(coord: number): number {
-  return Math.round(coord * 1000) / 1000
+  // Round to 0.005 degrees (~500m grid)
+  const rounded = Math.round(coord * 200) / 200
+  // Add small random offset (±0.001 = ~100m) so exact grid position is unpredictable
+  const offset = (Math.random() - 0.5) * 0.002
+  return Math.round((rounded + offset) * 1000) / 1000
 }

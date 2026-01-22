@@ -87,7 +87,7 @@ export const commonTranslations = {
     // Privacy
     anonymous: 'Anonymous',
     noTracking: 'No accounts. No tracking. Location rounded for privacy.',
-    precision100m: '~100m precision',
+    precision100m: '~500m precision',
     autoExpire8hr: '8hr auto-expire',
 
     // Alerts page
@@ -230,7 +230,7 @@ export const commonTranslations = {
     // Privacy
     anonymous: 'Anónimo',
     noTracking: 'Sin cuentas. Sin rastreo. Ubicación redondeada para privacidad.',
-    precision100m: '~100m de precisión',
+    precision100m: '~500m de precisión',
     autoExpire8hr: 'Expira en 8hrs',
 
     // Alerts page
@@ -371,9 +371,9 @@ export const commonTranslations = {
     learnMore: 'Saiba mais',
 
     // Privacy
-    anonymous: '100% Anônimo',
+    anonymous: 'Anônimo',
     noTracking: 'Sem contas. Sem rastreamento. Localização arredondada para privacidade.',
-    precision100m: '~100m de precisão',
+    precision100m: '~500m de precisão',
     autoExpire8hr: 'Expira em 8hrs',
 
     // Alerts page
