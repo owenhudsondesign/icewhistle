@@ -31,6 +31,67 @@ import {
   Radio
 } from 'lucide-react'
 import { fuzzyLocation, ALERT_EXPIRY_HOURS } from '@/types/alert'
+import { useLanguage } from '@/hooks/use-language'
+
+const emergencyTranslations = {
+  en: {
+    backToHome: 'Back to Home',
+    gettingLocation: 'Getting Location...',
+    sharing: 'Sharing...',
+    shareMyLocation: 'Share My Location Now',
+    locationShared: 'Location Shared!',
+    reportWillAppear: 'Your report will appear on the map for',
+    hours: 'hours',
+    thankYou: 'Thank you for helping keep the community safe.',
+    viewMap: 'View Map',
+    alertCommunity: 'Alert Your Community',
+    shareAnonymously: 'Share your location anonymously to warn others. The alert will appear on the community map for',
+    oneTimeSnapshot: 'One-time snapshot only',
+    neverTrack: 'we never track your location.',
+    anonymous100m: '100% anonymous • Location rounded to ~100m for privacy',
+    locationError: 'Could not access your location. Please enable location services.',
+    submitError: 'Failed to submit report. Please try again.',
+    loading: 'Loading...',
+  },
+  es: {
+    backToHome: 'Volver al Inicio',
+    gettingLocation: 'Obteniendo ubicación...',
+    sharing: 'Compartiendo...',
+    shareMyLocation: 'Compartir Mi Ubicación',
+    locationShared: '¡Ubicación Compartida!',
+    reportWillAppear: 'Tu reporte aparecerá en el mapa por',
+    hours: 'horas',
+    thankYou: 'Gracias por ayudar a mantener segura a la comunidad.',
+    viewMap: 'Ver Mapa',
+    alertCommunity: 'Alerta a Tu Comunidad',
+    shareAnonymously: 'Comparte tu ubicación de forma anónima para advertir a otros. La alerta aparecerá en el mapa comunitario por',
+    oneTimeSnapshot: 'Solo una captura única',
+    neverTrack: 'nunca rastreamos tu ubicación.',
+    anonymous100m: '100% anónimo • Ubicación redondeada a ~100m para privacidad',
+    locationError: 'No se pudo acceder a tu ubicación. Por favor habilita los servicios de ubicación.',
+    submitError: 'Error al enviar el reporte. Por favor intenta de nuevo.',
+    loading: 'Cargando...',
+  },
+  pt: {
+    backToHome: 'Voltar ao Início',
+    gettingLocation: 'Obtendo localização...',
+    sharing: 'Compartilhando...',
+    shareMyLocation: 'Compartilhar Minha Localização',
+    locationShared: 'Localização Compartilhada!',
+    reportWillAppear: 'Seu relatório aparecerá no mapa por',
+    hours: 'horas',
+    thankYou: 'Obrigado por ajudar a manter a comunidade segura.',
+    viewMap: 'Ver Mapa',
+    alertCommunity: 'Alerte Sua Comunidade',
+    shareAnonymously: 'Compartilhe sua localização anonimamente para alertar outros. O alerta aparecerá no mapa comunitário por',
+    oneTimeSnapshot: 'Apenas uma captura única',
+    neverTrack: 'nunca rastreamos sua localização.',
+    anonymous100m: '100% anônimo • Localização arredondada para ~100m para privacidade',
+    locationError: 'Não foi possível acessar sua localização. Por favor habilite os serviços de localização.',
+    submitError: 'Falha ao enviar o relatório. Por favor tente novamente.',
+    loading: 'Carregando...',
+  },
+}
 
 function EmergencyContent() {
   const searchParams = useSearchParams()
@@ -49,6 +110,8 @@ function EmergencyContent() {
 }
 
 function ICENearMeFlow({ location }: { location: string | null }) {
+  const { language } = useLanguage()
+  const t = emergencyTranslations[language]
   const [reportStatus, setReportStatus] = useState<'idle' | 'getting-location' | 'submitting' | 'success' | 'error'>('idle')
   const [errorMessage, setErrorMessage] = useState<string | null>(null)
 
@@ -91,9 +154,9 @@ function ICENearMeFlow({ location }: { location: string | null }) {
     } catch (err) {
       setReportStatus('error')
       if (err instanceof GeolocationPositionError) {
-        setErrorMessage('Could not access your location. Please enable location services.')
+        setErrorMessage(t.locationError)
       } else {
-        setErrorMessage('Failed to submit report. Please try again.')
+        setErrorMessage(t.submitError)
       }
     }
   }
@@ -106,7 +169,7 @@ function ICENearMeFlow({ location }: { location: string | null }) {
         className="inline-flex items-center text-sm text-muted-foreground hover:text-foreground mb-6"
       >
         <ArrowLeft className="h-4 w-4 mr-1" />
-        Back to Home
+        {t.backToHome}
       </Link>
 
       {/* Header */}
@@ -136,18 +199,18 @@ function ICENearMeFlow({ location }: { location: string | null }) {
                 <CheckCircle2 className="h-8 w-8 text-green-600" />
               </div>
               <h3 className="text-lg font-bold text-green-700 dark:text-green-400 mb-2">
-                Location Shared!
+                {t.locationShared}
               </h3>
               <p className="text-sm text-muted-foreground mb-2">
-                Your report will appear on the map for {ALERT_EXPIRY_HOURS} hours.
+                {t.reportWillAppear} {ALERT_EXPIRY_HOURS} {t.hours}.
               </p>
               <p className="text-xs text-muted-foreground">
-                Thank you for helping keep the community safe.
+                {t.thankYou}
               </p>
               <Link href="/alerts" className="inline-block mt-4">
                 <Button variant="outline" size="sm">
                   <MapPin className="h-4 w-4 mr-2" />
-                  View Map
+                  {t.viewMap}
                 </Button>
               </Link>
             </div>
@@ -155,10 +218,10 @@ function ICENearMeFlow({ location }: { location: string | null }) {
             <div className="text-center">
               <div className="flex items-center justify-center gap-2 mb-3">
                 <Radio className="h-5 w-5 text-destructive animate-pulse" />
-                <h3 className="text-lg font-bold">Alert Your Community</h3>
+                <h3 className="text-lg font-bold">{t.alertCommunity}</h3>
               </div>
               <p className="text-sm text-muted-foreground mb-4">
-                Share your location anonymously to warn others. The alert will appear on the community map for {ALERT_EXPIRY_HOURS} hours.
+                {t.shareAnonymously} {ALERT_EXPIRY_HOURS} {t.hours}.
               </p>
 
               <Button
@@ -169,17 +232,17 @@ function ICENearMeFlow({ location }: { location: string | null }) {
                 {reportStatus === 'getting-location' ? (
                   <>
                     <Loader2 className="h-5 w-5 mr-2 animate-spin" />
-                    Getting Location...
+                    {t.gettingLocation}
                   </>
                 ) : reportStatus === 'submitting' ? (
                   <>
                     <Loader2 className="h-5 w-5 mr-2 animate-spin" />
-                    Sharing...
+                    {t.sharing}
                   </>
                 ) : (
                   <>
                     <MapPin className="h-5 w-5 mr-2" />
-                    Share My Location Now
+                    {t.shareMyLocation}
                   </>
                 )}
               </Button>
@@ -189,10 +252,10 @@ function ICENearMeFlow({ location }: { location: string | null }) {
               )}
 
               <p className="text-xs text-muted-foreground mt-3">
-                <strong>One-time snapshot only</strong> — we never track your location.
+                <strong>{t.oneTimeSnapshot}</strong> — {t.neverTrack}
               </p>
               <p className="text-xs text-muted-foreground">
-                100% anonymous • Location rounded to ~100m for privacy
+                {t.anonymous100m}
               </p>
             </div>
           )}
@@ -1021,7 +1084,7 @@ export default function EmergencyPage() {
   return (
     <Suspense fallback={
       <div className="container mx-auto px-4 py-8 text-center">
-        Loading...
+        <Loader2 className="h-6 w-6 animate-spin mx-auto" />
       </div>
     }>
       <EmergencyContent />

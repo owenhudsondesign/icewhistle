@@ -120,6 +120,7 @@ const translations = {
     reported: 'Reported!',
     locationError: 'Try again',
     rateLimited: 'Wait {minutes} min',
+    discard: 'Discard',
 
     // Footer
     fullGuide: 'Full Rights Guide',
@@ -205,6 +206,7 @@ const translations = {
     reported: '¡Reportado!',
     locationError: 'Reintentar',
     rateLimited: 'Espera {minutes} min',
+    discard: 'Descartar',
 
     fullGuide: 'Guía Completa',
     allResources: 'Todos los Recursos',
@@ -289,6 +291,7 @@ const translations = {
     reported: 'Reportado!',
     locationError: 'Tentar novamente',
     rateLimited: 'Aguarde {minutes} min',
+    discard: 'Descartar',
 
     fullGuide: 'Guia Completo',
     allResources: 'Todos os Recursos',
@@ -381,8 +384,12 @@ export default function EncounterPage() {
       } else {
         const errorData = await response.json().catch(() => ({}))
         console.error('API error:', response.status, errorData)
-        const details = errorData.details ? `\n\n${errorData.details}` : ''
-        alert(`Failed to submit (${response.status}).${details}`)
+        const errorMsg = language === 'es'
+          ? `Error al enviar (${response.status}). Intenta de nuevo.`
+          : language === 'pt'
+          ? `Erro ao enviar (${response.status}). Tente novamente.`
+          : `Failed to submit (${response.status}). Please try again.`
+        alert(errorMsg)
         setReportStatus('error')
         setTimeout(() => setReportStatus('idle'), 3000)
       }
@@ -431,7 +438,7 @@ export default function EncounterPage() {
                 onClick={discardRecording}
                 className="w-full"
               >
-                Discard
+                {t.discard}
               </Button>
             </div>
           </div>

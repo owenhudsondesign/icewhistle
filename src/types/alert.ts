@@ -63,6 +63,7 @@ export interface AlertMapBounds {
 export const ALERT_TYPES: Record<AlertType, {
   label: string
   labelEs: string
+  labelPt: string
   icon: string
   color: string
   markerColor: string
@@ -72,6 +73,7 @@ export const ALERT_TYPES: Record<AlertType, {
   ice_raid: {
     label: 'ICE Presence',
     labelEs: 'Presencia de ICE',
+    labelPt: 'Presença do ICE',
     icon: 'AlertTriangle',
     color: 'text-red-600',
     markerColor: '#dc2626',
@@ -81,6 +83,7 @@ export const ALERT_TYPES: Record<AlertType, {
   ice_workplace: {
     label: 'Workplace Raid',
     labelEs: 'Redada Laboral',
+    labelPt: 'Batida no Trabalho',
     icon: 'Building2',
     color: 'text-red-600',
     markerColor: '#dc2626',
@@ -90,6 +93,7 @@ export const ALERT_TYPES: Record<AlertType, {
   ice_residence: {
     label: 'Residential Activity',
     labelEs: 'Actividad Residencial',
+    labelPt: 'Atividade Residencial',
     icon: 'Home',
     color: 'text-red-600',
     markerColor: '#dc2626',
@@ -99,6 +103,7 @@ export const ALERT_TYPES: Record<AlertType, {
   ice_checkpoint: {
     label: 'Checkpoint',
     labelEs: 'Puesto de Control',
+    labelPt: 'Posto de Controle',
     icon: 'ShieldAlert',
     color: 'text-orange-600',
     markerColor: '#ea580c',
@@ -108,6 +113,7 @@ export const ALERT_TYPES: Record<AlertType, {
   ice_vehicle: {
     label: 'ICE Vehicle Spotted',
     labelEs: 'Vehículo de ICE',
+    labelPt: 'Veículo do ICE',
     icon: 'Car',
     color: 'text-amber-600',
     markerColor: '#d97706',
@@ -117,6 +123,7 @@ export const ALERT_TYPES: Record<AlertType, {
   ice_transit: {
     label: 'ICE on Transit',
     labelEs: 'ICE en Transporte',
+    labelPt: 'ICE no Transporte',
     icon: 'Train',
     color: 'text-purple-600',
     markerColor: '#9333ea',
@@ -126,6 +133,7 @@ export const ALERT_TYPES: Record<AlertType, {
   unconfirmed: {
     label: 'Unconfirmed',
     labelEs: 'Sin Confirmar',
+    labelPt: 'Não Confirmado',
     icon: 'HelpCircle',
     color: 'text-gray-500',
     markerColor: '#6b7280',
@@ -135,6 +143,7 @@ export const ALERT_TYPES: Record<AlertType, {
   all_clear: {
     label: 'All Clear',
     labelEs: 'Despejado',
+    labelPt: 'Tudo Livre',
     icon: 'CheckCircle',
     color: 'text-green-600',
     markerColor: '#16a34a',

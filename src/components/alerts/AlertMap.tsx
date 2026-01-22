@@ -252,7 +252,7 @@ export function AlertMap({
           onAlertClickRef.current?.(alert)
         })
 
-        const typeLabel = language === 'es' ? type.labelEs : language === 'pt' ? (type.labelPt || type.label) : type.label
+        const typeLabel = language === 'es' ? type.labelEs : language === 'pt' ? type.labelPt : type.label
         const popup = new mapboxgl.Popup({ offset: 25, closeButton: false })
           .setHTML(`
             <div style="padding: 8px; min-width: 180px;">
