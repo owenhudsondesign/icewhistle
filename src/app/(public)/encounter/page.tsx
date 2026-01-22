@@ -119,6 +119,7 @@ const translations = {
     reporting: 'Getting location...',
     reported: 'Reported!',
     locationError: 'Enable location in settings',
+    rateLimited: 'Wait {minutes} min',
 
     // Footer
     fullGuide: 'Full Rights Guide',
@@ -203,6 +204,7 @@ const translations = {
     reporting: 'Obteniendo ubicación...',
     reported: '¡Reportado!',
     locationError: 'Habilitar ubicación en ajustes',
+    rateLimited: 'Espera {minutes} min',
 
     fullGuide: 'Guía Completa',
     allResources: 'Todos los Recursos',
@@ -286,6 +288,7 @@ const translations = {
     reporting: 'Obtendo localização...',
     reported: 'Reportado!',
     locationError: 'Habilitar localização nas config.',
+    rateLimited: 'Aguarde {minutes} min',
 
     fullGuide: 'Guia Completo',
     allResources: 'Todos os Recursos',
@@ -297,13 +300,29 @@ export default function EncounterPage() {
   const t = translations[language]
   const { isRecording, showSaveDialog, recordingBlob } = useRecordingStore()
   const { stopRecording, saveRecording, discardRecording } = useEnhancedRecording()
-  const [reportStatus, setReportStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle')
+  const [reportStatus, setReportStatus] = useState<'idle' | 'loading' | 'success' | 'error' | 'rate_limited'>('idle')
+  const [cooldownMinutes, setCooldownMinutes] = useState(0)
+
+  const REPORT_COOLDOWN_MS = 30 * 60 * 1000 // 30 minutes
 
   const handleStopAndSave = async () => {
     await stopRecording()
   }
 
   const handleReportICE = async () => {
+    // Check rate limit
+    const lastReportTime = localStorage.getItem('icewhistle_last_report')
+    if (lastReportTime) {
+      const timeSinceLastReport = Date.now() - parseInt(lastReportTime, 10)
+      if (timeSinceLastReport < REPORT_COOLDOWN_MS) {
+        const minutesRemaining = Math.ceil((REPORT_COOLDOWN_MS - timeSinceLastReport) / 60000)
+        setCooldownMinutes(minutesRemaining)
+        setReportStatus('rate_limited')
+        setTimeout(() => setReportStatus('idle'), 4000)
+        return
+      }
+    }
+
     setReportStatus('loading')
 
     try {
@@ -374,6 +393,8 @@ export default function EncounterPage() {
       })
 
       if (response.ok) {
+        // Save timestamp for rate limiting
+        localStorage.setItem('icewhistle_last_report', Date.now().toString())
         setReportStatus('success')
         setTimeout(() => setReportStatus('idle'), 5000)
       } else {
@@ -454,10 +475,12 @@ export default function EncounterPage() {
         <div className="grid grid-cols-2 gap-3 mb-6">
           <Button
             onClick={handleReportICE}
-            disabled={reportStatus === 'loading' || reportStatus === 'success'}
+            disabled={reportStatus === 'loading' || reportStatus === 'success' || reportStatus === 'rate_limited'}
             className={`h-14 text-sm font-semibold ${
               reportStatus === 'success'
                 ? 'bg-[#84CC16] hover:bg-[#84CC16]'
+                : reportStatus === 'rate_limited'
+                ? 'bg-gray-500 hover:bg-gray-500'
                 : 'bg-[#DC2626] hover:bg-[#DC2626]/90'
             } text-white`}
           >
@@ -470,6 +493,11 @@ export default function EncounterPage() {
               <>
                 <Check className="h-5 w-5 mr-2" />
                 {t.reported}
+              </>
+            ) : reportStatus === 'rate_limited' ? (
+              <>
+                <MapPin className="h-5 w-5 mr-2" />
+                {t.rateLimited.replace('{minutes}', cooldownMinutes.toString())}
               </>
             ) : reportStatus === 'error' ? (
               <>
