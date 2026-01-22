@@ -76,14 +76,14 @@ export function AppHeader({ showBack, backHref = '/', title, subtitle }: AppHead
                 <button
                   key={code}
                   onClick={() => setLanguage(code)}
-                  className={`px-1.5 sm:px-3 py-1 sm:py-1.5 transition-all min-h-[32px] sm:min-h-[44px] min-w-[32px] sm:min-w-[52px] flex flex-col items-center justify-center ${
+                  className={`px-3 sm:px-3 py-2 sm:py-1.5 transition-all min-h-[44px] sm:min-h-[44px] min-w-[44px] sm:min-w-[52px] flex flex-col items-center justify-center ${
                     language === code
                       ? 'bg-[#00A6B4] text-white'
                       : 'hover:bg-muted text-foreground'
                   }`}
                   aria-label={name}
                 >
-                  <span className="text-[11px] sm:text-caption font-bold">{label}</span>
+                  <span className="text-sm sm:text-caption font-bold">{label}</span>
                   <span className={`hidden sm:block text-[10px] ${language === code ? 'text-white/80' : 'text-muted-foreground'}`}>{name}</span>
                 </button>
               ))}
