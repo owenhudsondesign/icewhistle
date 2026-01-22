@@ -193,19 +193,12 @@ export function AlertMap({
           border-radius: 50%;
           cursor: pointer;
           box-shadow: 0 2px 6px rgba(0,0,0,0.3);
-          transition: transform 0.2s;
         `
 
         if (isVerified) {
           el.style.boxShadow = `0 0 0 3px ${type.markerColor}40, 0 2px 6px rgba(0,0,0,0.3)`
         }
 
-        el.addEventListener('mouseenter', () => {
-          el.style.transform = 'scale(1.2)'
-        })
-        el.addEventListener('mouseleave', () => {
-          el.style.transform = 'scale(1)'
-        })
         el.addEventListener('click', (e) => {
           e.stopPropagation()
           onAlertClickRef.current?.(alert)
