@@ -382,13 +382,8 @@ export default function EncounterPage() {
       } else {
         const errorData = await response.json().catch(() => ({}))
         console.error('API error:', response.status, errorData)
-        alert(
-          language === 'es'
-            ? `Error al enviar (${response.status}). Intenta de nuevo.`
-            : language === 'pt'
-            ? `Erro ao enviar (${response.status}). Tente novamente.`
-            : `Failed to submit (${response.status}). Please try again.`
-        )
+        const details = errorData.details ? `\n\n${errorData.details}` : ''
+        alert(`Failed to submit (${response.status}).${details}`)
         setReportStatus('error')
         setTimeout(() => setReportStatus('idle'), 3000)
       }
