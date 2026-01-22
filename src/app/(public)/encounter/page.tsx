@@ -310,6 +310,17 @@ export default function EncounterPage() {
   }
 
   const handleReportICE = async () => {
+    // Show disclaimer/confirmation
+    const disclaimerText = language === 'es'
+      ? 'Esto compartirá tu ubicación aproximada para alertar a otros en tu área. Tu ubicación exacta nunca se almacena. ¿Continuar?'
+      : language === 'pt'
+      ? 'Isso compartilhará sua localização aproximada para alertar outros na sua área. Sua localização exata nunca é armazenada. Continuar?'
+      : 'This will share your approximate location to alert others in your area. Your exact location is never stored. Continue?'
+
+    if (!confirm(disclaimerText)) {
+      return
+    }
+
     // Check rate limit
     const lastReportTime = localStorage.getItem('icewhistle_last_report')
     if (lastReportTime) {
