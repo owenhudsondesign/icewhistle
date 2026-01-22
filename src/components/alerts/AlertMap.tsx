@@ -5,6 +5,49 @@ import mapboxgl from 'mapbox-gl'
 import 'mapbox-gl/dist/mapbox-gl.css'
 import { Alert, ALERT_TYPES } from '@/types/alert'
 import { Crosshair, Loader2 } from 'lucide-react'
+import { useLanguage } from '@/hooks/use-language'
+
+const mapTranslations = {
+  en: {
+    presence: 'Presence',
+    checkpoint: 'Checkpoint',
+    vehicle: 'Vehicle',
+    transit: 'Transit',
+    other: 'Other',
+    confirmReport: 'Confirm This Report',
+    confirming: 'Confirming...',
+    confirmed: '✓ Confirmed',
+    confirmations: 'confirmations',
+    verified: '✓ Verified',
+    locationError: 'Could not get your location. Please check your browser settings.',
+  },
+  es: {
+    presence: 'Presencia',
+    checkpoint: 'Control',
+    vehicle: 'Vehículo',
+    transit: 'Tránsito',
+    other: 'Otro',
+    confirmReport: 'Confirmar Reporte',
+    confirming: 'Confirmando...',
+    confirmed: '✓ Confirmado',
+    confirmations: 'confirmaciones',
+    verified: '✓ Verificado',
+    locationError: 'No se pudo obtener tu ubicación. Verifica la configuración de tu navegador.',
+  },
+  pt: {
+    presence: 'Presença',
+    checkpoint: 'Posto',
+    vehicle: 'Veículo',
+    transit: 'Trânsito',
+    other: 'Outro',
+    confirmReport: 'Confirmar Relatório',
+    confirming: 'Confirmando...',
+    confirmed: '✓ Confirmado',
+    confirmations: 'confirmações',
+    verified: '✓ Verificado',
+    locationError: 'Não foi possível obter sua localização. Verifique as configurações do navegador.',
+  },
+}
 
 interface AlertMapProps {
   alerts: Alert[]
@@ -27,6 +70,8 @@ export function AlertMap({
   className = '',
   onUserLocationUpdate
 }: AlertMapProps) {
+  const { language } = useLanguage()
+  const t = mapTranslations[language]
   const mapContainer = useRef<HTMLDivElement>(null)
   const map = useRef<mapboxgl.Map | null>(null)
   const markers = useRef<Map<string, mapboxgl.Marker>>(new Map())
@@ -39,11 +84,14 @@ export function AlertMap({
   const onAlertClickRef = useRef(onAlertClick)
   const onVerifyAlertRef = useRef(onVerifyAlert)
 
+  const tRef = useRef(t)
+
   useEffect(() => {
     onMapMoveRef.current = onMapMove
     onAlertClickRef.current = onAlertClick
     onVerifyAlertRef.current = onVerifyAlert
-  }, [onMapMove, onAlertClick, onVerifyAlert])
+    tRef.current = t
+  }, [onMapMove, onAlertClick, onVerifyAlert, t])
 
   // Global click handler for confirm buttons in popups
   useEffect(() => {
@@ -52,11 +100,11 @@ export function AlertMap({
       if (target.classList.contains('confirm-alert-btn')) {
         const alertId = target.dataset.alertId
         if (alertId && onVerifyAlertRef.current) {
-          target.textContent = 'Confirming...'
+          target.textContent = tRef.current.confirming
           target.setAttribute('disabled', 'true')
           try {
             await onVerifyAlertRef.current(alertId)
-            target.textContent = '✓ Confirmed'
+            target.textContent = tRef.current.confirmed
             target.style.background = '#84CC16'
           } catch {
             target.textContent = 'Error'
@@ -204,20 +252,21 @@ export function AlertMap({
           onAlertClickRef.current?.(alert)
         })
 
+        const typeLabel = language === 'es' ? type.labelEs : language === 'pt' ? (type.labelPt || type.label) : type.label
         const popup = new mapboxgl.Popup({ offset: 25, closeButton: false })
           .setHTML(`
             <div style="padding: 8px; min-width: 180px;">
-              <div style="font-weight: 600; color: ${type.markerColor};">${type.label}</div>
+              <div style="font-weight: 600; color: ${type.markerColor};">${typeLabel}</div>
               ${alert.address ? `<div style="font-size: 12px; color: #666; margin-top: 4px;">${alert.address}</div>` : ''}
               <div style="font-size: 11px; color: #999; margin-top: 4px;">
-                ${isVerified ? '✓ Verified • ' : ''}${alert.verificationCount} confirmations
+                ${isVerified ? t.verified + ' • ' : ''}${alert.verificationCount} ${t.confirmations}
               </div>
               <button
                 class="confirm-alert-btn"
                 data-alert-id="${alert.id}"
                 style="margin-top: 8px; width: 100%; padding: 6px 12px; background: #00A6B4; color: white; border: none; border-radius: 6px; font-size: 12px; font-weight: 600; cursor: pointer;"
               >
-                Confirm This Report
+                ${t.confirmReport}
               </button>
             </div>
           `)
@@ -230,7 +279,7 @@ export function AlertMap({
         markers.current.set(alert.id, marker)
       }
     })
-  }, [alerts, selectedAlertId])
+  }, [alerts, selectedAlertId, language, t])
 
   // Fly to selected alert
   useEffect(() => {
@@ -300,7 +349,7 @@ export function AlertMap({
       onUserLocationUpdate?.({ lat: latitude, lng: longitude })
     } catch (err) {
       console.error('Error getting location:', err)
-      alert('Could not get your location. Please check your browser settings.')
+      alert(t.locationError)
     } finally {
       setIsLocating(false)
     }
@@ -329,23 +378,23 @@ export function AlertMap({
         <div className="flex flex-wrap gap-x-3 gap-y-1">
           <div className="flex items-center gap-1">
             <span className="w-2 h-2 rounded-full bg-red-600"></span>
-            <span className="text-white/80">Presence</span>
+            <span className="text-white/80">{t.presence}</span>
           </div>
           <div className="flex items-center gap-1">
             <span className="w-2 h-2 rounded-full bg-orange-600"></span>
-            <span className="text-white/80">Checkpoint</span>
+            <span className="text-white/80">{t.checkpoint}</span>
           </div>
           <div className="flex items-center gap-1">
             <span className="w-2 h-2 rounded-full bg-amber-600"></span>
-            <span className="text-white/80">Vehicle</span>
+            <span className="text-white/80">{t.vehicle}</span>
           </div>
           <div className="flex items-center gap-1">
             <span className="w-2 h-2 rounded-full bg-purple-600"></span>
-            <span className="text-white/80">Transit</span>
+            <span className="text-white/80">{t.transit}</span>
           </div>
           <div className="flex items-center gap-1">
             <span className="w-2 h-2 rounded-full bg-gray-500"></span>
-            <span className="text-white/80">Other</span>
+            <span className="text-white/80">{t.other}</span>
           </div>
         </div>
       </div>
