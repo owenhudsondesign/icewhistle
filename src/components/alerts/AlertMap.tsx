@@ -62,7 +62,8 @@ export function AlertMap({
       center: initialCenter,
       zoom: initialZoom,
       attributionControl: false,
-      preserveDrawingBuffer: true
+      preserveDrawingBuffer: true,
+      cooperativeGestures: true, // Require two-finger pan on mobile, Ctrl+scroll on desktop
     })
 
     const mapInstance = map.current
