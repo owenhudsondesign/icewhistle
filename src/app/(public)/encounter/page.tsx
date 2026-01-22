@@ -116,9 +116,9 @@ const translations = {
     reportHere: 'Report ICE Here',
     reportHereDesc: 'Share location to alert neighbors',
     viewMap: 'View Map',
-    reporting: 'Reporting...',
+    reporting: 'Getting location...',
     reported: 'Reported!',
-    locationError: 'Could not get location',
+    locationError: 'Enable location in settings',
 
     // Footer
     fullGuide: 'Full Rights Guide',
@@ -200,9 +200,9 @@ const translations = {
     reportHere: 'Reportar ICE Aquí',
     reportHereDesc: 'Compartir ubicación para alertar vecinos',
     viewMap: 'Ver Mapa',
-    reporting: 'Reportando...',
+    reporting: 'Obteniendo ubicación...',
     reported: '¡Reportado!',
-    locationError: 'No se pudo obtener ubicación',
+    locationError: 'Habilitar ubicación en ajustes',
 
     fullGuide: 'Guía Completa',
     allResources: 'Todos los Recursos',
@@ -283,9 +283,9 @@ const translations = {
     reportHere: 'Reportar ICE Aqui',
     reportHereDesc: 'Compartilhar localização para alertar vizinhos',
     viewMap: 'Ver Mapa',
-    reporting: 'Reportando...',
+    reporting: 'Obtendo localização...',
     reported: 'Reportado!',
-    locationError: 'Não foi possível obter localização',
+    locationError: 'Habilitar localização nas config.',
 
     fullGuide: 'Guia Completo',
     allResources: 'Todos os Recursos',
@@ -307,17 +307,60 @@ export default function EncounterPage() {
     setReportStatus('loading')
 
     try {
-      // Get fresh location directly
-      const position = await new Promise<GeolocationPosition>((resolve, reject) => {
-        navigator.geolocation.getCurrentPosition(resolve, reject, {
+      let currentLat: number
+      let currentLng: number
+
+      // Check if running on native platform (Capacitor)
+      const { Capacitor } = await import('@capacitor/core')
+
+      if (Capacitor.isNativePlatform()) {
+        // Use Capacitor Geolocation plugin which handles permissions properly
+        const { Geolocation } = await import('@capacitor/geolocation')
+
+        // Request permission first
+        const permStatus = await Geolocation.requestPermissions()
+        if (permStatus.location !== 'granted') {
+          throw new Error('Location permission denied')
+        }
+
+        const position = await Geolocation.getCurrentPosition({
           enableHighAccuracy: true,
           timeout: 10000,
-          maximumAge: 0,
         })
-      })
 
-      const currentLat = position.coords.latitude
-      const currentLng = position.coords.longitude
+        currentLat = position.coords.latitude
+        currentLng = position.coords.longitude
+      } else {
+        // Web browser - use standard API
+        if (!navigator.geolocation) {
+          throw new Error('Geolocation not supported')
+        }
+
+        // Check permission status if available (not all browsers support this)
+        if (navigator.permissions) {
+          try {
+            const permStatus = await navigator.permissions.query({ name: 'geolocation' })
+            console.log('Geolocation permission status:', permStatus.state)
+            if (permStatus.state === 'denied') {
+              throw new Error('Location permission was denied. Please enable it in your browser settings.')
+            }
+          } catch (e) {
+            // permissions.query not supported, continue anyway
+            console.log('Could not query permission status:', e)
+          }
+        }
+
+        const position = await new Promise<GeolocationPosition>((resolve, reject) => {
+          navigator.geolocation.getCurrentPosition(resolve, reject, {
+            enableHighAccuracy: true,
+            timeout: 15000,
+            maximumAge: 0,
+          })
+        })
+
+        currentLat = position.coords.latitude
+        currentLng = position.coords.longitude
+      }
 
       const response = await fetch('/api/alerts', {
         method: 'POST',
