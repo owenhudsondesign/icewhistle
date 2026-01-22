@@ -118,7 +118,7 @@ const translations = {
     viewMap: 'View Map',
     reporting: 'Getting location...',
     reported: 'Reported!',
-    locationError: 'Could not get location',
+    locationError: 'Try again',
     rateLimited: 'Wait {minutes} min',
 
     // Footer
@@ -203,7 +203,7 @@ const translations = {
     viewMap: 'Ver Mapa',
     reporting: 'Obteniendo ubicación...',
     reported: '¡Reportado!',
-    locationError: 'No se pudo obtener ubicación',
+    locationError: 'Reintentar',
     rateLimited: 'Espera {minutes} min',
 
     fullGuide: 'Guía Completa',
@@ -287,7 +287,7 @@ const translations = {
     viewMap: 'Ver Mapa',
     reporting: 'Obtendo localização...',
     reported: 'Reportado!',
-    locationError: 'Não foi possível obter localização',
+    locationError: 'Tentar novamente',
     rateLimited: 'Aguarde {minutes} min',
 
     fullGuide: 'Guia Completo',
@@ -337,47 +337,31 @@ export default function EncounterPage() {
     setReportStatus('loading')
 
     try {
-      let currentLat: number
-      let currentLng: number
+      if (!navigator.geolocation) {
+        throw new Error('Geolocation not supported')
+      }
 
-      // Check if running on native platform (Capacitor)
-      const { Capacitor } = await import('@capacitor/core')
-
-      if (Capacitor.isNativePlatform()) {
-        // Use Capacitor Geolocation plugin which handles permissions properly
-        const { Geolocation } = await import('@capacitor/geolocation')
-
-        // Request permission first
-        const permStatus = await Geolocation.requestPermissions()
-        if (permStatus.location !== 'granted') {
-          throw new Error('Location permission denied')
-        }
-
-        const position = await Geolocation.getCurrentPosition({
-          enableHighAccuracy: true,
-          timeout: 10000,
-        })
-
-        currentLat = position.coords.latitude
-        currentLng = position.coords.longitude
-      } else {
-        // Web browser - use standard API
-        // Just call getCurrentPosition directly - browser will prompt for permission if needed
-        if (!navigator.geolocation) {
-          throw new Error('Geolocation not supported')
-        }
-
-        const position = await new Promise<GeolocationPosition>((resolve, reject) => {
+      // Try to get position - first with high accuracy, then fallback to low accuracy
+      const getPosition = (highAccuracy: boolean): Promise<GeolocationPosition> => {
+        return new Promise((resolve, reject) => {
           navigator.geolocation.getCurrentPosition(resolve, reject, {
-            enableHighAccuracy: false, // Use false for faster response, we don't need precise location
-            timeout: 30000, // 30 seconds to allow time for user to respond to prompt
-            maximumAge: 60000, // Accept cached position up to 1 minute old
+            enableHighAccuracy: highAccuracy,
+            timeout: highAccuracy ? 10000 : 20000,
+            maximumAge: 600000, // Accept 10 min old cached position
           })
         })
-
-        currentLat = position.coords.latitude
-        currentLng = position.coords.longitude
       }
+
+      let position: GeolocationPosition
+      try {
+        position = await getPosition(true)
+      } catch {
+        // Retry with low accuracy if high accuracy fails
+        position = await getPosition(false)
+      }
+
+      const currentLat = position.coords.latitude
+      const currentLng = position.coords.longitude
 
       const response = await fetch('/api/alerts', {
         method: 'POST',
@@ -396,38 +380,31 @@ export default function EncounterPage() {
         setReportStatus('success')
         setTimeout(() => setReportStatus('idle'), 5000)
       } else {
+        alert(
+          language === 'es'
+            ? 'Error al enviar el reporte. Intenta de nuevo.'
+            : language === 'pt'
+            ? 'Erro ao enviar o relatório. Tente novamente.'
+            : 'Failed to submit report. Please try again.'
+        )
         setReportStatus('error')
         setTimeout(() => setReportStatus('idle'), 3000)
       }
     } catch (err: unknown) {
       const error = err as Error & { code?: number }
-      console.error('Failed to report ICE activity:', error)
+      console.error('Failed to report ICE activity:', error, 'Code:', error?.code, 'Message:', error?.message)
 
-      // GeolocationPositionError codes: 1 = PERMISSION_DENIED, 2 = POSITION_UNAVAILABLE, 3 = TIMEOUT
-      if (error?.code === 1) {
-        alert(
-          language === 'es'
-            ? 'Ubicación bloqueada. Ve a Configuración > Privacidad > Ubicación y permite el acceso para tu navegador.'
-            : language === 'pt'
-            ? 'Localização bloqueada. Vá para Ajustes > Privacidade > Localização e permita o acesso para seu navegador.'
-            : 'Location blocked. Go to Settings > Privacy > Location Services and allow access for your browser.'
-        )
-      } else if (error?.code === 2) {
-        alert(
-          language === 'es'
-            ? 'No se pudo determinar tu ubicación. Asegúrate de estar en un área con buena señal GPS o WiFi.'
-            : language === 'pt'
-            ? 'Não foi possível determinar sua localização. Certifique-se de estar em uma área com bom sinal GPS ou WiFi.'
-            : 'Could not determine your location. Make sure you have GPS or WiFi signal.'
-        )
-      } else if (error?.code === 3) {
-        alert(
-          language === 'es'
-            ? 'La solicitud de ubicación tardó demasiado. Intenta de nuevo.'
-            : language === 'pt'
-            ? 'A solicitação de localização demorou muito. Tente novamente.'
-            : 'Location request timed out. Please try again.'
-        )
+      // Offer to go to alerts page where they can enter address manually
+      const goToAlerts = confirm(
+        language === 'es'
+          ? 'No se pudo obtener ubicación automáticamente.\n\n¿Ir a la página de alertas para ingresar una dirección manualmente?'
+          : language === 'pt'
+          ? 'Não foi possível obter localização automaticamente.\n\nIr para a página de alertas para inserir um endereço manualmente?'
+          : 'Could not get location automatically.\n\nGo to alerts page to enter an address manually?'
+      )
+
+      if (goToAlerts) {
+        window.location.href = '/alerts?report=true'
       }
 
       setReportStatus('error')
