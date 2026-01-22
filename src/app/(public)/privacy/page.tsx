@@ -229,8 +229,8 @@ export default function PrivacyPolicyPage() {
             <div className="p-4 rounded-lg bg-muted/30">
               <p className="text-sm">
                 <strong>ICEwhistle</strong><br />
-                Website: <a href="https://icewhistle.org" className="text-primary hover:underline">icewhistle.org</a><br />
-                Email: privacy@icewhistle.org
+                Website: <a href="https://icewhistle.app" className="text-primary hover:underline">icewhistle.app</a><br />
+                Email: privacy@icewhistle.app
               </p>
             </div>
           </section>

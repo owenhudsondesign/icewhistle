@@ -3,63 +3,63 @@
         xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <!-- Homepage - ICE Alert App & Know Your Rights -->
   <url>
-    <loc>https://icewhistle.org/</loc>
+    <loc>https://icewhistle.app/</loc>
     <lastmod>2026-01-21</lastmod>
     <changefreq>daily</changefreq>
     <priority>1.0</priority>
-    <xhtml:link rel="alternate" hreflang="en" href="https://icewhistle.org/"/>
-    <xhtml:link rel="alternate" hreflang="es" href="https://icewhistle.org/"/>
-    <xhtml:link rel="alternate" hreflang="pt" href="https://icewhistle.org/"/>
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://icewhistle.org/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://icewhistle.app/"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://icewhistle.app/"/>
+    <xhtml:link rel="alternate" hreflang="pt" href="https://icewhistle.app/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://icewhistle.app/"/>
   </url>
 
   <!-- ICE Activity Near Me - Live Alerts -->
   <url>
-    <loc>https://icewhistle.org/alerts</loc>
+    <loc>https://icewhistle.app/alerts</loc>
     <lastmod>2026-01-21</lastmod>
     <changefreq>hourly</changefreq>
     <priority>0.95</priority>
-    <xhtml:link rel="alternate" hreflang="en" href="https://icewhistle.org/alerts"/>
-    <xhtml:link rel="alternate" hreflang="es" href="https://icewhistle.org/alerts"/>
-    <xhtml:link rel="alternate" hreflang="pt" href="https://icewhistle.org/alerts"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://icewhistle.app/alerts"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://icewhistle.app/alerts"/>
+    <xhtml:link rel="alternate" hreflang="pt" href="https://icewhistle.app/alerts"/>
   </url>
 
   <!-- Know Your Rights with ICE -->
   <url>
-    <loc>https://icewhistle.org/rights</loc>
+    <loc>https://icewhistle.app/rights</loc>
     <lastmod>2026-01-21</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.95</priority>
-    <xhtml:link rel="alternate" hreflang="en" href="https://icewhistle.org/rights"/>
-    <xhtml:link rel="alternate" hreflang="es" href="https://icewhistle.org/rights"/>
-    <xhtml:link rel="alternate" hreflang="pt" href="https://icewhistle.org/rights"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://icewhistle.app/rights"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://icewhistle.app/rights"/>
+    <xhtml:link rel="alternate" hreflang="pt" href="https://icewhistle.app/rights"/>
   </url>
 
   <!-- Immigration Emergency Hotlines & Legal Resources -->
   <url>
-    <loc>https://icewhistle.org/resources</loc>
+    <loc>https://icewhistle.app/resources</loc>
     <lastmod>2026-01-21</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
-    <xhtml:link rel="alternate" hreflang="en" href="https://icewhistle.org/resources"/>
-    <xhtml:link rel="alternate" hreflang="es" href="https://icewhistle.org/resources"/>
-    <xhtml:link rel="alternate" hreflang="pt" href="https://icewhistle.org/resources"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://icewhistle.app/resources"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://icewhistle.app/resources"/>
+    <xhtml:link rel="alternate" hreflang="pt" href="https://icewhistle.app/resources"/>
   </url>
 
   <!-- What to Do if ICE Stops You - Emergency Guide -->
   <url>
-    <loc>https://icewhistle.org/emergency</loc>
+    <loc>https://icewhistle.app/emergency</loc>
     <lastmod>2026-01-21</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.95</priority>
-    <xhtml:link rel="alternate" hreflang="en" href="https://icewhistle.org/emergency"/>
-    <xhtml:link rel="alternate" hreflang="es" href="https://icewhistle.org/emergency"/>
-    <xhtml:link rel="alternate" hreflang="pt" href="https://icewhistle.org/emergency"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://icewhistle.app/emergency"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://icewhistle.app/emergency"/>
+    <xhtml:link rel="alternate" hreflang="pt" href="https://icewhistle.app/emergency"/>
   </url>
 
   <!-- Emergency: ICE Is Near Me -->
   <url>
-    <loc>https://icewhistle.org/emergency?type=near</loc>
+    <loc>https://icewhistle.app/emergency?type=near</loc>
     <lastmod>2026-01-21</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
@@ -67,7 +67,7 @@
 
   <!-- Emergency: Someone Was Taken by ICE -->
   <url>
-    <loc>https://icewhistle.org/emergency?type=taken</loc>
+    <loc>https://icewhistle.app/emergency?type=taken</loc>
     <lastmod>2026-01-21</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
@@ -75,7 +75,7 @@
 
   <!-- Emergency: ICE Traffic Stop -->
   <url>
-    <loc>https://icewhistle.org/emergency?type=vehicle</loc>
+    <loc>https://icewhistle.app/emergency?type=vehicle</loc>
     <lastmod>2026-01-21</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
@@ -83,29 +83,29 @@
 
   <!-- Search Immigration Rights Resources -->
   <url>
-    <loc>https://icewhistle.org/search</loc>
+    <loc>https://icewhistle.app/search</loc>
     <lastmod>2026-01-21</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
-    <xhtml:link rel="alternate" hreflang="en" href="https://icewhistle.org/search"/>
-    <xhtml:link rel="alternate" hreflang="es" href="https://icewhistle.org/search"/>
-    <xhtml:link rel="alternate" hreflang="pt" href="https://icewhistle.org/search"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://icewhistle.app/search"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://icewhistle.app/search"/>
+    <xhtml:link rel="alternate" hreflang="pt" href="https://icewhistle.app/search"/>
   </url>
 
   <!-- Support -->
   <url>
-    <loc>https://icewhistle.org/support</loc>
+    <loc>https://icewhistle.app/support</loc>
     <lastmod>2026-01-21</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
-    <xhtml:link rel="alternate" hreflang="en" href="https://icewhistle.org/support"/>
-    <xhtml:link rel="alternate" hreflang="es" href="https://icewhistle.org/support"/>
-    <xhtml:link rel="alternate" hreflang="pt" href="https://icewhistle.org/support"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://icewhistle.app/support"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://icewhistle.app/support"/>
+    <xhtml:link rel="alternate" hreflang="pt" href="https://icewhistle.app/support"/>
   </url>
 
   <!-- Privacy Policy -->
   <url>
-    <loc>https://icewhistle.org/privacy</loc>
+    <loc>https://icewhistle.app/privacy</loc>
     <lastmod>2026-01-21</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.4</priority>
@@ -113,7 +113,7 @@
 
   <!-- Terms of Service -->
   <url>
-    <loc>https://icewhistle.org/terms</loc>
+    <loc>https://icewhistle.app/terms</loc>
     <lastmod>2026-01-21</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.4</priority>

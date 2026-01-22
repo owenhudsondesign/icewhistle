@@ -8,7 +8,7 @@ const config: CapacitorConfig = {
   // Use the live server URL (recommended for dynamic Next.js apps)
   server: {
     // Production: Use your Vercel URL
-    url: 'https://icewhistle.org',
+    url: 'https://icewhistle.app',
     // For local development, comment out the above and use:
     // url: 'http://localhost:3000',
     cleartext: false, // Only allow HTTPS in production

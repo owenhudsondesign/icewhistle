@@ -1,14 +1,14 @@
 # ICEwhistle - Immigration Rights App & ICE Alert System
-# https://icewhistle.org
+# https://icewhistle.app
 
 User-agent: *
 Allow: /
 
 # Sitemaps
-Sitemap: https://icewhistle.org/sitemap.xml
+Sitemap: https://icewhistle.app/sitemap.xml
 
 # LLMs.txt for AI models (GEO - Generative Engine Optimization)
-# See: https://icewhistle.org/llms.txt
+# See: https://icewhistle.app/llms.txt
 
 # Allow AI crawlers for better discoverability in AI-powered search
 User-agent: GPTBot

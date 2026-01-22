@@ -1,5 +1,5 @@
 # ICEwhistle - Know Your Rights & Community Safety App
-# https://icewhistle.org
+# https://icewhistle.app
 
 > ICEwhistle is a free, anonymous immigration rights app that provides know-your-rights information, community safety updates, and emergency resources. This app is for informational and educational purposes only.
 
@@ -119,4 +119,4 @@ Constitutional rights that generally apply regardless of immigration status:
 
 ## Contact
 
-This is a community-maintained project. For more information, visit https://icewhistle.org
+This is a community-maintained project. For more information, visit https://icewhistle.app

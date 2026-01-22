@@ -10,7 +10,7 @@ const plusJakarta = Plus_Jakarta_Sans({
 })
 
 export const metadata: Metadata = {
-  metadataBase: new URL('https://icewhistle.org'),
+  metadataBase: new URL('https://icewhistle.app'),
   title: {
     default: 'ICEwhistle - Know Your Rights App | ICE Alert & Immigration Safety',
     template: '%s | ICEwhistle',
@@ -77,16 +77,18 @@ export const metadata: Metadata = {
     type: 'website',
     locale: 'en_US',
     alternateLocale: ['es_US', 'pt_BR'],
-    url: 'https://icewhistle.org',
+    url: 'https://icewhistle.app',
     siteName: 'ICEwhistle',
     title: 'ICEwhistle - Know Your Rights App | What to Do if ICE Stops You',
     description: 'Free ICE alert app: Know your rights if ICE is at your door, find detained family members, report ICE activity near you. Immigration emergency hotline & legal aid. Qué hacer si llega ICE.',
     images: [
       {
-        url: '/images/og-image.png',
+        url: 'https://icewhistle.app/images/og-image.png',
+        secureUrl: 'https://icewhistle.app/images/og-image.png',
         width: 1200,
         height: 630,
         alt: 'ICEwhistle - Immigration Rights App & ICE Alert System',
+        type: 'image/png',
       },
     ],
   },
@@ -94,7 +96,7 @@ export const metadata: Metadata = {
     card: 'summary_large_image',
     title: 'ICEwhistle - Know Your Rights | ICE Alert App',
     description: 'Free app: What to do if ICE stops you. Find someone in ICE detention. Report ICE activity near you. Know your 4th Amendment rights. Qué hacer si llega ICE.',
-    images: ['/images/og-image.png'],
+    images: ['https://icewhistle.app/images/og-image.png'],
   },
   robots: {
     index: true,
@@ -108,11 +110,11 @@ export const metadata: Metadata = {
     },
   },
   alternates: {
-    canonical: 'https://icewhistle.org',
+    canonical: 'https://icewhistle.app',
     languages: {
-      'en-US': 'https://icewhistle.org',
-      'es-US': 'https://icewhistle.org',
-      'pt-BR': 'https://icewhistle.org',
+      'en-US': 'https://icewhistle.app',
+      'es-US': 'https://icewhistle.app',
+      'pt-BR': 'https://icewhistle.app',
     },
   },
   category: 'reference',
@@ -132,7 +134,7 @@ const jsonLd = {
   name: 'ICEwhistle',
   alternateName: ['Know Your Rights App', 'Immigration Rights App', 'Community Safety App'],
   description: 'Free immigration rights app: What to do if ICE stops you, ICE at your door, find someone detained by ICE. Know your rights with ICE. Community updates near you. Qué hacer si llega ICE.',
-  url: 'https://icewhistle.org',
+  url: 'https://icewhistle.app',
   applicationCategory: 'ReferenceApplication',
   operatingSystem: 'Any',
   offers: {
@@ -148,7 +150,7 @@ const jsonLd = {
   },
   potentialAction: {
     '@type': 'SearchAction',
-    target: 'https://icewhistle.org/search?q={search_term_string}',
+    target: 'https://icewhistle.app/search?q={search_term_string}',
     'query-input': 'required name=search_term_string',
   },
   keywords: 'immigration rights app, know your rights ICE, community safety, what to do if ICE stops you, ICE at my door, find someone detained by ICE, qué hacer si llega ICE',
@@ -158,8 +160,8 @@ const organizationJsonLd = {
   '@context': 'https://schema.org',
   '@type': 'Organization',
   name: 'ICEwhistle',
-  url: 'https://icewhistle.org',
-  logo: 'https://icewhistle.org/images/icewhistle-logo-dark.svg',
+  url: 'https://icewhistle.app',
+  logo: 'https://icewhistle.app/images/icewhistle-logo-dark.svg',
   description: 'Community-maintained immigration safety resource: know your rights with ICE, emergency alerts, find someone in ICE detention, immigration lawyer connections.',
   sameAs: [
     'https://opencollective.com/icewhistle-app',
