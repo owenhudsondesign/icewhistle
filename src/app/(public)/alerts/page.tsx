@@ -4,7 +4,6 @@ import { useState, useEffect, useCallback, Suspense, useRef } from 'react'
 import { useSearchParams } from 'next/navigation'
 import { Alert as AlertType, AlertMapBounds, ALERT_TYPES } from '@/types/alert'
 import { AlertMap } from '@/components/alerts/AlertMap'
-import { AlertFeed } from '@/components/alerts/AlertFeed'
 import { ReportAlertModal } from '@/components/alerts/ReportAlertModal'
 import { AppHeader } from '@/components/shared/AppHeader'
 import { useLanguage, commonTranslations } from '@/hooks/use-language'
@@ -13,8 +12,6 @@ import {
   AlertTriangle,
   Plus,
   RefreshCw,
-  List,
-  Map as MapIcon,
   Shield,
   Clock,
   MapPin,
@@ -39,7 +36,6 @@ function AlertsPageContent() {
   const [selectedAlertId, setSelectedAlertId] = useState<string | null>(null)
   const [showReportModal, setShowReportModal] = useState(false)
   const [reportType, setReportType] = useState<string | null>(null)
-  const [view, setView] = useState<'map' | 'list'>('map')
   const [lastRefresh, setLastRefresh] = useState<Date>(new Date())
 
   // Get user location on mount
@@ -247,73 +243,23 @@ function AlertsPageContent() {
               </div>
             </div>
 
-            {/* View Toggle - Soft Transit Buttons */}
-            <div className="flex gap-3 mb-5">
-              <Button
-                variant={view === 'map' ? 'default' : 'outline'}
-                onClick={() => setView('map')}
-                className={`flex-1 h-12 rounded-[8px] ${view === 'map' ? 'bg-[#00A6B4] hover:bg-[#00A6B4]/90' : ''}`}
-              >
-                <MapIcon className="h-5 w-5 mr-2" strokeWidth={2} />
-                {t.mapView}
-              </Button>
-              <Button
-                variant={view === 'list' ? 'default' : 'outline'}
-                onClick={() => setView('list')}
-                className={`flex-1 h-12 rounded-[8px] ${view === 'list' ? 'bg-[#00A6B4] hover:bg-[#00A6B4]/90' : ''}`}
-              >
-                <List className="h-5 w-5 mr-2" strokeWidth={2} />
-                {t.listView}
-              </Button>
+            {/* Map View */}
+            <div className="rounded-[16px] overflow-hidden border shadow-lg">
+              <AlertMap
+                alerts={alerts}
+                userLocation={userLocation}
+                onMapMove={handleMapMove}
+                onAlertClick={handleAlertClick}
+                selectedAlertId={selectedAlertId}
+                onUserLocationUpdate={setUserLocation}
+                className="h-[50vh] min-h-[400px]"
+              />
             </div>
 
-            {/* Map View */}
-            {view === 'map' && (
-              <div className="rounded-[16px] overflow-hidden border shadow-lg">
-                <AlertMap
-                  alerts={alerts}
-                  userLocation={userLocation}
-                  onMapMove={handleMapMove}
-                  onAlertClick={handleAlertClick}
-                  selectedAlertId={selectedAlertId}
-                  onUserLocationUpdate={setUserLocation}
-                  className="h-[50vh] min-h-[400px]"
-                />
-              </div>
-            )}
-
-            {/* List View */}
-            {view === 'list' && (
-              <div className="space-y-3">
-                {alerts.length === 0 ? (
-                  <div className="text-center py-12 card-glass">
-                    <CheckCircle className="h-12 w-12 text-[#84CC16] mx-auto mb-4" strokeWidth={2} />
-                    <h3 className="text-headline mb-2">{t.noActiveAlerts}</h3>
-                    <p className="text-muted-foreground text-caption">
-                      {t.noAlertsDesc}
-                    </p>
-                  </div>
-                ) : (
-                  <AlertFeed
-                    alerts={alerts}
-                    userLocation={userLocation}
-                    onAlertClick={handleAlertClick}
-                    onVerifyAlert={handleVerifyAlert}
-                    selectedAlertId={selectedAlertId}
-                  />
-                )}
-              </div>
-            )}
-
-            {/* Recent Alerts Preview (when in map view) */}
-            {view === 'map' && alerts.length > 0 && (
+            {/* Recent Alerts Preview */}
+            {alerts.length > 0 && (
               <div className="mt-5">
-                <div className="flex items-center justify-between mb-3">
-                  <h2 className="text-small font-semibold text-muted-foreground uppercase tracking-wide">{t.recentReports}</h2>
-                  <Button variant="ghost" size="sm" onClick={() => setView('list')} className="text-[#00A6B4]">
-                    {t.seeAll}
-                  </Button>
-                </div>
+                <h2 className="text-small font-semibold text-muted-foreground uppercase tracking-wide mb-3">{t.recentReports}</h2>
                 <div className="flex gap-3 overflow-x-auto pb-2 -mx-4 px-4">
                   {alerts.slice(0, 5).map((alert) => {
                     const type = ALERT_TYPES[alert.alertType]
