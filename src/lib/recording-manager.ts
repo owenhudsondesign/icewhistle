@@ -118,14 +118,6 @@ function createRecorder(stream: MediaStream, chunks: Blob[], mimeType: string, i
   return recorder
 }
 
-// High quality video constraints for evidence recording
-const HD_VIDEO_CONSTRAINTS: MediaTrackConstraints = {
-  width: { ideal: 1920, min: 1280 },
-  height: { ideal: 1080, min: 720 },
-  frameRate: { ideal: 30, min: 24 },
-  facingMode: 'environment', // Will be overridden
-}
-
 // High quality audio constraints - no processing to preserve authenticity
 const HD_AUDIO_CONSTRAINTS: MediaTrackConstraints = {
   sampleRate: { ideal: 48000 },
@@ -143,6 +135,70 @@ function stopAllStreams() {
   secondaryStream = null
   primaryRecorder = null
   secondaryRecorder = null
+}
+
+/**
+ * Find the widest angle camera for a given facing mode
+ * Prefers ultra-wide > wide > standard lens
+ */
+async function findWidestCamera(facingMode: 'user' | 'environment'): Promise<string | null> {
+  try {
+    // First request temporary permission to get labeled device list
+    const tempStream = await navigator.mediaDevices.getUserMedia({ video: { facingMode } })
+    tempStream.getTracks().forEach(track => track.stop())
+
+    const devices = await navigator.mediaDevices.enumerateDevices()
+    const videoDevices = devices.filter(d => d.kind === 'videoinput')
+
+    console.log('Available video devices:', videoDevices.map(d => ({ label: d.label, id: d.deviceId })))
+
+    // Keywords that indicate wide-angle cameras (prioritized)
+    const wideKeywords = ['ultra wide', 'ultrawide', 'ultra-wide', 'wide angle', 'wide-angle', '0.5x']
+    const standardWideKeywords = ['wide', 'back camera 0', 'rear camera 0'] // Often the first back camera is widest
+
+    // Filter cameras by facing mode based on label
+    const facingKeywords = facingMode === 'user'
+      ? ['front', 'facetime', 'selfie', 'user']
+      : ['back', 'rear', 'environment', 'main']
+
+    const matchingCameras = videoDevices.filter(device => {
+      const label = device.label.toLowerCase()
+      return facingKeywords.some(keyword => label.includes(keyword))
+    })
+
+    // If we couldn't filter by facing mode, try all cameras
+    const camerasToSearch = matchingCameras.length > 0 ? matchingCameras : videoDevices
+
+    // First pass: look for ultra-wide cameras
+    for (const device of camerasToSearch) {
+      const label = device.label.toLowerCase()
+      if (wideKeywords.some(keyword => label.includes(keyword))) {
+        console.log('Found ultra-wide camera:', device.label)
+        return device.deviceId
+      }
+    }
+
+    // Second pass: look for wide cameras
+    for (const device of camerasToSearch) {
+      const label = device.label.toLowerCase()
+      if (standardWideKeywords.some(keyword => label.includes(keyword))) {
+        console.log('Found wide camera:', device.label)
+        return device.deviceId
+      }
+    }
+
+    // For back camera, if multiple cameras exist, the first one is often the widest
+    if (facingMode === 'environment' && camerasToSearch.length > 1) {
+      console.log('Using first back camera (likely widest):', camerasToSearch[0].label)
+      return camerasToSearch[0].deviceId
+    }
+
+    console.log('No wide-angle camera found, will use facingMode constraint')
+    return null
+  } catch (err) {
+    console.warn('Could not enumerate cameras:', err)
+    return null
+  }
 }
 
 function startTimer() {
@@ -172,14 +228,26 @@ export const recordingManager = {
       if (type === 'video') {
         const facingMode = cameraMode === 'front' ? 'user' : 'environment'
 
+        // Try to find the widest angle camera for this facing mode
+        const wideDeviceId = await findWidestCamera(facingMode)
+
         // High quality video constraints - max out device capabilities
-        const videoConstraints: MediaTrackConstraints = {
-          facingMode,
-          width: { ideal: 4096, min: 1280 }, // Request up to 4K
-          height: { ideal: 2160, min: 720 }, // Request up to 4K
-          frameRate: { ideal: 60, min: 24 }, // Up to 60fps if supported
-          aspectRatio: { ideal: 16/9 },
-        }
+        // Use specific deviceId if we found a wide-angle camera, otherwise use facingMode
+        const videoConstraints: MediaTrackConstraints = wideDeviceId
+          ? {
+              deviceId: { exact: wideDeviceId },
+              width: { ideal: 4096, min: 1280 }, // Request up to 4K
+              height: { ideal: 2160, min: 720 }, // Request up to 4K
+              frameRate: { ideal: 60, min: 24 }, // Up to 60fps if supported
+              aspectRatio: { ideal: 16/9 },
+            }
+          : {
+              facingMode,
+              width: { ideal: 4096, min: 1280 }, // Request up to 4K
+              height: { ideal: 2160, min: 720 }, // Request up to 4K
+              frameRate: { ideal: 60, min: 24 }, // Up to 60fps if supported
+              aspectRatio: { ideal: 16/9 },
+            }
 
         // Primary camera stream with high quality
         const pStream = await navigator.mediaDevices.getUserMedia({
@@ -200,16 +268,51 @@ export const recordingManager = {
           try {
             await new Promise(resolve => setTimeout(resolve, 500))
 
+            // Try to find widest front camera for secondary stream
+            const wideFrontDeviceId = await findWidestCamera('user')
+            const secondaryVideoConstraints: MediaTrackConstraints = wideFrontDeviceId
+              ? {
+                  deviceId: { exact: wideFrontDeviceId },
+                  width: { ideal: 4096, min: 1280 },
+                  height: { ideal: 2160, min: 720 },
+                  frameRate: { ideal: 60, min: 24 },
+                  aspectRatio: { ideal: 16/9 },
+                }
+              : {
+                  facingMode: 'user',
+                  width: { ideal: 4096, min: 1280 },
+                  height: { ideal: 2160, min: 720 },
+                  frameRate: { ideal: 60, min: 24 },
+                  aspectRatio: { ideal: 16/9 },
+                }
+
             const sStream = await navigator.mediaDevices.getUserMedia({
-              video: { ...videoConstraints, facingMode: 'user' },
+              video: secondaryVideoConstraints,
               audio: false,
             })
 
             if (!primaryStream?.active) {
               console.warn('Primary stream was stopped when requesting secondary camera')
               sStream.getTracks().forEach(track => track.stop())
+              // Re-find widest back camera for primary
+              const wideBackDeviceId = await findWidestCamera('environment')
+              const recoveryConstraints: MediaTrackConstraints = wideBackDeviceId
+                ? {
+                    deviceId: { exact: wideBackDeviceId },
+                    width: { ideal: 4096, min: 1280 },
+                    height: { ideal: 2160, min: 720 },
+                    frameRate: { ideal: 60, min: 24 },
+                    aspectRatio: { ideal: 16/9 },
+                  }
+                : {
+                    facingMode: 'environment',
+                    width: { ideal: 4096, min: 1280 },
+                    height: { ideal: 2160, min: 720 },
+                    frameRate: { ideal: 60, min: 24 },
+                    aspectRatio: { ideal: 16/9 },
+                  }
               const newPrimary = await navigator.mediaDevices.getUserMedia({
-                video: { ...videoConstraints, facingMode: 'environment' },
+                video: recoveryConstraints,
                 audio: HD_AUDIO_CONSTRAINTS,
               })
               primaryStream = newPrimary
