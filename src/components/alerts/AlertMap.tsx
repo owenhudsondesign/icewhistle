@@ -11,6 +11,7 @@ interface AlertMapProps {
   userLocation?: { lat: number; lng: number } | null
   onMapMove?: (bounds: { north: number; south: number; east: number; west: number }) => void
   onAlertClick?: (alert: Alert) => void
+  onVerifyAlert?: (alertId: string) => Promise<void>
   selectedAlertId?: string | null
   className?: string
   onUserLocationUpdate?: (location: { lat: number; lng: number }) => void
@@ -21,6 +22,7 @@ export function AlertMap({
   userLocation,
   onMapMove,
   onAlertClick,
+  onVerifyAlert,
   selectedAlertId,
   className = '',
   onUserLocationUpdate
@@ -35,11 +37,37 @@ export function AlertMap({
   // Stable callback refs to avoid re-renders
   const onMapMoveRef = useRef(onMapMove)
   const onAlertClickRef = useRef(onAlertClick)
+  const onVerifyAlertRef = useRef(onVerifyAlert)
 
   useEffect(() => {
     onMapMoveRef.current = onMapMove
     onAlertClickRef.current = onAlertClick
-  }, [onMapMove, onAlertClick])
+    onVerifyAlertRef.current = onVerifyAlert
+  }, [onMapMove, onAlertClick, onVerifyAlert])
+
+  // Global click handler for confirm buttons in popups
+  useEffect(() => {
+    const handleConfirmClick = async (e: MouseEvent) => {
+      const target = e.target as HTMLElement
+      if (target.classList.contains('confirm-alert-btn')) {
+        const alertId = target.dataset.alertId
+        if (alertId && onVerifyAlertRef.current) {
+          target.textContent = 'Confirming...'
+          target.setAttribute('disabled', 'true')
+          try {
+            await onVerifyAlertRef.current(alertId)
+            target.textContent = '✓ Confirmed'
+            target.style.background = '#84CC16'
+          } catch {
+            target.textContent = 'Error'
+            target.style.background = '#DC2626'
+          }
+        }
+      }
+    }
+    document.addEventListener('click', handleConfirmClick)
+    return () => document.removeEventListener('click', handleConfirmClick)
+  }, [])
 
   // Initialize map only once
   useEffect(() => {
@@ -185,12 +213,19 @@ export function AlertMap({
 
         const popup = new mapboxgl.Popup({ offset: 25, closeButton: false })
           .setHTML(`
-            <div style="padding: 8px; min-width: 150px;">
+            <div style="padding: 8px; min-width: 180px;">
               <div style="font-weight: 600; color: ${type.markerColor};">${type.label}</div>
               ${alert.address ? `<div style="font-size: 12px; color: #666; margin-top: 4px;">${alert.address}</div>` : ''}
               <div style="font-size: 11px; color: #999; margin-top: 4px;">
                 ${isVerified ? '✓ Verified • ' : ''}${alert.verificationCount} confirmations
               </div>
+              <button
+                class="confirm-alert-btn"
+                data-alert-id="${alert.id}"
+                style="margin-top: 8px; width: 100%; padding: 6px 12px; background: #00A6B4; color: white; border: none; border-radius: 6px; font-size: 12px; font-weight: 600; cursor: pointer;"
+              >
+                Confirm This Report
+              </button>
             </div>
           `)
 

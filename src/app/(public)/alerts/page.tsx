@@ -250,6 +250,7 @@ function AlertsPageContent() {
                 userLocation={userLocation}
                 onMapMove={handleMapMove}
                 onAlertClick={handleAlertClick}
+                onVerifyAlert={handleVerifyAlert}
                 selectedAlertId={selectedAlertId}
                 onUserLocationUpdate={setUserLocation}
                 className="h-[50vh] min-h-[400px]"
