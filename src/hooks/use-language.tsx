@@ -85,8 +85,8 @@ export const commonTranslations = {
     learnMore: 'Learn more',
 
     // Privacy
-    anonymous: '100% Anonymous',
-    noTracking: 'No accounts • No tracking • Works offline • Your data stays on your device',
+    anonymous: 'Anonymous',
+    noTracking: 'No accounts. No tracking. Location rounded for privacy.',
     precision100m: '~100m precision',
     autoExpire8hr: '8hr auto-expire',
 
@@ -228,8 +228,8 @@ export const commonTranslations = {
     learnMore: 'Más información',
 
     // Privacy
-    anonymous: '100% Anónimo',
-    noTracking: 'Sin cuentas • Sin rastreo • Funciona sin internet • Tus datos quedan en tu dispositivo',
+    anonymous: 'Anónimo',
+    noTracking: 'Sin cuentas. Sin rastreo. Ubicación redondeada para privacidad.',
     precision100m: '~100m de precisión',
     autoExpire8hr: 'Expira en 8hrs',
 
@@ -287,7 +287,7 @@ export const commonTranslations = {
     step3Title: 'Proteger',
     step3Desc: 'Las comunidades pueden prepararse y mantenerse seguras',
     privacyFirst: 'Privacidad Primero',
-    privacyDesc: 'Sin cuentas, sin rastreo. Todos los datos quedan en tu dispositivo.',
+    privacyDesc: 'Sin cuentas. Sin rastreo. Ubicación redondeada para privacidad.',
 
     // Recording feature
     recordingFeature: 'Grabación Integrada',
@@ -372,7 +372,7 @@ export const commonTranslations = {
 
     // Privacy
     anonymous: '100% Anônimo',
-    noTracking: 'Sem contas • Sem rastreamento • Funciona offline • Seus dados ficam no seu dispositivo',
+    noTracking: 'Sem contas. Sem rastreamento. Localização arredondada para privacidade.',
     precision100m: '~100m de precisão',
     autoExpire8hr: 'Expira em 8hrs',
 
@@ -430,7 +430,7 @@ export const commonTranslations = {
     step3Title: 'Proteger',
     step3Desc: 'Comunidades podem se preparar e ficar seguras',
     privacyFirst: 'Privacidade Primeiro',
-    privacyDesc: 'Sem contas, sem rastreamento. Todos os dados ficam no seu dispositivo.',
+    privacyDesc: 'Sem contas. Sem rastreamento. Localização arredondada para privacidade.',
 
     // Recording feature
     recordingFeature: 'Gravação Integrada',

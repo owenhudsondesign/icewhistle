@@ -219,8 +219,8 @@ export function ReportAlertModal({
           <div className="flex items-start gap-2 p-3 bg-[#00A6B4]/10 rounded-[8px]">
             <Lock className="h-4 w-4 text-[#00A6B4] mt-0.5 flex-shrink-0" strokeWidth={2} />
             <p className="text-small text-muted-foreground">
-              <strong className="text-foreground">100% anonymous</strong> - Your identity is never recorded.
-              Location is rounded to ~100m for privacy.
+              <strong className="text-foreground">Anonymous</strong> — No accounts. No tracking.
+              Location rounded to ~100m for privacy.
             </p>
           </div>
         </div>
