@@ -274,6 +274,25 @@ export function generateFilenames(timestamp: Date, cameraMode: string, mimeType:
 }
 
 /**
+ * Helper to trigger a download
+ */
+function triggerDownload(url: string, filename: string): Promise<void> {
+  return new Promise((resolve) => {
+    const link = document.createElement('a')
+    link.href = url
+    link.download = filename
+    link.style.display = 'none'
+    document.body.appendChild(link)
+    link.click()
+    // Small delay before cleanup to ensure download starts
+    setTimeout(() => {
+      document.body.removeChild(link)
+      resolve()
+    }, 100)
+  })
+}
+
+/**
  * Save video with manifest (downloads both files)
  */
 export async function saveVideoWithManifest(
@@ -291,28 +310,25 @@ export async function saveVideoWithManifest(
   const timestamp = new Date(manifest.captureTimestamp)
   const { videoFilename, manifestFilename } = generateFilenames(timestamp, options.cameraMode, blob.type)
 
-  // Create download links
+  // Create URLs
   const videoUrl = URL.createObjectURL(blob)
   const manifestBlob = createManifestBlob(manifest)
   const manifestUrl = URL.createObjectURL(manifestBlob)
 
-  // Download video
-  const videoLink = document.createElement('a')
-  videoLink.href = videoUrl
-  videoLink.download = videoFilename
-  videoLink.click()
+  // Download video first (most important)
+  await triggerDownload(videoUrl, videoFilename)
+
+  // Wait before triggering second download (mobile browsers block rapid downloads)
+  await new Promise(resolve => setTimeout(resolve, 500))
 
   // Download manifest
-  const manifestLink = document.createElement('a')
-  manifestLink.href = manifestUrl
-  manifestLink.download = manifestFilename
-  manifestLink.click()
+  await triggerDownload(manifestUrl, manifestFilename)
 
-  // Cleanup
+  // Cleanup URLs after downloads complete
   setTimeout(() => {
     URL.revokeObjectURL(videoUrl)
     URL.revokeObjectURL(manifestUrl)
-  }, 1000)
+  }, 2000)
 
   return { manifest, videoFilename, manifestFilename }
 }
