@@ -21,6 +21,7 @@ import {
   ChevronLeft
 } from 'lucide-react'
 import { AlertType, ALERT_TYPES, fuzzyLocation } from '@/types/alert'
+import { Geolocation } from '@capacitor/geolocation'
 
 interface ReportAlertModalProps {
   isOpen: boolean
@@ -90,12 +91,19 @@ export function ReportAlertModal({
     setError(null)
 
     try {
-      const position = await new Promise<GeolocationPosition>((resolve, reject) => {
-        navigator.geolocation.getCurrentPosition(resolve, reject, {
-          enableHighAccuracy: true,
-          timeout: 10000,
-          maximumAge: 0
-        })
+      // Request permission first - this triggers the system dialog
+      const permissionStatus = await Geolocation.requestPermissions()
+
+      if (permissionStatus.location === 'denied') {
+        setError('Location permission was denied. Please allow location access in your device settings, or enter an address instead.')
+        setIsGettingLocation(false)
+        return
+      }
+
+      // Get the current position
+      const position = await Geolocation.getCurrentPosition({
+        enableHighAccuracy: true,
+        timeout: 15000
       })
 
       // Apply fuzzy location for privacy
@@ -106,7 +114,16 @@ export function ReportAlertModal({
       setLocationMethod('gps')
       setStep('details')
     } catch (err) {
-      setError('Could not get your location. Please enter an address instead.')
+      const errorMessage = err instanceof Error ? err.message : 'Unknown error'
+      if (errorMessage.includes('denied') || errorMessage.includes('permission')) {
+        setError('Location permission was denied. Please allow location access in your device settings, or enter an address instead.')
+      } else if (errorMessage.includes('unavailable') || errorMessage.includes('disabled')) {
+        setError('Could not determine your location. Please make sure location services are enabled on your device, or enter an address instead.')
+      } else if (errorMessage.includes('timeout')) {
+        setError('Location request timed out. Please try again or enter an address instead.')
+      } else {
+        setError('Could not get your location. Please enter an address instead.')
+      }
     } finally {
       setIsGettingLocation(false)
     }

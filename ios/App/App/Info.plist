@@ -53,6 +53,8 @@
 	</array>
 	<key>ITSAppUsesNonExemptEncryption</key>
 	<false/>
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>ICEwhistle needs your location to report ICE activity in your area. Your exact location is never stored - it is rounded to approximately 100 meters for privacy.</string>
 	<key>NSAppTransportSecurity</key>
 	<dict>
 		<key>NSAllowsArbitraryLoads</key>
