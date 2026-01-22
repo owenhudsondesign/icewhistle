@@ -274,7 +274,7 @@ export function generateFilenames(timestamp: Date, cameraMode: string, mimeType:
 }
 
 /**
- * Helper to trigger a download
+ * Helper to trigger a download (web fallback)
  */
 function triggerDownload(url: string, filename: string): Promise<void> {
   return new Promise((resolve) => {
@@ -284,7 +284,6 @@ function triggerDownload(url: string, filename: string): Promise<void> {
     link.style.display = 'none'
     document.body.appendChild(link)
     link.click()
-    // Small delay before cleanup to ensure download starts
     setTimeout(() => {
       document.body.removeChild(link)
       resolve()
@@ -293,7 +292,54 @@ function triggerDownload(url: string, filename: string): Promise<void> {
 }
 
 /**
- * Save video with manifest (downloads both files)
+ * Convert blob to base64 data URL
+ */
+function blobToBase64(blob: Blob): Promise<string> {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader()
+    reader.onloadend = () => {
+      const base64 = reader.result as string
+      resolve(base64)
+    }
+    reader.onerror = reject
+    reader.readAsDataURL(blob)
+  })
+}
+
+/**
+ * Save video to device photo library (native) or download (web)
+ */
+async function saveVideoToDevice(blob: Blob, filename: string): Promise<void> {
+  // Check if running on native platform
+  if (Capacitor.isNativePlatform()) {
+    try {
+      // Dynamic import to avoid issues on web
+      const { Media } = await import('@capacitor-community/media')
+
+      // Convert blob to base64
+      const base64Data = await blobToBase64(blob)
+
+      // Save to photo library
+      await Media.saveVideo({
+        path: base64Data,
+        albumIdentifier: undefined, // Save to default album
+      })
+
+      console.log('Video saved to photo library:', filename)
+      return
+    } catch (err) {
+      console.warn('Failed to save to photo library, falling back to download:', err)
+    }
+  }
+
+  // Web fallback: trigger download
+  const url = URL.createObjectURL(blob)
+  await triggerDownload(url, filename)
+  URL.revokeObjectURL(url)
+}
+
+/**
+ * Save video with manifest (saves to photo library on native, downloads on web)
  */
 export async function saveVideoWithManifest(
   blob: Blob,
@@ -310,25 +356,18 @@ export async function saveVideoWithManifest(
   const timestamp = new Date(manifest.captureTimestamp)
   const { videoFilename, manifestFilename } = generateFilenames(timestamp, options.cameraMode, blob.type)
 
-  // Create URLs
-  const videoUrl = URL.createObjectURL(blob)
-  const manifestBlob = createManifestBlob(manifest)
-  const manifestUrl = URL.createObjectURL(manifestBlob)
+  // Save video to device (photo library on native, download on web)
+  await saveVideoToDevice(blob, videoFilename)
 
-  // Download video first (most important)
-  await triggerDownload(videoUrl, videoFilename)
-
-  // Wait before triggering second download (mobile browsers block rapid downloads)
-  await new Promise(resolve => setTimeout(resolve, 500))
-
-  // Download manifest
-  await triggerDownload(manifestUrl, manifestFilename)
-
-  // Cleanup URLs after downloads complete
-  setTimeout(() => {
-    URL.revokeObjectURL(videoUrl)
+  // For the manifest JSON, always use download since it's not a media file
+  // Only download on web - on native, the video in photos is the priority
+  if (!Capacitor.isNativePlatform()) {
+    await new Promise(resolve => setTimeout(resolve, 500))
+    const manifestBlob = createManifestBlob(manifest)
+    const manifestUrl = URL.createObjectURL(manifestBlob)
+    await triggerDownload(manifestUrl, manifestFilename)
     URL.revokeObjectURL(manifestUrl)
-  }, 2000)
+  }
 
   return { manifest, videoFilename, manifestFilename }
 }

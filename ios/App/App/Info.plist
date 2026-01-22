@@ -55,6 +55,12 @@
 	<false/>
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string>ICEwhistle needs your location to report ICE activity in your area. Your exact location is never stored - it is rounded to approximately 100 meters for privacy.</string>
+	<key>NSPhotoLibraryAddUsageDescription</key>
+	<string>ICEwhistle needs permission to save recorded videos to your photo library as evidence documentation.</string>
+	<key>NSCameraUsageDescription</key>
+	<string>ICEwhistle needs camera access to record video documentation during encounters.</string>
+	<key>NSMicrophoneUsageDescription</key>
+	<string>ICEwhistle needs microphone access to record audio during encounters.</string>
 	<key>NSAppTransportSecurity</key>
 	<dict>
 		<key>NSAllowsArbitraryLoads</key>
