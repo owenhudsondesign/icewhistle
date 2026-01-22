@@ -118,7 +118,7 @@ const translations = {
     viewMap: 'View Map',
     reporting: 'Getting location...',
     reported: 'Reported!',
-    locationError: 'Enable location in settings',
+    locationError: 'Could not get location',
     rateLimited: 'Wait {minutes} min',
 
     // Footer
@@ -203,7 +203,7 @@ const translations = {
     viewMap: 'Ver Mapa',
     reporting: 'Obteniendo ubicación...',
     reported: '¡Reportado!',
-    locationError: 'Habilitar ubicación en ajustes',
+    locationError: 'No se pudo obtener ubicación',
     rateLimited: 'Espera {minutes} min',
 
     fullGuide: 'Guía Completa',
@@ -287,7 +287,7 @@ const translations = {
     viewMap: 'Ver Mapa',
     reporting: 'Obtendo localização...',
     reported: 'Reportado!',
-    locationError: 'Habilitar localização nas config.',
+    locationError: 'Não foi possível obter localização',
     rateLimited: 'Aguarde {minutes} min',
 
     fullGuide: 'Guia Completo',
@@ -405,13 +405,28 @@ export default function EncounterPage() {
 
       // GeolocationPositionError codes: 1 = PERMISSION_DENIED, 2 = POSITION_UNAVAILABLE, 3 = TIMEOUT
       if (error?.code === 1) {
-        // Permission denied - show helpful instructions
         alert(
           language === 'es'
-            ? 'Ubicación bloqueada. Ve a Configuración de iOS > Privacidad > Ubicación > Safari y permite el acceso.'
+            ? 'Ubicación bloqueada. Ve a Configuración > Privacidad > Ubicación y permite el acceso para tu navegador.'
             : language === 'pt'
-            ? 'Localização bloqueada. Vá para Ajustes do iOS > Privacidade > Localização > Safari e permita o acesso.'
-            : 'Location blocked. Go to iOS Settings > Privacy > Location Services > Safari and allow access. Then reload this page.'
+            ? 'Localização bloqueada. Vá para Ajustes > Privacidade > Localização e permita o acesso para seu navegador.'
+            : 'Location blocked. Go to Settings > Privacy > Location Services and allow access for your browser.'
+        )
+      } else if (error?.code === 2) {
+        alert(
+          language === 'es'
+            ? 'No se pudo determinar tu ubicación. Asegúrate de estar en un área con buena señal GPS o WiFi.'
+            : language === 'pt'
+            ? 'Não foi possível determinar sua localização. Certifique-se de estar em uma área com bom sinal GPS ou WiFi.'
+            : 'Could not determine your location. Make sure you have GPS or WiFi signal.'
+        )
+      } else if (error?.code === 3) {
+        alert(
+          language === 'es'
+            ? 'La solicitud de ubicación tardó demasiado. Intenta de nuevo.'
+            : language === 'pt'
+            ? 'A solicitação de localização demorou muito. Tente novamente.'
+            : 'Location request timed out. Please try again.'
         )
       }
 
