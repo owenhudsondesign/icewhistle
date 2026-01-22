@@ -76,21 +76,36 @@ function getMimeType(type: RecordingType): string {
   return ''
 }
 
-function createRecorder(stream: MediaStream, chunks: Blob[], mimeType: string): MediaRecorder {
-  const options = mimeType ? { mimeType } : undefined
+function createRecorder(stream: MediaStream, chunks: Blob[], mimeType: string, isVideo: boolean): MediaRecorder {
+  // High quality recording options for court evidence
+  const recorderOptions: MediaRecorderOptions = {
+    // High bitrates for quality evidence
+    videoBitsPerSecond: isVideo ? 8000000 : undefined, // 8 Mbps for video
+    audioBitsPerSecond: 256000, // 256 kbps for audio
+  }
+
+  if (mimeType) {
+    recorderOptions.mimeType = mimeType
+  }
+
   let recorder: MediaRecorder
 
   try {
-    recorder = new MediaRecorder(stream, options)
+    recorder = new MediaRecorder(stream, recorderOptions)
   } catch (e) {
-    // If specified mimeType fails, let browser choose
-    console.warn('Failed to create MediaRecorder with mimeType:', mimeType, e)
-    recorder = new MediaRecorder(stream)
+    // If high quality fails, try without bitrate settings
+    console.warn('Failed to create high-quality MediaRecorder, trying defaults:', e)
+    try {
+      recorder = new MediaRecorder(stream, mimeType ? { mimeType } : undefined)
+    } catch (e2) {
+      console.warn('Failed with mimeType, using browser defaults:', e2)
+      recorder = new MediaRecorder(stream)
+    }
   }
 
   // Store the actual mimeType being used
   detectedMimeType = recorder.mimeType || mimeType || 'video/mp4'
-  console.log('MediaRecorder using mimeType:', detectedMimeType)
+  console.log('MediaRecorder using mimeType:', detectedMimeType, 'videoBps:', recorder.videoBitsPerSecond, 'audioBps:', recorder.audioBitsPerSecond)
 
   recorder.ondataavailable = (e) => {
     if (e.data.size > 0) {
@@ -101,6 +116,24 @@ function createRecorder(stream: MediaStream, chunks: Blob[], mimeType: string): 
     console.error('MediaRecorder error:', e)
   }
   return recorder
+}
+
+// High quality video constraints for evidence recording
+const HD_VIDEO_CONSTRAINTS: MediaTrackConstraints = {
+  width: { ideal: 1920, min: 1280 },
+  height: { ideal: 1080, min: 720 },
+  frameRate: { ideal: 30, min: 24 },
+  facingMode: 'environment', // Will be overridden
+}
+
+// High quality audio constraints - no processing to preserve authenticity
+const HD_AUDIO_CONSTRAINTS: MediaTrackConstraints = {
+  sampleRate: { ideal: 48000 },
+  sampleSize: { ideal: 16 },
+  channelCount: { ideal: 2 },
+  echoCancellation: false, // Preserve original audio for evidence
+  noiseSuppression: false, // Don't alter audio
+  autoGainControl: false, // Keep original levels
 }
 
 function stopAllStreams() {
@@ -139,13 +172,28 @@ export const recordingManager = {
       if (type === 'video') {
         const facingMode = cameraMode === 'front' ? 'user' : 'environment'
 
-        // Primary camera stream
+        // High quality video constraints - max out device capabilities
+        const videoConstraints: MediaTrackConstraints = {
+          facingMode,
+          width: { ideal: 4096, min: 1280 }, // Request up to 4K
+          height: { ideal: 2160, min: 720 }, // Request up to 4K
+          frameRate: { ideal: 60, min: 24 }, // Up to 60fps if supported
+          aspectRatio: { ideal: 16/9 },
+        }
+
+        // Primary camera stream with high quality
         const pStream = await navigator.mediaDevices.getUserMedia({
-          video: { facingMode },
-          audio: true,
+          video: videoConstraints,
+          audio: HD_AUDIO_CONSTRAINTS,
         })
+
+        // Log actual resolution obtained
+        const videoTrack = pStream.getVideoTracks()[0]
+        const settings = videoTrack?.getSettings()
+        console.log('Video recording quality:', settings?.width, 'x', settings?.height, '@', settings?.frameRate, 'fps')
+
         primaryStream = pStream
-        primaryRecorder = createRecorder(pStream, primaryChunks, mimeType)
+        primaryRecorder = createRecorder(pStream, primaryChunks, mimeType, true)
 
         // Secondary camera for dual mode (native app only)
         if (cameraMode === 'both') {
@@ -153,7 +201,7 @@ export const recordingManager = {
             await new Promise(resolve => setTimeout(resolve, 500))
 
             const sStream = await navigator.mediaDevices.getUserMedia({
-              video: { facingMode: 'user' },
+              video: { ...videoConstraints, facingMode: 'user' },
               audio: false,
             })
 
@@ -161,24 +209,24 @@ export const recordingManager = {
               console.warn('Primary stream was stopped when requesting secondary camera')
               sStream.getTracks().forEach(track => track.stop())
               const newPrimary = await navigator.mediaDevices.getUserMedia({
-                video: { facingMode: 'environment' },
-                audio: true,
+                video: { ...videoConstraints, facingMode: 'environment' },
+                audio: HD_AUDIO_CONSTRAINTS,
               })
               primaryStream = newPrimary
-              primaryRecorder = createRecorder(newPrimary, primaryChunks, mimeType)
+              primaryRecorder = createRecorder(newPrimary, primaryChunks, mimeType, true)
             } else {
               secondaryStream = sStream
-              secondaryRecorder = createRecorder(sStream, secondaryChunks, mimeType)
+              secondaryRecorder = createRecorder(sStream, secondaryChunks, mimeType, true)
             }
           } catch (err) {
             console.warn('Dual camera not supported, using single camera:', err)
           }
         }
       } else {
-        // Audio only
-        const aStream = await navigator.mediaDevices.getUserMedia({ audio: true })
+        // Audio only - high quality
+        const aStream = await navigator.mediaDevices.getUserMedia({ audio: HD_AUDIO_CONSTRAINTS })
         primaryStream = aStream
-        primaryRecorder = createRecorder(aStream, primaryChunks, mimeType)
+        primaryRecorder = createRecorder(aStream, primaryChunks, mimeType, false)
       }
 
       // Start recording
