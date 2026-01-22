@@ -49,8 +49,8 @@ export function useLanguage() {
 export const commonTranslations = {
   en: {
     // Home page - Emergency buttons
-    iceNear: 'Report ICE Near Me',
-    iceNearSub: 'Alert your community',
+    iceNear: 'ICE Is Near Me',
+    iceNearSub: 'Record & get help',
     trafficStop: 'Traffic Stop',
     trafficStopSub: 'Driver or passenger',
     someoneTaken: 'Someone Was Taken',
@@ -146,6 +146,13 @@ export const commonTranslations = {
     privacyFirst: 'Privacy First',
     privacyDesc: 'No accounts, no tracking. All data stays on your device.',
 
+    // Recording feature
+    recordingFeature: 'Built-in Recording',
+    recordingFeatureDesc: 'Document encounters with video or audio. Each recording includes a cryptographic signature proving it was captured in real-time — not AI-generated or edited.',
+    recordingFeature1: 'Front, back, or dual camera',
+    recordingFeature2: 'Cryptographic authenticity proof',
+    recordingFeature3: 'Admissible documentation',
+
     // Section badges
     badgeEmergency: 'EMERGENCY',
     badgeReport: 'REPORT',
@@ -185,8 +192,8 @@ export const commonTranslations = {
   },
   es: {
     // Home page - Emergency buttons
-    iceNear: 'Reportar ICE Cerca',
-    iceNearSub: 'Alerta a tu comunidad',
+    iceNear: 'ICE Está Cerca',
+    iceNearSub: 'Grabar y obtener ayuda',
     trafficStop: 'Control de Tráfico',
     trafficStopSub: 'Conductor o pasajero',
     someoneTaken: 'Alguien Fue Detenido',
@@ -282,6 +289,13 @@ export const commonTranslations = {
     privacyFirst: 'Privacidad Primero',
     privacyDesc: 'Sin cuentas, sin rastreo. Todos los datos quedan en tu dispositivo.',
 
+    // Recording feature
+    recordingFeature: 'Grabación Integrada',
+    recordingFeatureDesc: 'Documenta encuentros con video o audio. Cada grabación incluye una firma criptográfica que prueba que fue capturada en tiempo real — no generada por IA ni editada.',
+    recordingFeature1: 'Cámara frontal, trasera o dual',
+    recordingFeature2: 'Prueba de autenticidad criptográfica',
+    recordingFeature3: 'Documentación admisible',
+
     // Section badges
     badgeEmergency: 'EMERGENCIA',
     badgeReport: 'REPORTAR',
@@ -321,8 +335,8 @@ export const commonTranslations = {
   },
   pt: {
     // Home page - Emergency buttons
-    iceNear: 'Reportar ICE Perto',
-    iceNearSub: 'Alerte sua comunidade',
+    iceNear: 'ICE Está Perto',
+    iceNearSub: 'Gravar e obter ajuda',
     trafficStop: 'Blitz de Trânsito',
     trafficStopSub: 'Motorista ou passageiro',
     someoneTaken: 'Alguém Foi Levado',
@@ -417,6 +431,13 @@ export const commonTranslations = {
     step3Desc: 'Comunidades podem se preparar e ficar seguras',
     privacyFirst: 'Privacidade Primeiro',
     privacyDesc: 'Sem contas, sem rastreamento. Todos os dados ficam no seu dispositivo.',
+
+    // Recording feature
+    recordingFeature: 'Gravação Integrada',
+    recordingFeatureDesc: 'Documente encontros com vídeo ou áudio. Cada gravação inclui uma assinatura criptográfica provando que foi capturada em tempo real — não gerada por IA nem editada.',
+    recordingFeature1: 'Câmera frontal, traseira ou dual',
+    recordingFeature2: 'Prova de autenticidade criptográfica',
+    recordingFeature3: 'Documentação admissível',
 
     // Section badges
     badgeEmergency: 'EMERGÊNCIA',

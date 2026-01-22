@@ -2,6 +2,8 @@ import { NextRequest, NextResponse } from 'next/server'
 import { alertSubmissionSchema } from '@/lib/validators'
 import prisma from '@/lib/db'
 import { ALERT_EXPIRY_HOURS, fuzzyLocation } from '@/types/alert'
+import { getNotifiableSubscriptions } from '@/services/push/ZipRadiusService'
+import { sendPushNotificationBatch, type PushNotificationPayload } from '@/services/push/PushService'
 
 // GET /api/alerts - Fetch alerts within bounds
 export async function GET(request: NextRequest) {
@@ -113,6 +115,7 @@ export async function POST(request: NextRequest) {
         latitude: true,
         longitude: true,
         address: true,
+        neighborhood: true,
         alertType: true,
         description: true,
         status: true,
@@ -123,6 +126,11 @@ export async function POST(request: NextRequest) {
       },
     })
 
+    // Trigger push notifications to nearby subscribers (async, don't wait)
+    triggerPushNotifications(alert).catch((err) => {
+      console.error('Push notification error:', err)
+    })
+
     return NextResponse.json({ alert }, { status: 201 })
   } catch (error) {
     console.error('Error creating alert:', error)
@@ -130,5 +138,51 @@ export async function POST(request: NextRequest) {
       { error: 'Failed to create alert' },
       { status: 500 }
     )
+  }
+}
+
+/**
+ * Trigger push notifications to users within 5 miles of the alert
+ */
+async function triggerPushNotifications(alert: {
+  id: string
+  latitude: number
+  longitude: number
+  alertType: string
+  neighborhood?: string | null
+  description?: string | null
+}) {
+  try {
+    // Get subscriptions within 5 miles that aren't in quiet hours
+    const subscriptions = await getNotifiableSubscriptions(alert.latitude, alert.longitude)
+
+    if (subscriptions.length === 0) {
+      console.log('No subscriptions to notify for alert:', alert.id)
+      return
+    }
+
+    // Build notification payload
+    const payload: PushNotificationPayload = {
+      alertId: alert.id,
+      alertType: alert.alertType,
+      latitude: alert.latitude,
+      longitude: alert.longitude,
+      neighborhood: alert.neighborhood || undefined,
+      description: alert.description || undefined,
+    }
+
+    // Send notifications in batch
+    const result = await sendPushNotificationBatch(subscriptions, payload)
+
+    console.log(
+      `Push notifications for alert ${alert.id}: sent=${result.sent}, failed=${result.failed}`
+    )
+
+    if (result.errors.length > 0) {
+      console.warn('Push notification errors:', result.errors.slice(0, 5))
+    }
+  } catch (error) {
+    console.error('Error triggering push notifications:', error)
+    // Don't throw - we don't want to fail the alert creation
   }
 }

@@ -189,7 +189,7 @@ model PushSubscription {
   pushToken       String    @unique // Expo push token
 
   // Location preference (coarse - ZIP or geohash only, not precise)
-  zip             String?   // US ZIP code for location-based alerts
+  zip             String?   // US ZIP code for location-based alerts (legacy, use zipPreferences)
   geohashLowPrecision String? // Alternative: low-precision geohash
 
   // Preferences
@@ -203,9 +203,41 @@ model PushSubscription {
   updatedAt       DateTime  @updatedAt
   disabledAt      DateTime? // Soft delete for opt-out
 
+  // Multi-ZIP support
+  zipPreferences  ZipPreference[]
+
   @@index([zip])
   @@index([geohashLowPrecision])
   @@index([alertsEnabled])
+}
+
+// ZIP code preferences for multi-location notifications
+model ZipPreference {
+  id              String    @id @default(cuid())
+  subscriptionId  String
+  subscription    PushSubscription @relation(fields: [subscriptionId], references: [id], onDelete: Cascade)
+
+  zipCode         String
+  label           String?   // "home", "work", "family", or custom
+  latitude        Float?    // Pre-computed center of ZIP for radius matching
+  longitude       Float?
+
+  createdAt       DateTime  @default(now())
+
+  @@index([zipCode])
+  @@index([subscriptionId])
+}
+
+// ZIP code geocoding cache for radius matching
+model ZipCodeCache {
+  zipCode   String   @id
+  latitude  Float
+  longitude Float
+  city      String?
+  state     String?
+  cachedAt  DateTime @default(now())
+
+  @@index([latitude, longitude])
 }
 
 // Moderation actions for community reports (App Store compliance - moderated content)

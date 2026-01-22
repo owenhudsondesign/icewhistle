@@ -1,7 +1,10 @@
 'use client'
 
 import { useState } from 'react'
-import { useRecording, formatRecordingTime, downloadRecording, RecordingType } from '@/hooks/useRecording'
+import { useRouter } from 'next/navigation'
+import { useEnhancedRecording, formatRecordingTime } from '@/hooks/useEnhancedRecording'
+import { useRecordingStore, type CameraMode, type RecordingType } from '@/stores/recordingStore'
+import { CameraSelector } from '@/components/recording/CameraSelector'
 import { Button } from '@/components/ui/button'
 import {
   Video,
@@ -13,7 +16,9 @@ import {
   X,
   AlertTriangle,
   Shield,
-  ChevronRight
+  ChevronRight,
+  ChevronLeft,
+  Camera,
 } from 'lucide-react'
 
 interface RecordingModalProps {
@@ -22,6 +27,8 @@ interface RecordingModalProps {
   onContinueWithoutRecording: () => void
   language: 'en' | 'es' | 'pt'
 }
+
+type ModalStep = 'choose-type' | 'choose-camera' | 'recording' | 'complete' | 'saved'
 
 const translations = {
   en: {
@@ -43,6 +50,16 @@ const translations = {
     micOnly: 'Microphone only',
     videoRecorded: 'Video recorded',
     audioRecorded: 'Audio recorded',
+    chooseCamera: 'Choose camera',
+    chooseCameraDesc: 'Select which camera to use',
+    startRecording: 'Start recording',
+    back: 'Back',
+    frontCamera: 'Front Camera',
+    backCamera: 'Back Camera',
+    bothCameras: 'Both Cameras',
+    frontCameraDesc: 'Record yourself',
+    backCameraDesc: 'Record your surroundings',
+    bothCamerasDesc: 'Record both views',
   },
   es: {
     title: 'Documenta este encuentro',
@@ -63,6 +80,16 @@ const translations = {
     micOnly: 'Solo micrófono',
     videoRecorded: 'Video grabado',
     audioRecorded: 'Audio grabado',
+    chooseCamera: 'Elegir cámara',
+    chooseCameraDesc: 'Selecciona qué cámara usar',
+    startRecording: 'Iniciar grabación',
+    back: 'Volver',
+    frontCamera: 'Cámara frontal',
+    backCamera: 'Cámara trasera',
+    bothCameras: 'Ambas cámaras',
+    frontCameraDesc: 'Grábate a ti mismo',
+    backCameraDesc: 'Graba tu entorno',
+    bothCamerasDesc: 'Graba ambas vistas',
   },
   pt: {
     title: 'Documente este encontro',
@@ -83,6 +110,16 @@ const translations = {
     micOnly: 'Apenas microfone',
     videoRecorded: 'Vídeo gravado',
     audioRecorded: 'Áudio gravado',
+    chooseCamera: 'Escolher câmera',
+    chooseCameraDesc: 'Selecione qual câmera usar',
+    startRecording: 'Iniciar gravação',
+    back: 'Voltar',
+    frontCamera: 'Câmera frontal',
+    backCamera: 'Câmera traseira',
+    bothCameras: 'Ambas câmeras',
+    frontCameraDesc: 'Grave você mesmo',
+    backCameraDesc: 'Grave seu ambiente',
+    bothCamerasDesc: 'Grave ambas as vistas',
   },
 }
 
@@ -92,50 +129,92 @@ export function RecordingModal({
   onContinueWithoutRecording,
   language
 }: RecordingModalProps) {
+  const router = useRouter()
   const t = translations[language]
+
+  const [step, setStep] = useState<ModalStep>('choose-type')
+  const [selectedType, setSelectedType] = useState<RecordingType>('video')
+  const [selectedCamera, setSelectedCamera] = useState<CameraMode>('back')
+
   const {
     isRecording,
     isPaused,
     recordingTime,
     recordingType,
+    recordingBlob,
+    secondaryBlob,
+    error,
     startRecording,
     stopRecording,
     pauseRecording,
     resumeRecording,
-    error
-  } = useRecording()
+    saveRecording,
+    discardRecording,
+  } = useEnhancedRecording()
 
-  const [recordingBlob, setRecordingBlob] = useState<Blob | null>(null)
-  const [saved, setSaved] = useState(false)
+  const store = useRecordingStore()
 
   if (!isOpen) return null
 
-  const handleStartRecording = async (type: RecordingType) => {
-    await startRecording(type)
-  }
-
-  const handleStopRecording = async () => {
-    const blob = await stopRecording()
-    setRecordingBlob(blob)
-  }
-
-  const handleSaveAndContinue = () => {
-    if (recordingBlob && recordingType) {
-      downloadRecording(recordingBlob, recordingType)
-      setSaved(true)
-      setTimeout(() => {
-        onContinueWithoutRecording()
-      }, 1500)
+  const handleChooseType = (type: RecordingType) => {
+    setSelectedType(type)
+    if (type === 'video') {
+      setStep('choose-camera')
+    } else {
+      // Audio - start recording directly
+      handleStartRecording(type, 'back')
     }
   }
 
+  const handleStartRecording = async (type: RecordingType, camera: CameraMode) => {
+    const success = await startRecording(type, camera)
+    if (success) {
+      setStep('recording')
+      // Navigate to encounter page while recording continues
+      setTimeout(() => {
+        router.push('/encounter')
+      }, 500)
+    }
+  }
+
+  const handleStopRecording = async () => {
+    await stopRecording()
+    setStep('complete')
+  }
+
+  const handleSaveAndContinue = () => {
+    saveRecording()
+    setStep('saved')
+    setTimeout(() => {
+      onContinueWithoutRecording()
+    }, 1500)
+  }
+
   const handleDiscard = () => {
-    setRecordingBlob(null)
+    discardRecording()
     onContinueWithoutRecording()
   }
 
+  const handleContinueWithoutRecording = () => {
+    router.push('/encounter')
+  }
+
+  const handleBack = () => {
+    setStep('choose-type')
+  }
+
+  // Camera selection translations
+  const cameraTranslations = {
+    front: t.frontCamera,
+    back: t.backCamera,
+    both: t.bothCameras,
+    frontDesc: t.frontCameraDesc,
+    backDesc: t.backCameraDesc,
+    bothDesc: t.bothCamerasDesc,
+  }
+
   // Show saved confirmation
-  if (saved) {
+  if (step === 'saved') {
     return (
       <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm p-4">
         <div className="card-glass p-8 max-w-sm w-full text-center">
@@ -150,7 +229,7 @@ export function RecordingModal({
   }
 
   // Show recording complete - save or discard
-  if (recordingBlob) {
+  if (step === 'complete' && recordingBlob) {
     return (
       <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm p-4">
         <div className="card-glass p-6 max-w-sm w-full">
@@ -163,6 +242,11 @@ export function RecordingModal({
             <p className="text-caption text-muted-foreground">
               {recordingType === 'video' ? t.videoRecorded : t.audioRecorded}
             </p>
+            {secondaryBlob && (
+              <p className="text-small text-muted-foreground mt-1">
+                + {t.frontCamera} recording
+              </p>
+            )}
           </div>
 
           <div className="space-y-3">
@@ -187,8 +271,8 @@ export function RecordingModal({
     )
   }
 
-  // Show active recording
-  if (isRecording) {
+  // Show active recording (brief state before navigation)
+  if (step === 'recording' && isRecording) {
     return (
       <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/90 backdrop-blur-sm p-4">
         <div className="card-glass p-6 max-w-sm w-full text-center">
@@ -236,7 +320,58 @@ export function RecordingModal({
     )
   }
 
-  // Show recording options
+  // Show camera selection
+  if (step === 'choose-camera') {
+    return (
+      <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm p-4">
+        <div className="card-glass p-6 max-w-sm w-full relative">
+          <button
+            onClick={onClose}
+            className="absolute top-4 right-4 text-muted-foreground hover:text-foreground press-scale"
+            aria-label="Close"
+          >
+            <X className="h-6 w-6" strokeWidth={2} />
+          </button>
+
+          <div className="text-center mb-6">
+            <div className="w-16 h-16 rounded-full bg-[#DC2626]/20 flex items-center justify-center mx-auto mb-4">
+              <Camera className="h-8 w-8 text-[#DC2626]" strokeWidth={2} />
+            </div>
+            <h2 className="text-title mb-1">{t.chooseCamera}</h2>
+            <p className="text-caption text-muted-foreground">{t.chooseCameraDesc}</p>
+          </div>
+
+          <CameraSelector
+            selectedMode={selectedCamera}
+            onSelect={setSelectedCamera}
+            translations={cameraTranslations}
+            className="mb-4"
+          />
+
+          <div className="flex gap-3">
+            <Button
+              variant="outline"
+              onClick={handleBack}
+              className="flex-1 h-12 rounded-[8px] press-scale"
+            >
+              <ChevronLeft className="h-4 w-4 mr-1" strokeWidth={2} />
+              {t.back}
+            </Button>
+
+            <Button
+              onClick={() => handleStartRecording('video', selectedCamera)}
+              className="flex-1 h-12 bg-[#DC2626] hover:bg-[#DC2626]/90 text-white rounded-[8px] press-scale"
+            >
+              {t.startRecording}
+              <ChevronRight className="h-4 w-4 ml-1" strokeWidth={2} />
+            </Button>
+          </div>
+        </div>
+      </div>
+    )
+  }
+
+  // Show recording options (choose type)
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm p-4">
       <div className="card-glass p-6 max-w-sm w-full relative">
@@ -264,7 +399,7 @@ export function RecordingModal({
 
         <div className="space-y-3 mb-4">
           <button
-            onClick={() => handleStartRecording('video')}
+            onClick={() => handleChooseType('video')}
             className="w-full bg-[#DC2626] hover:bg-[#DC2626]/90 text-white rounded-[16px] p-4 flex items-center gap-4 press-scale hover-scale"
           >
             <div className="w-12 h-12 rounded-full bg-white/20 flex items-center justify-center">
@@ -278,7 +413,7 @@ export function RecordingModal({
           </button>
 
           <button
-            onClick={() => handleStartRecording('audio')}
+            onClick={() => handleChooseType('audio')}
             className="w-full bg-[#FF8C42] hover:bg-[#FF8C42]/90 text-white rounded-[16px] p-4 flex items-center gap-4 press-scale hover-scale"
           >
             <div className="w-12 h-12 rounded-full bg-white/20 flex items-center justify-center">
@@ -294,7 +429,7 @@ export function RecordingModal({
 
         <Button
           variant="ghost"
-          onClick={onContinueWithoutRecording}
+          onClick={handleContinueWithoutRecording}
           className="w-full h-12 text-muted-foreground rounded-[8px] press-scale"
         >
           {t.continueWithout}

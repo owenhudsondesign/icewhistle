@@ -25,6 +25,9 @@ import {
   MapPin,
   Users,
   Eye,
+  Video,
+  CheckCircle,
+  FileCheck,
 } from 'lucide-react'
 
 export default function Home() {
@@ -48,16 +51,12 @@ export default function Home() {
       setShowRecordingModal(true)
       return
     }
-    navigateToEmergency(type)
-  }
-
-  const navigateToEmergency = (type: 'near' | 'taken' | 'vehicle') => {
     router.push(`/emergency?type=${type}`)
   }
 
   const handleContinueAfterRecording = () => {
+    // RecordingModal now handles navigation to /encounter
     setShowRecordingModal(false)
-    navigateToEmergency('near')
   }
 
   return (
@@ -222,6 +221,33 @@ export default function Home() {
           <div className="mt-4 pt-3 border-t border-border/30 flex items-center justify-center gap-2 text-small text-muted-foreground">
             <Lock className="h-4 w-4" />
             <span><strong className="text-foreground">{t.privacyFirst}:</strong> {t.privacyDesc}</span>
+          </div>
+        </div>
+
+        {/* Recording Feature - Authenticity */}
+        <div className="card-glass p-4 mb-4">
+          <div className="flex items-start gap-4">
+            <div className="w-12 h-12 rounded-full bg-[#00A6B4]/10 flex items-center justify-center flex-shrink-0">
+              <Video className="h-6 w-6 text-[#00A6B4]" strokeWidth={2} />
+            </div>
+            <div className="flex-1">
+              <h2 className="text-headline mb-1">{t.recordingFeature}</h2>
+              <p className="text-small text-muted-foreground mb-3">{t.recordingFeatureDesc}</p>
+              <div className="flex flex-wrap gap-2">
+                <span className="inline-flex items-center gap-1.5 text-xs bg-[#00A6B4]/10 text-[#00A6B4] px-2 py-1 rounded-full">
+                  <Video className="h-3 w-3" />
+                  {t.recordingFeature1}
+                </span>
+                <span className="inline-flex items-center gap-1.5 text-xs bg-[#84CC16]/10 text-[#84CC16] px-2 py-1 rounded-full">
+                  <CheckCircle className="h-3 w-3" />
+                  {t.recordingFeature2}
+                </span>
+                <span className="inline-flex items-center gap-1.5 text-xs bg-[#8B5CF6]/10 text-[#8B5CF6] px-2 py-1 rounded-full">
+                  <FileCheck className="h-3 w-3" />
+                  {t.recordingFeature3}
+                </span>
+              </div>
+            </div>
           </div>
         </div>
 

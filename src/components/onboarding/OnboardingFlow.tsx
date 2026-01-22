@@ -7,6 +7,8 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Switch } from '@/components/ui/switch'
 import { Label } from '@/components/ui/label'
 import { Shield, Lock, Globe, Bell, ChevronRight, ChevronLeft, Check } from 'lucide-react'
+import { MultiZipInput, type ZipEntry } from './MultiZipInput'
+import { usePushNotifications, isPushSupported } from '@/hooks/usePushNotifications'
 
 // Onboarding translations
 const translations = {
@@ -124,6 +126,7 @@ type Language = 'en' | 'es' | 'pt'
 interface OnboardingData {
   language: Language
   zip: string
+  zipEntries: ZipEntry[]
   alertsEnabled: boolean
   alertScope: 'nearby' | 'statewide'
   quietHoursEnabled: boolean
@@ -138,10 +141,15 @@ export function OnboardingFlow({ onComplete, onSkip }: OnboardingFlowProps) {
   const [step, setStep] = useState(1)
   const [language, setLanguage] = useState<Language>('en')
   const [zip, setZip] = useState('')
+  const [zipEntries, setZipEntries] = useState<ZipEntry[]>([{ zipCode: '', label: 'home' }])
   const [zipError, setZipError] = useState('')
   const [alertsEnabled, setAlertsEnabled] = useState(false)
   const [alertScope, setAlertScope] = useState<'nearby' | 'statewide'>('nearby')
   const [quietHoursEnabled, setQuietHoursEnabled] = useState(true)
+
+  // Push notifications (native mobile only)
+  const pushNotifications = usePushNotifications()
+  const showPushOption = isPushSupported()
 
   const t = translations[language]
   const totalSteps = 4
@@ -159,9 +167,12 @@ export function OnboardingFlow({ onComplete, onSkip }: OnboardingFlowProps) {
   }
 
   const handleNext = () => {
-    if (step === 2 && zip && !validateZip(zip)) {
-      setZipError('Please enter a valid 5-digit ZIP code')
-      return
+    if (step === 2) {
+      const primaryZip = zipEntries[0]?.zipCode
+      if (primaryZip && !validateZip(primaryZip)) {
+        setZipError('Please enter a valid 5-digit ZIP code')
+        return
+      }
     }
     if (step < totalSteps) {
       setStep(step + 1)
@@ -174,10 +185,19 @@ export function OnboardingFlow({ onComplete, onSkip }: OnboardingFlowProps) {
     }
   }
 
-  const handleComplete = () => {
+  const handleComplete = async () => {
+    // Register push notifications if enabled and on mobile
+    if (alertsEnabled && showPushOption && pushNotifications.token) {
+      const validZips = zipEntries.filter((e) => /^\d{5}$/.test(e.zipCode))
+      await pushNotifications.registerToken(
+        validZips.map((e) => ({ zipCode: e.zipCode, label: e.label }))
+      )
+    }
+
     onComplete({
       language,
-      zip,
+      zip: zipEntries[0]?.zipCode || '',
+      zipEntries: zipEntries.filter((e) => /^\d{5}$/.test(e.zipCode)),
       alertsEnabled,
       alertScope,
       quietHoursEnabled,
@@ -250,7 +270,7 @@ export function OnboardingFlow({ onComplete, onSkip }: OnboardingFlowProps) {
           </>
         )}
 
-        {/* Step 2: ZIP Code */}
+        {/* Step 2: ZIP Code(s) */}
         {step === 2 && (
           <>
             <CardHeader className="text-center">
@@ -261,28 +281,29 @@ export function OnboardingFlow({ onComplete, onSkip }: OnboardingFlowProps) {
               <CardDescription>{t.setAreaDesc}</CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
-              <div className="space-y-2">
-                <Input
-                  type="text"
-                  inputMode="numeric"
-                  placeholder={t.zipPlaceholder}
-                  value={zip}
-                  onChange={(e) => handleZipChange(e.target.value)}
-                  className="text-center text-lg h-12"
-                  maxLength={5}
-                />
-                {zipError && (
-                  <p className="text-sm text-destructive text-center">{zipError}</p>
-                )}
-                <p className="text-xs text-muted-foreground text-center">{t.zipHelp}</p>
-              </div>
+              <MultiZipInput
+                value={zipEntries}
+                onChange={(entries) => {
+                  setZipEntries(entries)
+                  setZipError('')
+                }}
+                maxEntries={5}
+              />
+
+              {zipError && (
+                <p className="text-sm text-destructive text-center">{zipError}</p>
+              )}
 
               <div className="flex gap-2">
                 <Button variant="outline" onClick={handleBack} className="flex-1">
                   <ChevronLeft className="h-4 w-4 mr-2" />
                   Back
                 </Button>
-                <Button onClick={handleNext} className="flex-1" disabled={zip.length > 0 && !validateZip(zip)}>
+                <Button
+                  onClick={handleNext}
+                  className="flex-1"
+                  disabled={zipEntries[0]?.zipCode.length > 0 && !validateZip(zipEntries[0].zipCode)}
+                >
                   {t.continue}
                   <ChevronRight className="h-4 w-4 ml-2" />
                 </Button>
