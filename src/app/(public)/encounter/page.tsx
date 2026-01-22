@@ -312,10 +312,10 @@ export default function EncounterPage() {
   const handleReportICE = async () => {
     // Show disclaimer/confirmation
     const disclaimerText = language === 'es'
-      ? 'Esto compartirá tu ubicación aproximada para alertar a otros en tu área. Tu ubicación exacta nunca se almacena. ¿Continuar?'
+      ? 'Esto compartirá tu ubicación aproximada para alertar a otros en tu área. Tu ubicación exacta nunca se almacena.\n\nNota: Si tu navegador está configurado para "Nunca" permitir ubicación, esto no funcionará.\n\n¿Continuar?'
       : language === 'pt'
-      ? 'Isso compartilhará sua localização aproximada para alertar outros na sua área. Sua localização exata nunca é armazenada. Continuar?'
-      : 'This will share your approximate location to alert others in your area. Your exact location is never stored. Continue?'
+      ? 'Isso compartilhará sua localização aproximada para alertar outros na sua área. Sua localização exata nunca é armazenada.\n\nNota: Se seu navegador estiver configurado para "Nunca" permitir localização, isso não funcionará.\n\nContinuar?'
+      : 'This will share your approximate location to alert others in your area. Your exact location is never stored.\n\nNote: If your browser is set to "Never" allow location, this won\'t work.\n\nContinue?'
 
     if (!confirm(disclaimerText)) {
       return
