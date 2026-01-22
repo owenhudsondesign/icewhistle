@@ -301,7 +301,7 @@ export function AlertMap({
         <div className="flex flex-wrap gap-x-3 gap-y-1">
           <div className="flex items-center gap-1">
             <span className="w-2 h-2 rounded-full bg-red-600"></span>
-            <span className="text-white/80">Raid</span>
+            <span className="text-white/80">Presence</span>
           </div>
           <div className="flex items-center gap-1">
             <span className="w-2 h-2 rounded-full bg-orange-600"></span>
@@ -314,6 +314,10 @@ export function AlertMap({
           <div className="flex items-center gap-1">
             <span className="w-2 h-2 rounded-full bg-purple-600"></span>
             <span className="text-white/80">Transit</span>
+          </div>
+          <div className="flex items-center gap-1">
+            <span className="w-2 h-2 rounded-full bg-gray-500"></span>
+            <span className="text-white/80">Other</span>
           </div>
         </div>
       </div>
