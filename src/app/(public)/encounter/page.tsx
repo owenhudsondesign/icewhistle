@@ -380,8 +380,16 @@ export default function EncounterPage() {
         setReportStatus('error')
         setTimeout(() => setReportStatus('idle'), 3000)
       }
-    } catch (err) {
-      console.error('Failed to report:', err)
+    } catch (err: unknown) {
+      const error = err as Error & { code?: number }
+      console.error('Failed to report ICE activity:', {
+        message: error?.message,
+        code: error?.code,
+        name: error?.name,
+        stack: error?.stack,
+      })
+      // Show error in alert for debugging (can remove later)
+      alert(`Location error: ${error?.message || 'Unknown error'} (code: ${error?.code || 'none'})`)
       setReportStatus('error')
       setTimeout(() => setReportStatus('idle'), 3000)
     }
