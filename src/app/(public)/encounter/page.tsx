@@ -351,29 +351,16 @@ export default function EncounterPage() {
         currentLng = position.coords.longitude
       } else {
         // Web browser - use standard API
+        // Just call getCurrentPosition directly - browser will prompt for permission if needed
         if (!navigator.geolocation) {
           throw new Error('Geolocation not supported')
         }
 
-        // Check permission status if available (not all browsers support this)
-        if (navigator.permissions) {
-          try {
-            const permStatus = await navigator.permissions.query({ name: 'geolocation' })
-            console.log('Geolocation permission status:', permStatus.state)
-            if (permStatus.state === 'denied') {
-              throw new Error('Location permission was denied. Please enable it in your browser settings.')
-            }
-          } catch (e) {
-            // permissions.query not supported, continue anyway
-            console.log('Could not query permission status:', e)
-          }
-        }
-
         const position = await new Promise<GeolocationPosition>((resolve, reject) => {
           navigator.geolocation.getCurrentPosition(resolve, reject, {
-            enableHighAccuracy: true,
-            timeout: 15000,
-            maximumAge: 0,
+            enableHighAccuracy: false, // Use false for faster response, we don't need precise location
+            timeout: 30000, // 30 seconds to allow time for user to respond to prompt
+            maximumAge: 60000, // Accept cached position up to 1 minute old
           })
         })
 
