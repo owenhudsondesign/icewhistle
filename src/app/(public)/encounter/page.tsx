@@ -401,9 +401,7 @@ export default function EncounterPage() {
             className={`h-14 text-sm font-semibold ${
               reportStatus === 'success'
                 ? 'bg-[#84CC16] hover:bg-[#84CC16]'
-                : reportStatus === 'error'
-                ? 'bg-[#DC2626] hover:bg-[#DC2626]/90'
-                : 'bg-[#FF8C42] hover:bg-[#FF8C42]/90'
+                : 'bg-[#DC2626] hover:bg-[#DC2626]/90'
             } text-white`}
           >
             {reportStatus === 'loading' ? (
