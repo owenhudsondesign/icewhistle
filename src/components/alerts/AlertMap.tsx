@@ -1,9 +1,10 @@
 'use client'
 
-import { useEffect, useRef, useCallback } from 'react'
+import { useEffect, useRef, useCallback, useState } from 'react'
 import mapboxgl from 'mapbox-gl'
 import 'mapbox-gl/dist/mapbox-gl.css'
 import { Alert, ALERT_TYPES } from '@/types/alert'
+import { Crosshair, Loader2 } from 'lucide-react'
 
 interface AlertMapProps {
   alerts: Alert[]
@@ -12,6 +13,7 @@ interface AlertMapProps {
   onAlertClick?: (alert: Alert) => void
   selectedAlertId?: string | null
   className?: string
+  onUserLocationUpdate?: (location: { lat: number; lng: number }) => void
 }
 
 export function AlertMap({
@@ -20,13 +22,15 @@ export function AlertMap({
   onMapMove,
   onAlertClick,
   selectedAlertId,
-  className = ''
+  className = '',
+  onUserLocationUpdate
 }: AlertMapProps) {
   const mapContainer = useRef<HTMLDivElement>(null)
   const map = useRef<mapboxgl.Map | null>(null)
   const markers = useRef<Map<string, mapboxgl.Marker>>(new Map())
   const userMarker = useRef<mapboxgl.Marker | null>(null)
   const initialized = useRef(false)
+  const [isLocating, setIsLocating] = useState(false)
 
   // Stable callback refs to avoid re-renders
   const onMapMoveRef = useRef(onMapMove)
@@ -218,9 +222,79 @@ export function AlertMap({
     }
   }, [selectedAlertId, alerts])
 
+  // Locate me function
+  const handleLocateMe = useCallback(async () => {
+    if (!map.current || !navigator.geolocation) return
+
+    setIsLocating(true)
+
+    try {
+      const position = await new Promise<GeolocationPosition>((resolve, reject) => {
+        navigator.geolocation.getCurrentPosition(resolve, reject, {
+          enableHighAccuracy: true,
+          timeout: 10000,
+          maximumAge: 60000,
+        })
+      })
+
+      const { latitude, longitude } = position.coords
+
+      // Update user location marker
+      if (userMarker.current) {
+        userMarker.current.setLngLat([longitude, latitude])
+      } else {
+        const el = document.createElement('div')
+        el.className = 'user-marker'
+        el.innerHTML = `
+          <div style="
+            width: 20px;
+            height: 20px;
+            background: #3b82f6;
+            border: 3px solid white;
+            border-radius: 50%;
+            box-shadow: 0 0 10px rgba(59, 130, 246, 0.5);
+          "></div>
+        `
+
+        userMarker.current = new mapboxgl.Marker({ element: el })
+          .setLngLat([longitude, latitude])
+          .addTo(map.current)
+      }
+
+      // Fly to location with ~5 mile radius view (zoom ~11)
+      map.current.flyTo({
+        center: [longitude, latitude],
+        zoom: 11,
+        duration: 1500
+      })
+
+      // Notify parent of new location
+      onUserLocationUpdate?.({ lat: latitude, lng: longitude })
+    } catch (err) {
+      console.error('Error getting location:', err)
+      alert('Could not get your location. Please check your browser settings.')
+    } finally {
+      setIsLocating(false)
+    }
+  }, [onUserLocationUpdate])
+
   return (
     <div className={`relative ${className}`}>
       <div ref={mapContainer} className="w-full h-full rounded-2xl" />
+
+      {/* Locate Me Button */}
+      <button
+        onClick={handleLocateMe}
+        disabled={isLocating}
+        className="absolute top-3 right-14 bg-white dark:bg-gray-800 rounded-lg p-2 shadow-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors disabled:opacity-50"
+        aria-label="Find my location"
+      >
+        {isLocating ? (
+          <Loader2 className="h-5 w-5 text-blue-500 animate-spin" />
+        ) : (
+          <Crosshair className="h-5 w-5 text-blue-500" />
+        )}
+      </button>
 
       {/* Legend */}
       <div className="absolute bottom-3 left-3 bg-black/70 backdrop-blur-sm rounded-lg p-2 text-xs">

@@ -276,6 +276,7 @@ function AlertsPageContent() {
                   onMapMove={handleMapMove}
                   onAlertClick={handleAlertClick}
                   selectedAlertId={selectedAlertId}
+                  onUserLocationUpdate={setUserLocation}
                   className="h-[50vh] min-h-[400px]"
                 />
               </div>
