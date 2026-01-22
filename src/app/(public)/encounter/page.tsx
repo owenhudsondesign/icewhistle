@@ -369,7 +369,7 @@ export default function EncounterPage() {
         body: JSON.stringify({
           latitude: currentLat,
           longitude: currentLng,
-          alertType: 'ice_presence',
+          alertType: 'unconfirmed',
           description: 'ICE activity reported via emergency page',
         }),
       })
