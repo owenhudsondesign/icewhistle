@@ -252,15 +252,23 @@ export function createManifestBlob(manifest: VideoManifest): Blob {
 /**
  * Generate filenames for video and manifest
  */
-export function generateFilenames(timestamp: Date, cameraMode: string): {
+export function generateFilenames(timestamp: Date, cameraMode: string, mimeType: string): {
   videoFilename: string
   manifestFilename: string
 } {
   const dateStr = timestamp.toISOString().replace(/[:.]/g, '-').slice(0, 19)
   const base = `icewhistle-${dateStr}-${cameraMode}`
 
+  // Determine extension from mime type
+  let extension = 'webm'
+  if (mimeType.includes('mp4')) {
+    extension = 'mp4'
+  } else if (mimeType.includes('webm')) {
+    extension = 'webm'
+  }
+
   return {
-    videoFilename: `${base}.webm`,
+    videoFilename: `${base}.${extension}`,
     manifestFilename: `${base}-manifest.json`,
   }
 }
@@ -281,7 +289,7 @@ export async function saveVideoWithManifest(
 
   // Generate filenames
   const timestamp = new Date(manifest.captureTimestamp)
-  const { videoFilename, manifestFilename } = generateFilenames(timestamp, options.cameraMode)
+  const { videoFilename, manifestFilename } = generateFilenames(timestamp, options.cameraMode, blob.type)
 
   // Create download links
   const videoUrl = URL.createObjectURL(blob)

@@ -76,19 +76,44 @@ export function useEnhancedRecording(): UseEnhancedRecordingReturn {
 
   const getMimeType = (type: RecordingType): string => {
     if (type === 'video') {
-      return MediaRecorder.isTypeSupported('video/webm;codecs=vp9')
-        ? 'video/webm;codecs=vp9'
-        : 'video/webm'
+      // Check supported formats in order of preference
+      if (MediaRecorder.isTypeSupported('video/webm;codecs=vp9')) {
+        return 'video/webm;codecs=vp9'
+      }
+      if (MediaRecorder.isTypeSupported('video/webm;codecs=vp8')) {
+        return 'video/webm;codecs=vp8'
+      }
+      if (MediaRecorder.isTypeSupported('video/webm')) {
+        return 'video/webm'
+      }
+      // iOS Safari only supports mp4
+      if (MediaRecorder.isTypeSupported('video/mp4')) {
+        return 'video/mp4'
+      }
+      // Fallback - let browser choose
+      return ''
     }
-    return MediaRecorder.isTypeSupported('audio/webm') ? 'audio/webm' : 'audio/mp4'
+    // Audio formats
+    if (MediaRecorder.isTypeSupported('audio/webm')) {
+      return 'audio/webm'
+    }
+    if (MediaRecorder.isTypeSupported('audio/mp4')) {
+      return 'audio/mp4'
+    }
+    return ''
   }
 
   const createRecorder = (stream: MediaStream, chunks: Blob[], mimeType: string): MediaRecorder => {
-    const recorder = new MediaRecorder(stream, { mimeType })
+    // If mimeType is empty, let the browser choose
+    const options = mimeType ? { mimeType } : undefined
+    const recorder = new MediaRecorder(stream, options)
     recorder.ondataavailable = (e) => {
       if (e.data.size > 0) {
         chunks.push(e.data)
       }
+    }
+    recorder.onerror = (e) => {
+      console.error('MediaRecorder error:', e)
     }
     return recorder
   }
@@ -117,17 +142,35 @@ export function useEnhancedRecording(): UseEnhancedRecordingReturn {
         primaryRecorder.current = createRecorder(pStream, primaryChunks.current, mimeType)
 
         // Secondary camera for dual mode
+        // Note: Most mobile browsers don't support two simultaneous camera streams
         if (cameraMode === 'both') {
           try {
+            // Small delay to ensure first stream is established
+            await new Promise(resolve => setTimeout(resolve, 500))
+
             const sStream = await navigator.mediaDevices.getUserMedia({
               video: { facingMode: 'user' }, // Front camera as secondary/PiP
               audio: false, // Only primary has audio
             })
-            secondaryStream.current = sStream
-            secondaryRecorder.current = createRecorder(sStream, secondaryChunks.current, mimeType)
+
+            // Check if primary stream is still active (some browsers stop it when requesting second)
+            if (!primaryStream.current?.active) {
+              console.warn('Primary stream was stopped when requesting secondary camera')
+              // Re-acquire primary stream
+              sStream.getTracks().forEach(track => track.stop())
+              const newPrimary = await navigator.mediaDevices.getUserMedia({
+                video: { facingMode: 'environment' },
+                audio: true,
+              })
+              primaryStream.current = newPrimary
+              primaryRecorder.current = createRecorder(newPrimary, primaryChunks.current, mimeType)
+            } else {
+              secondaryStream.current = sStream
+              secondaryRecorder.current = createRecorder(sStream, secondaryChunks.current, mimeType)
+            }
           } catch (err) {
-            console.warn('Could not access secondary camera, continuing with single camera:', err)
-            // Continue with single camera
+            console.warn('Dual camera not supported on this device, using single camera:', err)
+            // Continue with single camera - this is expected on most mobile devices
           }
         }
       } else {
@@ -173,9 +216,9 @@ export function useEnhancedRecording(): UseEnhancedRecordingReturn {
 
       // Stop primary recorder
       if (primaryRecorder.current && primaryRecorder.current.state !== 'inactive') {
+        const primaryMimeType = primaryRecorder.current.mimeType || 'video/webm'
         primaryRecorder.current.onstop = () => {
-          const type = store.recordingType === 'video' ? 'video/webm' : 'audio/webm'
-          primaryBlob = new Blob(primaryChunks.current, { type })
+          primaryBlob = new Blob(primaryChunks.current, { type: primaryMimeType })
           primaryStopped = true
           checkCompletion()
         }
@@ -187,8 +230,9 @@ export function useEnhancedRecording(): UseEnhancedRecordingReturn {
 
       // Stop secondary recorder
       if (secondaryRecorder.current && secondaryRecorder.current.state !== 'inactive') {
+        const secondaryMimeType = secondaryRecorder.current.mimeType || 'video/webm'
         secondaryRecorder.current.onstop = () => {
-          secondBlob = new Blob(secondaryChunks.current, { type: 'video/webm' })
+          secondBlob = new Blob(secondaryChunks.current, { type: secondaryMimeType })
           secondaryStopped = true
           checkCompletion()
         }
@@ -289,7 +333,13 @@ function downloadBlob(blob: Blob, type: RecordingType, suffix: string = '') {
   const url = URL.createObjectURL(blob)
   const a = document.createElement('a')
   a.href = url
-  const extension = type === 'video' ? 'webm' : 'webm'
+  // Determine extension from blob type
+  let extension = 'webm'
+  if (blob.type.includes('mp4')) {
+    extension = 'mp4'
+  } else if (blob.type.includes('webm')) {
+    extension = 'webm'
+  }
   const timestamp = new Date().toISOString().replace(/[:.]/g, '-')
   const filename = suffix
     ? `icewhistle-${suffix}-${timestamp}.${extension}`
