@@ -113,7 +113,6 @@ function AlertsPageContent() {
 
   const handleAlertClick = (alert: AlertType) => {
     setSelectedAlertId(alert.id)
-    setView('map')
   }
 
   const handleVerifyAlert = async (alertId: string) => {
