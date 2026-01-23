@@ -1,6 +1,7 @@
 'use client'
 
 import { useState } from 'react'
+import Image from 'next/image'
 import { Shield, Globe, MapPin, Eye, ChevronRight } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
@@ -148,8 +149,23 @@ export function OnboardingScreen({ onComplete }: OnboardingScreenProps) {
         <div className="min-h-full flex flex-col justify-center px-6 py-12 max-w-md mx-auto">
           {/* Header */}
           <div className="text-center mb-8">
-            <div className="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-primary/10 mb-4">
-              <Shield className="w-8 h-8 text-primary" />
+            <div className="mb-4">
+              <Image
+                src="/images/icewhistle-logo-white.svg"
+                alt="ICEwhistle"
+                width={200}
+                height={48}
+                className="h-12 w-auto mx-auto dark:block hidden"
+                priority
+              />
+              <Image
+                src="/images/icewhistle-logo-dark.svg"
+                alt="ICEwhistle"
+                width={200}
+                height={48}
+                className="h-12 w-auto mx-auto dark:hidden block"
+                priority
+              />
             </div>
             <h1 className="text-2xl font-bold">{t.welcome}</h1>
             <p className="text-muted-foreground mt-1">{t.subtitle}</p>

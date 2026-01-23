@@ -243,12 +243,14 @@ export function AppHeader({ showBack, backHref = '/', title, subtitle }: AppHead
 
       {/* iOS Install Instructions Modal */}
       {showIOSModal && (
-        <>
+        <div
+          className="fixed inset-0 z-[100] bg-black/50 backdrop-blur-sm flex items-center justify-center p-4"
+          onClick={() => setShowIOSModal(false)}
+        >
           <div
-            className="fixed inset-0 z-[100] bg-black/50 backdrop-blur-sm"
-            onClick={() => setShowIOSModal(false)}
-          />
-          <div className="fixed z-[101] left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-[90%] max-w-sm bg-background rounded-2xl p-6 shadow-xl border border-border">
+            className="w-full max-w-sm bg-background rounded-2xl p-6 shadow-xl border border-border max-h-[90vh] overflow-y-auto"
+            onClick={(e) => e.stopPropagation()}
+          >
             <h3 className="text-lg font-semibold mb-4">{t.iosTitle}</h3>
             <div className="space-y-4 mb-6">
               <div className="flex items-start gap-3">
@@ -277,7 +279,7 @@ export function AppHeader({ showBack, backHref = '/', title, subtitle }: AppHead
               {t.close}
             </Button>
           </div>
-        </>
+        </div>
       )}
     </header>
   )
