@@ -26,6 +26,7 @@ interface AlertFeedProps {
   userLocation?: { lat: number; lng: number } | null
   onAlertClick?: (alert: Alert) => void
   onVerifyAlert?: (alertId: string) => Promise<void>
+  onMarkAllClear?: (alertId: string) => Promise<void>
   selectedAlertId?: string | null
 }
 
@@ -56,9 +57,11 @@ export function AlertFeed({
   userLocation,
   onAlertClick,
   onVerifyAlert,
+  onMarkAllClear,
   selectedAlertId
 }: AlertFeedProps) {
   const [verifyingId, setVerifyingId] = useState<string | null>(null)
+  const [clearingId, setClearingId] = useState<string | null>(null)
 
   const handleVerify = async (e: React.MouseEvent, alertId: string) => {
     e.stopPropagation()
@@ -69,6 +72,18 @@ export function AlertFeed({
       await onVerifyAlert(alertId)
     } finally {
       setVerifyingId(null)
+    }
+  }
+
+  const handleAllClear = async (e: React.MouseEvent, alertId: string) => {
+    e.stopPropagation()
+    if (!onMarkAllClear) return
+
+    setClearingId(alertId)
+    try {
+      await onMarkAllClear(alertId)
+    } finally {
+      setClearingId(null)
     }
   }
 
@@ -190,19 +205,33 @@ export function AlertFeed({
                   </span>
                 </div>
 
-                {/* Verify button */}
-                {onVerifyAlert && !isVerified && (
-                  <Button
-                    variant="ghost"
-                    size="sm"
-                    className="mt-2 h-10 text-small text-[#00A6B4] hover:bg-[#00A6B4]/10 rounded-[8px] press-scale"
-                    onClick={(e) => handleVerify(e, alert.id)}
-                    disabled={verifyingId === alert.id}
-                  >
-                    <ThumbsUp className="h-4 w-4 mr-1" strokeWidth={2} />
-                    {verifyingId === alert.id ? 'Confirming...' : 'I see this too'}
-                  </Button>
-                )}
+                {/* Action buttons */}
+                <div className="flex gap-2 mt-2 flex-wrap">
+                  {onVerifyAlert && !isVerified && (
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      className="h-10 text-small text-[#00A6B4] hover:bg-[#00A6B4]/10 rounded-[8px] press-scale"
+                      onClick={(e) => handleVerify(e, alert.id)}
+                      disabled={verifyingId === alert.id}
+                    >
+                      <ThumbsUp className="h-4 w-4 mr-1" strokeWidth={2} />
+                      {verifyingId === alert.id ? 'Confirming...' : 'I see this too'}
+                    </Button>
+                  )}
+                  {onMarkAllClear && alert.status !== 'resolved' && (
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      className="h-10 text-small text-[#84CC16] hover:bg-[#84CC16]/10 rounded-[8px] press-scale"
+                      onClick={(e) => handleAllClear(e, alert.id)}
+                      disabled={clearingId === alert.id}
+                    >
+                      <CheckCircle className="h-4 w-4 mr-1" strokeWidth={2} />
+                      {clearingId === alert.id ? 'Updating...' : "They've Left"}
+                    </Button>
+                  )}
+                </div>
               </div>
             </div>
           </div>

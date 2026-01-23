@@ -6,8 +6,10 @@ import { Alert as AlertType, AlertMapBounds, ALERT_TYPES } from '@/types/alert'
 import { AlertMap } from '@/components/alerts/AlertMap'
 import { AlertFeed } from '@/components/alerts/AlertFeed'
 import { ReportAlertModal } from '@/components/alerts/ReportAlertModal'
+import { ZipCodeModal } from '@/components/alerts/ZipCodeModal'
 import { AppHeader } from '@/components/shared/AppHeader'
 import { useLanguage, commonTranslations } from '@/hooks/use-language'
+import { useLocation } from '@/hooks/use-location'
 import {
   AlertTriangle,
   Plus,
@@ -20,12 +22,14 @@ import {
   ShieldAlert,
   CheckCircle,
   Map,
-  List
+  List,
+  MapPin
 } from 'lucide-react'
 
 function AlertsPageContent() {
   const searchParams = useSearchParams()
   const { language } = useLanguage()
+  const { savedLocation, mounted: locationMounted } = useLocation()
   const t = commonTranslations[language]
   const [alerts, setAlerts] = useState<AlertType[]>([])
   const [loading, setLoading] = useState(true)
@@ -35,12 +39,22 @@ function AlertsPageContent() {
   const mapBoundsRef = useRef<AlertMapBounds | null>(null)
   const [selectedAlertId, setSelectedAlertId] = useState<string | null>(null)
   const [showReportModal, setShowReportModal] = useState(false)
+  const [showZipModal, setShowZipModal] = useState(false)
   const [reportType, setReportType] = useState<string | null>(null)
   const [lastRefresh, setLastRefresh] = useState<Date>(new Date())
   const [viewMode, setViewMode] = useState<'map' | 'feed'>('map')
 
-  // Get user location on mount
+  // Get user location on mount - prefer saved location if available
   useEffect(() => {
+    if (!locationMounted) return
+
+    // If user has a saved zip code location, use that
+    if (savedLocation) {
+      setUserLocation({ lat: savedLocation.lat, lng: savedLocation.lng })
+      return
+    }
+
+    // Otherwise try geolocation
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
         (position) => {
@@ -55,7 +69,7 @@ function AlertsPageContent() {
         { enableHighAccuracy: true, timeout: 10000, maximumAge: 300000 }
       )
     }
-  }, [])
+  }, [locationMounted, savedLocation])
 
   // Fetch alerts
   const fetchAlerts = useCallback(async (bounds?: AlertMapBounds) => {
@@ -123,6 +137,14 @@ function AlertsPageContent() {
     setAlerts(prev => prev.map(a => a.id === alertId ? { ...a, ...data.alert } : a))
   }
 
+  const handleMarkAllClear = async (alertId: string) => {
+    const response = await fetch(`/api/alerts/${alertId}/clear`, { method: 'POST' })
+    if (!response.ok) throw new Error('Failed to mark as clear')
+    const data = await response.json()
+    // Remove resolved alerts from the list or update their status
+    setAlerts(prev => prev.filter(a => a.id !== alertId))
+  }
+
   const handleSubmitAlert = async (data: {
     alertType: string
     latitude: number
@@ -176,6 +198,34 @@ function AlertsPageContent() {
       />
 
       <main className="container mx-auto px-4 py-4">
+        {/* Location Indicator */}
+        <button
+          onClick={() => setShowZipModal(true)}
+          className="w-full mb-4 p-3 card-glass rounded-[12px] flex items-center justify-between gap-3 press-scale hover:bg-muted/50 transition-colors"
+        >
+          <div className="flex items-center gap-2">
+            <MapPin className="h-4 w-4 text-[#00A6B4]" />
+            <span className="text-small">
+              {savedLocation ? (
+                <span>
+                  {savedLocation.city ? `${savedLocation.city} (${savedLocation.zipCode})` : `ZIP: ${savedLocation.zipCode}`}
+                </span>
+              ) : userLocation ? (
+                <span className="text-muted-foreground">
+                  {language === 'es' ? 'Usando tu ubicación' : language === 'pt' ? 'Usando sua localização' : 'Using your location'}
+                </span>
+              ) : (
+                <span className="text-muted-foreground">
+                  {language === 'es' ? 'Establecer ubicación' : language === 'pt' ? 'Definir localização' : 'Set location'}
+                </span>
+              )}
+            </span>
+          </div>
+          <span className="text-[11px] text-[#00A6B4] font-medium">
+            {language === 'es' ? 'Cambiar' : language === 'pt' ? 'Alterar' : 'Change'}
+          </span>
+        </button>
+
         {loading ? (
           <div className="flex items-center justify-center h-[60vh]">
             <div className="text-center">
@@ -231,7 +281,7 @@ function AlertsPageContent() {
             {/* Quick Report Type Buttons */}
             <div className="mb-5">
               <h2 className="text-small font-semibold mb-3 text-muted-foreground uppercase tracking-wide">{t.quickReport}</h2>
-              <div className="grid grid-cols-3 md:grid-cols-6 gap-3">
+              <div className="grid grid-cols-3 gap-3">
                 {[
                   { type: 'ice_raid', icon: AlertTriangle, label: t.raid, color: 'text-[#DC2626] bg-[#DC2626]/10 hover:bg-[#DC2626]/20' },
                   { type: 'ice_workplace', icon: Building2, label: t.workplace, color: 'text-[#DC2626] bg-[#DC2626]/10 hover:bg-[#DC2626]/20' },
@@ -239,7 +289,6 @@ function AlertsPageContent() {
                   { type: 'ice_checkpoint', icon: ShieldAlert, label: t.checkpoint, color: 'text-[#FF8C42] bg-[#FF8C42]/10 hover:bg-[#FF8C42]/20' },
                   { type: 'ice_vehicle', icon: Car, label: t.vehicle, color: 'text-[#8B5CF6] bg-[#8B5CF6]/10 hover:bg-[#8B5CF6]/20' },
                   { type: 'ice_transit', icon: Train, label: t.transit, color: 'text-[#00A6B4] bg-[#00A6B4]/10 hover:bg-[#00A6B4]/20' },
-                  { type: 'all_clear', icon: CheckCircle, label: t.theyveLeft, color: 'text-[#84CC16] bg-[#84CC16]/10 hover:bg-[#84CC16]/20' },
                 ].map(({ type, icon: Icon, label, color }) => (
                   <button
                     key={type}
@@ -293,6 +342,7 @@ function AlertsPageContent() {
                   onMapMove={handleMapMove}
                   onAlertClick={handleAlertClick}
                   onVerifyAlert={handleVerifyAlert}
+                  onMarkAllClear={handleMarkAllClear}
                   selectedAlertId={selectedAlertId}
                   onUserLocationUpdate={setUserLocation}
                   className="h-[50vh] min-h-[400px]"
@@ -307,6 +357,7 @@ function AlertsPageContent() {
                 userLocation={userLocation}
                 onAlertClick={handleAlertClick}
                 onVerifyAlert={handleVerifyAlert}
+                onMarkAllClear={handleMarkAllClear}
                 selectedAlertId={selectedAlertId}
               />
             )}
@@ -357,6 +408,17 @@ function AlertsPageContent() {
         }}
         onSubmit={handleSubmitAlert}
         initialLocation={userLocation}
+      />
+
+      {/* Zip Code Modal */}
+      <ZipCodeModal
+        isOpen={showZipModal}
+        onClose={() => setShowZipModal(false)}
+        onLocationSet={(loc) => {
+          if (loc) {
+            setUserLocation(loc)
+          }
+        }}
       />
     </div>
   )

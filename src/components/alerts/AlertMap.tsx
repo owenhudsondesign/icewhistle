@@ -27,6 +27,9 @@ const mapTranslations = {
     confirmations: 'confirmations',
     verified: '✓ Verified',
     locationError: 'Could not get your location. Please check your browser settings.',
+    theyveLeft: "They've Left",
+    updating: 'Updating...',
+    cleared: '✓ Cleared',
   },
   es: {
     presence: 'Presencia',
@@ -40,6 +43,9 @@ const mapTranslations = {
     confirmations: 'confirmaciones',
     verified: '✓ Verificado',
     locationError: 'No se pudo obtener tu ubicación. Verifica la configuración de tu navegador.',
+    theyveLeft: 'Ya Se Fueron',
+    updating: 'Actualizando...',
+    cleared: '✓ Despejado',
   },
   pt: {
     presence: 'Presença',
@@ -53,6 +59,9 @@ const mapTranslations = {
     confirmations: 'confirmações',
     verified: '✓ Verificado',
     locationError: 'Não foi possível obter sua localização. Verifique as configurações do navegador.',
+    theyveLeft: 'Eles Foram Embora',
+    updating: 'Atualizando...',
+    cleared: '✓ Liberado',
   },
 }
 
@@ -62,6 +71,7 @@ interface AlertMapProps {
   onMapMove?: (bounds: { north: number; south: number; east: number; west: number }) => void
   onAlertClick?: (alert: Alert) => void
   onVerifyAlert?: (alertId: string) => Promise<void>
+  onMarkAllClear?: (alertId: string) => Promise<void>
   selectedAlertId?: string | null
   className?: string
   onUserLocationUpdate?: (location: { lat: number; lng: number }) => void
@@ -73,6 +83,7 @@ export function AlertMap({
   onMapMove,
   onAlertClick,
   onVerifyAlert,
+  onMarkAllClear,
   selectedAlertId,
   className = '',
   onUserLocationUpdate
@@ -90,6 +101,7 @@ export function AlertMap({
   const onMapMoveRef = useRef(onMapMove)
   const onAlertClickRef = useRef(onAlertClick)
   const onVerifyAlertRef = useRef(onVerifyAlert)
+  const onMarkAllClearRef = useRef(onMarkAllClear)
 
   const tRef = useRef(t)
 
@@ -97,10 +109,11 @@ export function AlertMap({
     onMapMoveRef.current = onMapMove
     onAlertClickRef.current = onAlertClick
     onVerifyAlertRef.current = onVerifyAlert
+    onMarkAllClearRef.current = onMarkAllClear
     tRef.current = t
-  }, [onMapMove, onAlertClick, onVerifyAlert, t])
+  }, [onMapMove, onAlertClick, onVerifyAlert, onMarkAllClear, t])
 
-  // Global click handler for confirm buttons in popups
+  // Global click handler for confirm and all-clear buttons in popups
   useEffect(() => {
     const handleConfirmClick = async (e: MouseEvent) => {
       const target = e.target as HTMLElement
@@ -112,6 +125,21 @@ export function AlertMap({
           try {
             await onVerifyAlertRef.current(alertId)
             target.textContent = tRef.current.confirmed
+            target.style.background = '#84CC16'
+          } catch {
+            target.textContent = 'Error'
+            target.style.background = '#DC2626'
+          }
+        }
+      }
+      if (target.classList.contains('all-clear-btn')) {
+        const alertId = target.dataset.alertId
+        if (alertId && onMarkAllClearRef.current) {
+          target.textContent = tRef.current.updating
+          target.setAttribute('disabled', 'true')
+          try {
+            await onMarkAllClearRef.current(alertId)
+            target.textContent = tRef.current.cleared
             target.style.background = '#84CC16'
           } catch {
             target.textContent = 'Error'
@@ -295,13 +323,22 @@ export function AlertMap({
               <div style="font-size: 11px; color: #999; margin-top: 4px;">
                 ${isVerified ? t.verified + ' • ' : ''}${alert.verificationCount} ${t.confirmations}
               </div>
-              <button
-                class="confirm-alert-btn"
-                data-alert-id="${alert.id}"
-                style="margin-top: 8px; width: 100%; padding: 6px 12px; background: #00A6B4; color: white; border: none; border-radius: 6px; font-size: 12px; font-weight: 600; cursor: pointer;"
-              >
-                ${t.confirmReport}
-              </button>
+              <div style="display: flex; gap: 6px; margin-top: 8px;">
+                <button
+                  class="confirm-alert-btn"
+                  data-alert-id="${alert.id}"
+                  style="flex: 1; padding: 6px 8px; background: #00A6B4; color: white; border: none; border-radius: 6px; font-size: 11px; font-weight: 600; cursor: pointer;"
+                >
+                  ${t.confirmReport}
+                </button>
+                <button
+                  class="all-clear-btn"
+                  data-alert-id="${alert.id}"
+                  style="flex: 1; padding: 6px 8px; background: #84CC16; color: white; border: none; border-radius: 6px; font-size: 11px; font-weight: 600; cursor: pointer;"
+                >
+                  ${t.theyveLeft}
+                </button>
+              </div>
             </div>
           `)
 
