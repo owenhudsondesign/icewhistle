@@ -1,7 +1,7 @@
 'use client'
 
 import { useState } from 'react'
-import { Alert, ALERT_TYPES, getTimeAgo, getDistanceMiles } from '@/types/alert'
+import { Alert, ALERT_TYPES, getTimeAgo, getDistanceMiles, CLEAR_VOTES_REQUIRED } from '@/types/alert'
 import { Button } from '@/components/ui/button'
 import { AlertMedia } from './AlertMedia'
 import {
@@ -228,7 +228,7 @@ export function AlertFeed({
                       disabled={clearingId === alert.id}
                     >
                       <CheckCircle className="h-4 w-4 mr-1" strokeWidth={2} />
-                      {clearingId === alert.id ? 'Updating...' : "They've Left"}
+                      {clearingId === alert.id ? 'Voting...' : `They've Left (${alert.clearVoteCount || 0}/${CLEAR_VOTES_REQUIRED})`}
                     </Button>
                   )}
                 </div>

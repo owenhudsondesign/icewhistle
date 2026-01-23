@@ -87,6 +87,10 @@ model Alert {
   status          String    @default("unverified") // "unverified", "verified", "disputed", "resolved", "expired"
   verificationCount Int     @default(0)            // Number of confirmations from other users
 
+  // Clear voting (requires 5 votes to mark as resolved)
+  clearVoteCount  Int       @default(0)            // Number of "they've left" votes
+  clearVoterHashes String[] @default([])           // Track who voted to clear (hashed)
+
   // Timestamps
   reportedAt      DateTime  @default(now())
   occurredAt      DateTime

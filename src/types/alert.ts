@@ -33,6 +33,7 @@ export interface Alert {
   description?: string
   status: AlertStatus
   verificationCount: number
+  clearVoteCount: number
   reportedAt: string
   occurredAt: string
   expiresAt: string
@@ -42,6 +43,8 @@ export interface Alert {
   timeAgo?: string
   distance?: number
 }
+
+export const CLEAR_VOTES_REQUIRED = 5
 
 export interface AlertSubmission {
   latitude: number

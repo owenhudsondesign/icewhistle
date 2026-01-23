@@ -1,21 +1,36 @@
 import { NextRequest, NextResponse } from 'next/server'
 import prisma from '@/lib/db'
+import crypto from 'crypto'
 
-// POST /api/alerts/[id]/clear - Mark an alert as resolved/all-clear
+const CLEAR_VOTES_REQUIRED = 5
+
+// Generate anonymous voter hash from IP and user agent
+function generateVoterHash(request: NextRequest): string {
+  const ip = request.headers.get('x-forwarded-for')?.split(',')[0] ||
+             request.headers.get('x-real-ip') ||
+             'unknown'
+  const userAgent = request.headers.get('user-agent') || ''
+  const data = `clear-vote:${ip}:${userAgent}`
+  return crypto.createHash('sha256').update(data).digest('hex').slice(0, 16)
+}
+
+// POST /api/alerts/[id]/clear - Vote that the presence has left (requires 5 votes to resolve)
 export async function POST(
   request: NextRequest,
   { params }: { params: Promise<{ id: string }> }
 ) {
   try {
     const { id } = await params
+    const voterHash = generateVoterHash(request)
 
-    // Find the alert
+    // Find the alert with current clear vote info
     const alert = await prisma.alert.findUnique({
       where: { id },
       select: {
         id: true,
         status: true,
-        expiresAt: true,
+        clearVoteCount: true,
+        clearVoterHashes: true,
       },
     })
 
@@ -34,12 +49,36 @@ export async function POST(
       )
     }
 
-    // Update the alert to resolved status
+    // Check if this voter has already voted
+    if (alert.clearVoterHashes.includes(voterHash)) {
+      return NextResponse.json({
+        alert: {
+          id: alert.id,
+          clearVoteCount: alert.clearVoteCount,
+          status: alert.status,
+        },
+        alreadyVoted: true,
+        votesNeeded: CLEAR_VOTES_REQUIRED - alert.clearVoteCount,
+      })
+    }
+
+    // Calculate new vote count
+    const newVoteCount = alert.clearVoteCount + 1
+    const shouldResolve = newVoteCount >= CLEAR_VOTES_REQUIRED
+
+    // Update the alert with the new vote
     const updatedAlert = await prisma.alert.update({
       where: { id },
       data: {
-        status: 'resolved',
-        resolvedAt: new Date(),
+        clearVoteCount: newVoteCount,
+        clearVoterHashes: {
+          push: voterHash,
+        },
+        // Only resolve if we have enough votes
+        ...(shouldResolve && {
+          status: 'resolved',
+          resolvedAt: new Date(),
+        }),
       },
       select: {
         id: true,
@@ -50,6 +89,7 @@ export async function POST(
         description: true,
         status: true,
         verificationCount: true,
+        clearVoteCount: true,
         reportedAt: true,
         occurredAt: true,
         expiresAt: true,
@@ -59,12 +99,14 @@ export async function POST(
 
     return NextResponse.json({
       alert: updatedAlert,
-      cleared: true,
+      cleared: shouldResolve,
+      voteRecorded: true,
+      votesNeeded: shouldResolve ? 0 : CLEAR_VOTES_REQUIRED - newVoteCount,
     })
   } catch (error) {
-    console.error('Error clearing alert:', error)
+    console.error('Error voting to clear alert:', error)
     return NextResponse.json(
-      { error: 'Failed to clear alert' },
+      { error: 'Failed to record vote' },
       { status: 500 }
     )
   }

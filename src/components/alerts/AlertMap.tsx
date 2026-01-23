@@ -3,7 +3,7 @@
 import { useEffect, useRef, useCallback, useState } from 'react'
 import mapboxgl from 'mapbox-gl'
 import 'mapbox-gl/dist/mapbox-gl.css'
-import { Alert, ALERT_TYPES } from '@/types/alert'
+import { Alert, ALERT_TYPES, CLEAR_VOTES_REQUIRED } from '@/types/alert'
 import { Crosshair, Loader2 } from 'lucide-react'
 import { useLanguage } from '@/hooks/use-language'
 
@@ -336,7 +336,7 @@ export function AlertMap({
                   data-alert-id="${alert.id}"
                   style="flex: 1; padding: 6px 8px; background: #84CC16; color: white; border: none; border-radius: 6px; font-size: 11px; font-weight: 600; cursor: pointer;"
                 >
-                  ${t.theyveLeft}
+                  ${t.theyveLeft} (${alert.clearVoteCount || 0}/${CLEAR_VOTES_REQUIRED})
                 </button>
               </div>
             </div>

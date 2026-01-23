@@ -139,10 +139,20 @@ function AlertsPageContent() {
 
   const handleMarkAllClear = async (alertId: string) => {
     const response = await fetch(`/api/alerts/${alertId}/clear`, { method: 'POST' })
-    if (!response.ok) throw new Error('Failed to mark as clear')
+    if (!response.ok) throw new Error('Failed to vote')
     const data = await response.json()
-    // Remove resolved alerts from the list or update their status
-    setAlerts(prev => prev.filter(a => a.id !== alertId))
+
+    if (data.cleared) {
+      // Alert has enough votes - remove it from the list
+      setAlerts(prev => prev.filter(a => a.id !== alertId))
+    } else {
+      // Update the alert with new vote count
+      setAlerts(prev => prev.map(a =>
+        a.id === alertId
+          ? { ...a, clearVoteCount: data.alert.clearVoteCount }
+          : a
+      ))
+    }
   }
 
   const handleSubmitAlert = async (data: {
