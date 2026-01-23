@@ -114,6 +114,8 @@ export const commonTranslations = {
     checkpoint: 'Checkpoint',
     vehicle: 'Vehicle',
     transit: 'Transit',
+    theyveLeft: "They've Left",
+    allClear: 'All Clear',
 
     // Time
     loading: 'Loading...',
@@ -257,6 +259,8 @@ export const commonTranslations = {
     checkpoint: 'Control',
     vehicle: 'Vehículo',
     transit: 'Tránsito',
+    theyveLeft: 'Ya Se Fueron',
+    allClear: 'Todo Despejado',
 
     // Time
     loading: 'Cargando...',
@@ -400,6 +404,8 @@ export const commonTranslations = {
     checkpoint: 'Posto',
     vehicle: 'Veículo',
     transit: 'Trânsito',
+    theyveLeft: 'Eles Foram Embora',
+    allClear: 'Tudo Livre',
 
     // Time
     loading: 'Carregando...',

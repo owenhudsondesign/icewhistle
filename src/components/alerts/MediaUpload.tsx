@@ -22,13 +22,16 @@ const translations = {
     captionPlaceholder: 'Describe what you see...',
     uploading: 'Uploading...',
     processing: 'Processing...',
-    uploadFailed: 'Upload failed',
+    uploadFailed: 'Upload failed - tap to retry',
     retry: 'Retry',
     remove: 'Remove',
     maxSize: 'Max 100MB for videos, 10MB for photos',
     videoTooLong: 'Video must be under 2 minutes',
     fileTooLarge: 'File is too large',
     anonymousNotice: 'Completely anonymous - no connection to you',
+    uploadError: 'Upload error',
+    uploadsNotConfigured: 'Media uploads temporarily unavailable',
+    uploadSuccess: 'Uploaded successfully',
   },
   es: {
     addPhoto: 'Agregar Foto',
@@ -37,13 +40,16 @@ const translations = {
     captionPlaceholder: 'Describe lo que ves...',
     uploading: 'Subiendo...',
     processing: 'Procesando...',
-    uploadFailed: 'Error al subir',
+    uploadFailed: 'Error al subir - toca para reintentar',
     retry: 'Reintentar',
     remove: 'Eliminar',
     maxSize: 'Máx 100MB para videos, 10MB para fotos',
     videoTooLong: 'El video debe ser menor a 2 minutos',
     fileTooLarge: 'El archivo es muy grande',
     anonymousNotice: 'Completamente anónimo - sin conexión contigo',
+    uploadError: 'Error de carga',
+    uploadsNotConfigured: 'Subida de medios temporalmente no disponible',
+    uploadSuccess: 'Subido exitosamente',
   },
   pt: {
     addPhoto: 'Adicionar Foto',
@@ -52,13 +58,16 @@ const translations = {
     captionPlaceholder: 'Descreva o que você vê...',
     uploading: 'Enviando...',
     processing: 'Processando...',
-    uploadFailed: 'Falha no envio',
+    uploadFailed: 'Falha no envio - toque para tentar novamente',
     retry: 'Tentar novamente',
     remove: 'Remover',
     maxSize: 'Máx 100MB para vídeos, 10MB para fotos',
     videoTooLong: 'O vídeo deve ter menos de 2 minutos',
     fileTooLarge: 'O arquivo é muito grande',
     anonymousNotice: 'Completamente anônimo - sem conexão com você',
+    uploadError: 'Erro de upload',
+    uploadsNotConfigured: 'Upload de mídia temporariamente indisponível',
+    uploadSuccess: 'Enviado com sucesso',
   },
 }
 
@@ -174,7 +183,16 @@ export function MediaUpload({
       }
     } catch (err) {
       console.error('Upload failed:', err)
+      const errorMsg = err instanceof Error ? err.message : 'Unknown error'
+      setError(`${t.uploadError}: ${errorMsg}`)
       updateItem(item.id, { status: 'failed', progress: 0 })
+    }
+  }
+
+  const retryUpload = (item: MediaItem) => {
+    if (item.file) {
+      setError(null)
+      uploadMedia(item)
     }
   }
 
@@ -184,36 +202,26 @@ export function MediaUpload({
     // Compress and strip EXIF
     updateItem(item.id, { progress: 20 })
     const compressed = await compressImage(item.file)
-    const extension = getFileExtension(item.file)
 
-    // Get upload URL from our API
+    // Upload via our API (which proxies to Bunny Storage)
     updateItem(item.id, { progress: 40 })
+    const formData = new FormData()
+    formData.append('file', compressed, `image.${getFileExtension(item.file)}`)
+
     const response = await fetch('/api/upload/image', {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ extension, mimeType: 'image/jpeg' }),
+      body: formData,
     })
 
     if (!response.ok) {
-      throw new Error('Failed to get upload URL')
+      const errorData = await response.json().catch(() => ({ error: 'Upload failed' }))
+      if (response.status === 503) {
+        throw new Error(t.uploadsNotConfigured)
+      }
+      throw new Error(errorData.error || 'Failed to upload image')
     }
 
-    const { uploadUrl, publicUrl, uploadHeaders, contentType } = await response.json()
-
-    // Upload directly to Bunny Storage
-    updateItem(item.id, { progress: 60 })
-    const uploadResponse = await fetch(uploadUrl, {
-      method: 'PUT',
-      headers: {
-        ...uploadHeaders,
-        'Content-Type': contentType,
-      },
-      body: compressed,
-    })
-
-    if (!uploadResponse.ok) {
-      throw new Error('Failed to upload to storage')
-    }
+    const { publicUrl } = await response.json()
 
     // Update item with public URL
     updateItem(item.id, {
@@ -239,6 +247,9 @@ export function MediaUpload({
     })
 
     if (!response.ok) {
+      if (response.status === 503) {
+        throw new Error(t.uploadsNotConfigured)
+      }
       throw new Error('Failed to create video')
     }
 
@@ -249,20 +260,29 @@ export function MediaUpload({
 
     // For simplicity, we'll use a direct upload instead of TUS
     // TUS would be better for large files with resumable uploads
-    const uploadResponse = await fetch(
-      `https://video.bunnycdn.com/library/${tusHeaders.LibraryId}/videos/${videoId}`,
-      {
-        method: 'PUT',
-        headers: {
-          'AccessKey': tusHeaders.AuthorizationSignature,
-          'Content-Type': 'application/octet-stream',
-        },
-        body: item.file,
-      }
-    )
+    try {
+      const uploadResponse = await fetch(
+        `https://video.bunnycdn.com/library/${tusHeaders.LibraryId}/videos/${videoId}`,
+        {
+          method: 'PUT',
+          headers: {
+            'AccessKey': tusHeaders.AuthorizationSignature,
+            'Content-Type': 'application/octet-stream',
+          },
+          body: item.file,
+        }
+      )
 
-    if (!uploadResponse.ok) {
-      throw new Error('Failed to upload video')
+      if (!uploadResponse.ok) {
+        const errorText = await uploadResponse.text().catch(() => 'Unknown video error')
+        throw new Error(`Video upload failed: ${uploadResponse.status} ${errorText}`)
+      }
+    } catch (fetchError) {
+      // CORS errors show up as TypeError: Failed to fetch
+      if (fetchError instanceof TypeError && fetchError.message.includes('fetch')) {
+        throw new Error('Video service access denied (CORS). Check Bunny Stream settings.')
+      }
+      throw fetchError
     }
 
     // Update item with video info
@@ -331,9 +351,15 @@ export function MediaUpload({
                     </div>
                   )}
                   {item.status === 'failed' && (
-                    <div className="absolute inset-0 bg-red-500/50 flex items-center justify-center">
-                      <AlertCircle className="h-6 w-6 text-white" />
-                    </div>
+                    <button
+                      onClick={() => retryUpload(item)}
+                      className="absolute inset-0 bg-red-500/70 flex items-center justify-center cursor-pointer hover:bg-red-500/80"
+                    >
+                      <div className="text-center">
+                        <AlertCircle className="h-5 w-5 text-white mx-auto" />
+                        <span className="text-[9px] text-white mt-1 block">{t.retry}</span>
+                      </div>
+                    </button>
                   )}
 
                   {/* Type indicator */}
@@ -418,20 +444,18 @@ export function MediaUpload({
             {t.addVideo}
           </Button>
 
-          {/* Hidden file inputs */}
+          {/* Hidden file inputs - no capture attribute so users can choose camera OR gallery */}
           <input
             ref={photoInputRef}
             type="file"
-            accept="image/*"
-            capture="environment"
+            accept="image/jpeg,image/png,image/webp,image/heic"
             onChange={(e) => handleFileSelect(e, 'image')}
             className="hidden"
           />
           <input
             ref={videoInputRef}
             type="file"
-            accept="video/*"
-            capture="environment"
+            accept="video/mp4,video/quicktime,video/webm"
             onChange={(e) => handleFileSelect(e, 'video')}
             className="hidden"
           />

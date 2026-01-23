@@ -226,6 +226,7 @@ function AlertsPageContent() {
                   { type: 'ice_checkpoint', icon: ShieldAlert, label: t.checkpoint, color: 'text-[#FF8C42] bg-[#FF8C42]/10 hover:bg-[#FF8C42]/20' },
                   { type: 'ice_vehicle', icon: Car, label: t.vehicle, color: 'text-[#8B5CF6] bg-[#8B5CF6]/10 hover:bg-[#8B5CF6]/20' },
                   { type: 'ice_transit', icon: Train, label: t.transit, color: 'text-[#00A6B4] bg-[#00A6B4]/10 hover:bg-[#00A6B4]/20' },
+                  { type: 'all_clear', icon: CheckCircle, label: t.theyveLeft, color: 'text-[#84CC16] bg-[#84CC16]/10 hover:bg-[#84CC16]/20' },
                 ].map(({ type, icon: Icon, label, color }) => (
                   <button
                     key={type}

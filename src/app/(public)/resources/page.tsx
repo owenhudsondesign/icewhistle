@@ -195,6 +195,7 @@ const organizationCategories = [
     icon: Scale,
     description: 'Free and low-cost legal help',
     organizations: [
+      { name: 'Immigration Advocates Network', url: 'https://www.immigrationadvocates.org/nonprofit/legaldirectory/', description: 'National directory of free legal services' },
       { name: 'National Immigrant Justice Center (NIJC)', url: 'https://immigrantjustice.org', description: 'Direct legal services, nationwide' },
       { name: 'Catholic Legal Immigration Network (CLINIC)', url: 'https://cliniclegal.org', description: '400+ nonprofit programs' },
       { name: 'American Immigration Lawyers Association', url: 'https://aila.org', description: 'Find a licensed attorney' },
