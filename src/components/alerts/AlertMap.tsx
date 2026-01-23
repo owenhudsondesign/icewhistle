@@ -7,6 +7,13 @@ import { Alert, ALERT_TYPES } from '@/types/alert'
 import { Crosshair, Loader2 } from 'lucide-react'
 import { useLanguage } from '@/hooks/use-language'
 
+// Escape HTML to prevent XSS in popups
+function escapeHtml(text: string): string {
+  const div = document.createElement('div')
+  div.textContent = text
+  return div.innerHTML
+}
+
 const mapTranslations = {
   en: {
     presence: 'Presence',
@@ -274,12 +281,16 @@ export function AlertMap({
           mediaHtml = `<div style="display: flex; gap: 4px; margin-top: 8px;">${mediaItems}</div>`
         }
 
+        // Escape user-provided content to prevent XSS
+        const safeAddress = alert.address ? escapeHtml(alert.address) : ''
+        const safeDescription = alert.description ? escapeHtml(alert.description) : ''
+
         const popup = new mapboxgl.Popup({ offset: 25, closeButton: false })
           .setHTML(`
             <div style="padding: 8px; min-width: 180px; max-width: 250px;">
               <div style="font-weight: 600; color: ${type.markerColor};">${typeLabel}</div>
-              ${alert.address ? `<div style="font-size: 12px; color: #666; margin-top: 4px;">${alert.address}</div>` : ''}
-              ${alert.description ? `<div style="font-size: 12px; color: #888; margin-top: 6px; padding: 6px; background: rgba(0,0,0,0.05); border-radius: 4px; word-wrap: break-word;">"${alert.description}"</div>` : ''}
+              ${safeAddress ? `<div style="font-size: 12px; color: #666; margin-top: 4px;">${safeAddress}</div>` : ''}
+              ${safeDescription ? `<div style="font-size: 12px; color: #888; margin-top: 6px; padding: 6px; background: rgba(0,0,0,0.05); border-radius: 4px; word-wrap: break-word;">"${safeDescription}"</div>` : ''}
               ${mediaHtml}
               <div style="font-size: 11px; color: #999; margin-top: 4px;">
                 ${isVerified ? t.verified + ' • ' : ''}${alert.verificationCount} ${t.confirmations}
