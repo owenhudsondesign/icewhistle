@@ -7,6 +7,7 @@ import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { useLanguage } from '@/hooks/use-language'
 import { search, KnowledgeEntry } from '@/lib/search'
+import { getTranslatedEntry } from '@/data/knowledge-base'
 import { ChatMessage, categoryRoutes } from './types'
 
 const faqTranslations = {
@@ -169,7 +170,7 @@ export function FAQChat() {
                 {message.results && message.results.length > 0 && (
                   <div className="space-y-2">
                     {message.results.map((entry) => (
-                      <ResultCard key={entry.id} entry={entry} learnMoreText={t.learnMore} />
+                      <ResultCard key={entry.id} entry={entry} learnMoreText={t.learnMore} language={language} />
                     ))}
                   </div>
                 )}
@@ -253,13 +254,14 @@ export function FAQChat() {
 }
 
 // Result Card Component
-function ResultCard({ entry, learnMoreText }: { entry: KnowledgeEntry; learnMoreText: string }) {
+function ResultCard({ entry, learnMoreText, language }: { entry: KnowledgeEntry; learnMoreText: string; language: 'en' | 'es' | 'pt' }) {
   const route = categoryRoutes[entry.category]
+  const translatedEntry = getTranslatedEntry(entry, language)
 
   return (
     <div className="bg-card border rounded-xl p-3 space-y-2 text-left">
-      <h3 className="font-semibold text-sm">{entry.title}</h3>
-      <p className="text-xs text-muted-foreground line-clamp-3">{entry.content}</p>
+      <h3 className="font-semibold text-sm">{translatedEntry.title}</h3>
+      <p className="text-xs text-muted-foreground line-clamp-3">{translatedEntry.content}</p>
 
       <div className="flex flex-wrap gap-2 pt-1">
         {/* Phone numbers */}
