@@ -4,7 +4,7 @@ import { useState } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
 import { Button } from '@/components/ui/button'
-import { Moon, Sun, ChevronLeft, Menu, X } from 'lucide-react'
+import { Moon, Sun, ChevronLeft, Menu, X, MessageCircleQuestion } from 'lucide-react'
 import { useTheme } from '@/hooks/use-theme'
 import { useLanguage } from '@/hooks/use-language'
 
@@ -90,10 +90,20 @@ export function AppHeader({ showBack, backHref = '/', title, subtitle }: AppHead
             </div>
           </div>
 
-          {/* Right - Desktop: Support & Dark Mode, Mobile: Hamburger */}
+          {/* Right - Desktop: FAQ & Dark Mode, Mobile: Hamburger */}
           <div className="flex items-center gap-2 sm:flex-1 justify-end flex-shrink-0">
-            {/* Desktop - Dark Mode Toggle */}
+            {/* Desktop - FAQ Link & Dark Mode Toggle */}
             <div className="hidden sm:flex items-center gap-2">
+              <Link href="/faq">
+                <Button
+                  variant="outline"
+                  size="icon"
+                  className="h-10 w-10 rounded-[8px] border-border/50 press-scale"
+                  aria-label="FAQ"
+                >
+                  <MessageCircleQuestion className="h-5 w-5 text-[#00A6B4]" strokeWidth={2} />
+                </Button>
+              </Link>
               <Button
                 variant="outline"
                 size="icon"
@@ -135,6 +145,14 @@ export function AppHeader({ showBack, backHref = '/', title, subtitle }: AppHead
                   />
                   {/* Menu Content */}
                   <div className="absolute right-0 top-12 z-50 w-48 rounded-[12px] border border-border/50 bg-background shadow-lg overflow-hidden">
+                    <Link
+                      href="/faq"
+                      onClick={() => setMenuOpen(false)}
+                      className="w-full flex items-center gap-3 px-4 py-3 hover:bg-muted/50 transition-colors"
+                    >
+                      <MessageCircleQuestion className="h-4 w-4 text-[#00A6B4]" strokeWidth={2} />
+                      <span className="text-sm">FAQ</span>
+                    </Link>
                     <button
                       onClick={() => {
                         toggleTheme()

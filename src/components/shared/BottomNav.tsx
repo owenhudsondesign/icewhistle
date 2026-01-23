@@ -3,7 +3,7 @@
 import { useState, useEffect, ReactNode } from 'react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
-import { Home, MapPin, Plus, Shield, Phone } from 'lucide-react'
+import { Home, MapPin, Plus, Shield, Phone, MessageCircleQuestion } from 'lucide-react'
 import { useLanguage } from '@/hooks/use-language'
 import { cn } from '@/lib/utils'
 import { Capacitor } from '@capacitor/core'
@@ -29,6 +29,7 @@ const navTranslations = {
     alerts: 'Alerts',
     report: 'Report',
     rights: 'Rights',
+    faq: 'FAQ',
     emergency: 'Emergency',
   },
   es: {
@@ -36,6 +37,7 @@ const navTranslations = {
     alerts: 'Alertas',
     report: 'Reportar',
     rights: 'Derechos',
+    faq: 'Preguntas',
     emergency: 'Emergencia',
   },
   pt: {
@@ -43,6 +45,7 @@ const navTranslations = {
     alerts: 'Alertas',
     report: 'Reportar',
     rights: 'Direitos',
+    faq: 'Perguntas',
     emergency: 'Emergência',
   },
 }
@@ -66,6 +69,7 @@ export function BottomNav() {
     { href: '/alerts', icon: MapPin, label: t.alerts },
     { href: '/alerts?report=true', icon: Plus, label: t.report, isReport: true },
     { href: '/rights', icon: Shield, label: t.rights },
+    { href: '/faq', icon: MessageCircleQuestion, label: t.faq },
     { href: '/emergency', icon: Phone, label: t.emergency },
   ]
 
