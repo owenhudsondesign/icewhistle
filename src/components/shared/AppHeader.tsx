@@ -4,9 +4,37 @@ import { useState } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
 import { Button } from '@/components/ui/button'
-import { Moon, Sun, ChevronLeft, Menu, X, MessageCircleQuestion } from 'lucide-react'
+import { Moon, Sun, ChevronLeft, Menu, X, MessageCircleQuestion, Download, Share, Plus } from 'lucide-react'
 import { useTheme } from '@/hooks/use-theme'
 import { useLanguage } from '@/hooks/use-language'
+import { usePWAInstall } from '@/hooks/use-pwa-install'
+
+const installTranslations = {
+  en: {
+    install: 'Install App',
+    iosTitle: 'Install on iPhone/iPad',
+    iosStep1: '1. Tap the Share button',
+    iosStep2: '2. Scroll down and tap "Add to Home Screen"',
+    iosStep3: '3. Tap "Add" to install',
+    close: 'Got it',
+  },
+  es: {
+    install: 'Instalar App',
+    iosTitle: 'Instalar en iPhone/iPad',
+    iosStep1: '1. Toca el botón Compartir',
+    iosStep2: '2. Desplázate y toca "Añadir a la pantalla de inicio"',
+    iosStep3: '3. Toca "Añadir" para instalar',
+    close: 'Entendido',
+  },
+  pt: {
+    install: 'Instalar App',
+    iosTitle: 'Instalar no iPhone/iPad',
+    iosStep1: '1. Toque no botão Compartilhar',
+    iosStep2: '2. Role para baixo e toque em "Adicionar à Tela de Início"',
+    iosStep3: '3. Toque em "Adicionar" para instalar',
+    close: 'Entendi',
+  },
+}
 
 interface AppHeaderProps {
   showBack?: boolean
@@ -18,7 +46,21 @@ interface AppHeaderProps {
 export function AppHeader({ showBack, backHref = '/', title, subtitle }: AppHeaderProps) {
   const { toggleTheme, isDark, mounted } = useTheme()
   const { language, setLanguage } = useLanguage()
+  const { canInstall, isIOS, isInstalled, promptInstall } = usePWAInstall()
   const [menuOpen, setMenuOpen] = useState(false)
+  const [showIOSModal, setShowIOSModal] = useState(false)
+  const t = installTranslations[language]
+
+  const handleInstallClick = async () => {
+    if (canInstall) {
+      await promptInstall()
+    } else if (isIOS) {
+      setShowIOSModal(true)
+    }
+    setMenuOpen(false)
+  }
+
+  const showInstallButton = canInstall || isIOS
 
   return (
     <header className="sticky top-0 z-50 glass-subtle border-b">
@@ -92,8 +134,18 @@ export function AppHeader({ showBack, backHref = '/', title, subtitle }: AppHead
 
           {/* Right - Desktop: FAQ & Dark Mode, Mobile: Hamburger */}
           <div className="flex items-center gap-2 sm:flex-1 justify-end flex-shrink-0">
-            {/* Desktop - FAQ Link, Support Link & Dark Mode Toggle */}
+            {/* Desktop - Install, FAQ Link & Dark Mode Toggle */}
             <div className="hidden sm:flex items-center gap-2">
+              {showInstallButton && !isInstalled && (
+                <Button
+                  variant="outline"
+                  onClick={handleInstallClick}
+                  className="h-10 rounded-[8px] border-border/50 press-scale gap-2 px-3"
+                >
+                  <Download className="h-4 w-4 text-[#00A6B4]" strokeWidth={2} />
+                  <span className="text-sm">{t.install}</span>
+                </Button>
+              )}
               <Link href="/faq">
                 <Button
                   variant="outline"
@@ -145,6 +197,15 @@ export function AppHeader({ showBack, backHref = '/', title, subtitle }: AppHead
                   />
                   {/* Menu Content */}
                   <div className="absolute right-0 top-12 z-50 w-48 rounded-[12px] border border-border/50 bg-background shadow-lg overflow-hidden">
+                    {showInstallButton && !isInstalled && (
+                      <button
+                        onClick={handleInstallClick}
+                        className="w-full flex items-center gap-3 px-4 py-3 hover:bg-muted/50 transition-colors border-b border-border/30"
+                      >
+                        <Download className="h-4 w-4 text-[#00A6B4]" strokeWidth={2} />
+                        <span className="text-sm font-medium">{t.install}</span>
+                      </button>
+                    )}
                     <Link
                       href="/faq"
                       onClick={() => setMenuOpen(false)}
@@ -179,6 +240,45 @@ export function AppHeader({ showBack, backHref = '/', title, subtitle }: AppHead
           </div>
         </div>
       </div>
+
+      {/* iOS Install Instructions Modal */}
+      {showIOSModal && (
+        <>
+          <div
+            className="fixed inset-0 z-[100] bg-black/50 backdrop-blur-sm"
+            onClick={() => setShowIOSModal(false)}
+          />
+          <div className="fixed z-[101] left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-[90%] max-w-sm bg-background rounded-2xl p-6 shadow-xl border border-border">
+            <h3 className="text-lg font-semibold mb-4">{t.iosTitle}</h3>
+            <div className="space-y-4 mb-6">
+              <div className="flex items-start gap-3">
+                <div className="w-8 h-8 rounded-lg bg-blue-500/10 flex items-center justify-center flex-shrink-0">
+                  <Share className="w-4 h-4 text-blue-500" />
+                </div>
+                <p className="text-sm text-muted-foreground pt-1">{t.iosStep1}</p>
+              </div>
+              <div className="flex items-start gap-3">
+                <div className="w-8 h-8 rounded-lg bg-blue-500/10 flex items-center justify-center flex-shrink-0">
+                  <Plus className="w-4 h-4 text-blue-500" />
+                </div>
+                <p className="text-sm text-muted-foreground pt-1">{t.iosStep2}</p>
+              </div>
+              <div className="flex items-start gap-3">
+                <div className="w-8 h-8 rounded-lg bg-green-500/10 flex items-center justify-center flex-shrink-0">
+                  <Download className="w-4 h-4 text-green-500" />
+                </div>
+                <p className="text-sm text-muted-foreground pt-1">{t.iosStep3}</p>
+              </div>
+            </div>
+            <Button
+              onClick={() => setShowIOSModal(false)}
+              className="w-full"
+            >
+              {t.close}
+            </Button>
+          </div>
+        </>
+      )}
     </header>
   )
 }
