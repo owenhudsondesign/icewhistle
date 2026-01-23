@@ -5,6 +5,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 import { RecordingIndicator } from '@/components/recording/RecordingIndicator'
+import { AlertContactsButton } from '@/components/emergency-contacts'
 import { useRecordingStore } from '@/stores/recordingStore'
 import { useEnhancedRecording } from '@/hooks/useEnhancedRecording'
 import { useLanguage } from '@/hooks/use-language'
@@ -466,6 +467,9 @@ export default function EncounterPage() {
           <h1 className="text-2xl font-bold text-[#DC2626] mb-1">{t.title}</h1>
           <p className="text-muted-foreground">{t.subtitle}</p>
         </div>
+
+        {/* Alert Contacts Button */}
+        <AlertContactsButton className="mb-4" />
 
         {/* Quick Action Buttons */}
         <div className="grid grid-cols-2 gap-3 mb-6">

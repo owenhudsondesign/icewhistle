@@ -24,19 +24,14 @@ export interface VideoManifest {
   captureTimestampUnix: number
   timezoneOffset: number
 
-  // Device info
+  // Minimal device info (privacy-preserving - no fingerprinting)
   deviceInfo: {
-    platform: string // 'ios' | 'android' | 'web'
-    userAgent: string
-    screenWidth: number
-    screenHeight: number
-    devicePixelRatio: number
-    language: string
+    platform: string // 'ios' | 'android' | 'web' - broad category only
   }
 
   // Recording details
   recording: {
-    cameraMode: string // 'front' | 'back' | 'both'
+    cameraMode: string // 'front' | 'back'
     recordingType: string // 'video' | 'audio'
     durationSeconds: number
   }
@@ -45,7 +40,6 @@ export interface VideoManifest {
   app: {
     name: string
     version: string
-    buildId: string
   }
 
   // Signature
@@ -156,6 +150,7 @@ export async function createVideoManifest(
   const fileHash = await generateFileHash(blob)
 
   // Build manifest (without signature)
+  // Privacy-preserving: only store minimal info needed for authenticity verification
   const manifest: VideoManifest = {
     fileHash,
     fileSize: blob.size,
@@ -165,13 +160,9 @@ export async function createVideoManifest(
     captureTimestampUnix: now.getTime(),
     timezoneOffset: now.getTimezoneOffset(),
 
+    // Minimal device info - no fingerprinting data
     deviceInfo: {
       platform: Capacitor.isNativePlatform() ? Capacitor.getPlatform() : 'web',
-      userAgent: navigator.userAgent,
-      screenWidth: window.screen.width,
-      screenHeight: window.screen.height,
-      devicePixelRatio: window.devicePixelRatio,
-      language: navigator.language,
     },
 
     recording: {
@@ -183,7 +174,6 @@ export async function createVideoManifest(
     app: {
       name: 'ICEwhistle',
       version: '1.0.0',
-      buildId: process.env.NEXT_PUBLIC_BUILD_ID || 'dev',
     },
   }
 
