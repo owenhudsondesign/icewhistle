@@ -84,8 +84,8 @@ export const metadata: Metadata = {
     description: 'Free ICE alert app: Know your rights if ICE is at your door, find detained family members, report ICE activity near you. Immigration emergency hotline & legal aid. Qué hacer si llega ICE.',
     images: [
       {
-        url: 'https://icewhistle.app/images/og-image.png',
-        secureUrl: 'https://icewhistle.app/images/og-image.png',
+        url: 'https://icewhistle.app/images/og-image.png?v=2',
+        secureUrl: 'https://icewhistle.app/images/og-image.png?v=2',
         width: 1200,
         height: 630,
         alt: 'ICEwhistle - Immigration Rights App & ICE Alert System',
@@ -97,7 +97,7 @@ export const metadata: Metadata = {
     card: 'summary_large_image',
     title: 'ICEwhistle - Know Your Rights | ICE Alert App',
     description: 'Free app: What to do if ICE stops you. Find someone in ICE detention. Report ICE activity near you. Know your 4th Amendment rights. Qué hacer si llega ICE.',
-    images: ['https://icewhistle.app/images/og-image.png'],
+    images: ['https://icewhistle.app/images/og-image.png?v=2'],
   },
   robots: {
     index: true,
