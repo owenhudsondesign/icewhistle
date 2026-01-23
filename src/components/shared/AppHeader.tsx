@@ -244,11 +244,12 @@ export function AppHeader({ showBack, backHref = '/', title, subtitle }: AppHead
       {/* iOS Install Instructions Modal */}
       {showIOSModal && (
         <div
-          className="fixed inset-0 z-[100] bg-black/50 backdrop-blur-sm flex items-center justify-center p-4"
+          className="fixed inset-0 z-[100] bg-black/50 backdrop-blur-sm flex items-start justify-center pt-20 pb-4 px-4 overflow-y-auto"
+          style={{ paddingTop: 'max(5rem, env(safe-area-inset-top, 5rem))' }}
           onClick={() => setShowIOSModal(false)}
         >
           <div
-            className="w-full max-w-sm bg-background rounded-2xl p-6 shadow-xl border border-border max-h-[90vh] overflow-y-auto"
+            className="w-full max-w-sm bg-background rounded-2xl p-6 shadow-xl border border-border"
             onClick={(e) => e.stopPropagation()}
           >
             <h3 className="text-lg font-semibold mb-4">{t.iosTitle}</h3>
