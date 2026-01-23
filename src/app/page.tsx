@@ -358,6 +358,13 @@ export default function Home() {
           <LegalDisclaimer variant="compact" className="mt-3 pt-3 border-t border-border/30" />
           <div className="mt-3 pt-3 border-t border-border/30 flex flex-wrap items-center justify-center gap-3">
             <Link
+              href="/about"
+              className="text-xs text-muted-foreground hover:text-foreground transition-colors"
+            >
+              About
+            </Link>
+            <span className="text-xs text-muted-foreground">•</span>
+            <Link
               href="/privacy"
               className="text-xs text-muted-foreground hover:text-foreground transition-colors"
             >

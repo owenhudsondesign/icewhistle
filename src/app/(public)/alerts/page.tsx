@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useCallback, Suspense, useRef } from 'react'
 import { useSearchParams } from 'next/navigation'
+import Link from 'next/link'
 import { Alert as AlertType, AlertMapBounds, ALERT_TYPES } from '@/types/alert'
 import { AlertMap } from '@/components/alerts/AlertMap'
 import { ReportAlertModal } from '@/components/alerts/ReportAlertModal'
@@ -308,6 +309,9 @@ function AlertsPageContent() {
             <Clock className="h-3 w-3" />
             {t.autoExpire8hr}
           </span>
+          <Link href="/about" className="text-[#00A6B4] hover:underline">
+            How it works
+          </Link>
         </div>
       </div>
 
