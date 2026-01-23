@@ -1,6 +1,7 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
+import { createPortal } from 'react-dom'
 import Link from 'next/link'
 import Image from 'next/image'
 import { Button } from '@/components/ui/button'
@@ -49,7 +50,12 @@ export function AppHeader({ showBack, backHref = '/', title, subtitle }: AppHead
   const { canInstall, isIOS, isInstalled, promptInstall } = usePWAInstall()
   const [menuOpen, setMenuOpen] = useState(false)
   const [showIOSModal, setShowIOSModal] = useState(false)
+  const [portalRoot, setPortalRoot] = useState<HTMLElement | null>(null)
   const t = installTranslations[language]
+
+  useEffect(() => {
+    setPortalRoot(document.body)
+  }, [])
 
   const handleInstallClick = async () => {
     if (canInstall) {
@@ -63,6 +69,7 @@ export function AppHeader({ showBack, backHref = '/', title, subtitle }: AppHead
   const showInstallButton = canInstall || isIOS
 
   return (
+    <>
     <header className="sticky top-0 z-50 glass-subtle border-b">
       <div className="container mx-auto px-4 py-3">
         <div className="flex items-center justify-between gap-2">
@@ -241,10 +248,12 @@ export function AppHeader({ showBack, backHref = '/', title, subtitle }: AppHead
         </div>
       </div>
 
-      {/* iOS Install Instructions Modal */}
-      {showIOSModal && (
+    </header>
+
+      {/* iOS Install Instructions Modal - rendered via portal to escape header stacking context */}
+      {showIOSModal && portalRoot && createPortal(
         <div
-          className="fixed inset-0 z-[100] bg-black/50 backdrop-blur-sm flex items-start justify-center pt-20 pb-4 px-4 overflow-y-auto"
+          className="fixed inset-0 z-[9999] bg-black/50 backdrop-blur-sm flex items-start justify-center pt-20 pb-4 px-4 overflow-y-auto"
           style={{ paddingTop: 'max(5rem, env(safe-area-inset-top, 5rem))' }}
           onClick={() => setShowIOSModal(false)}
         >
@@ -280,9 +289,10 @@ export function AppHeader({ showBack, backHref = '/', title, subtitle }: AppHead
               {t.close}
             </Button>
           </div>
-        </div>
+        </div>,
+        portalRoot
       )}
-    </header>
+    </>
   )
 }
 
