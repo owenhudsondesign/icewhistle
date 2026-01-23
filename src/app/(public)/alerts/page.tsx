@@ -125,6 +125,15 @@ function AlertsPageContent() {
     longitude: number
     address?: string
     description?: string
+    media?: {
+      type: 'image' | 'video'
+      url: string
+      caption?: string
+      videoId?: string
+      thumbnailUrl?: string
+      durationSeconds?: number
+      fileSizeBytes?: number
+    }[]
   }) => {
     const response = await fetch('/api/alerts', {
       method: 'POST',

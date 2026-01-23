@@ -253,12 +253,34 @@ export function AlertMap({
         })
 
         const typeLabel = language === 'es' ? type.labelEs : language === 'pt' ? type.labelPt : type.label
+
+        // Build media HTML if media exists
+        let mediaHtml = ''
+        if (alert.media && alert.media.length > 0) {
+          const mediaItems = alert.media.slice(0, 3).map(m => {
+            if (m.mediaType === 'video' && m.thumbnailUrl) {
+              return `<div style="position: relative; width: 60px; height: 60px; border-radius: 4px; overflow: hidden; background: #1a1a1a;">
+                <img src="${m.thumbnailUrl}" style="width: 100%; height: 100%; object-fit: cover;" alt="" />
+                <div style="position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; background: rgba(0,0,0,0.3);">
+                  <span style="color: white; font-size: 16px;">▶</span>
+                </div>
+              </div>`
+            } else {
+              return `<div style="width: 60px; height: 60px; border-radius: 4px; overflow: hidden; background: #1a1a1a;">
+                <img src="${m.storageUrl}" style="width: 100%; height: 100%; object-fit: cover;" alt="" />
+              </div>`
+            }
+          }).join('')
+          mediaHtml = `<div style="display: flex; gap: 4px; margin-top: 8px;">${mediaItems}</div>`
+        }
+
         const popup = new mapboxgl.Popup({ offset: 25, closeButton: false })
           .setHTML(`
             <div style="padding: 8px; min-width: 180px; max-width: 250px;">
               <div style="font-weight: 600; color: ${type.markerColor};">${typeLabel}</div>
               ${alert.address ? `<div style="font-size: 12px; color: #666; margin-top: 4px;">${alert.address}</div>` : ''}
               ${alert.description ? `<div style="font-size: 12px; color: #888; margin-top: 6px; padding: 6px; background: rgba(0,0,0,0.05); border-radius: 4px; word-wrap: break-word;">"${alert.description}"</div>` : ''}
+              ${mediaHtml}
               <div style="font-size: 11px; color: #999; margin-top: 4px;">
                 ${isVerified ? t.verified + ' • ' : ''}${alert.verificationCount} ${t.confirmations}
               </div>

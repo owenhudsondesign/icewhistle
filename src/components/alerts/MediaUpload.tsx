@@ -330,7 +330,7 @@ export function MediaUpload({
             >
               {/* Preview */}
               <div className="flex gap-3 p-3">
-                <div className="relative w-20 h-20 rounded-[6px] overflow-hidden bg-muted flex-shrink-0">
+                <div className={`relative w-20 h-20 rounded-[6px] overflow-hidden bg-muted flex-shrink-0 ${item.status === 'ready' ? 'ring-2 ring-[#84CC16]' : ''}`}>
                   {item.type === 'image' ? (
                     <img
                       src={item.previewUrl}
@@ -385,9 +385,18 @@ export function MediaUpload({
                     maxLength={200}
                     disabled={disabled}
                   />
-                  <p className="text-[10px] text-muted-foreground mt-1">
-                    {item.status === 'uploading' && `${t.uploading} ${item.progress}%`}
-                    {item.status === 'ready' && formatFileSize(item.fileSizeBytes || 0)}
+                  <p className="text-[10px] mt-1">
+                    {item.status === 'uploading' && (
+                      <span className="text-muted-foreground">{t.uploading} {item.progress}%</span>
+                    )}
+                    {item.status === 'ready' && (
+                      <span className="text-[#84CC16] font-medium flex items-center gap-1">
+                        ✓ {t.uploadSuccess} ({formatFileSize(item.fileSizeBytes || 0)})
+                      </span>
+                    )}
+                    {item.status === 'pending' && (
+                      <span className="text-muted-foreground">{t.processing}</span>
+                    )}
                     {item.status === 'failed' && (
                       <span className="text-[#DC2626]">{t.uploadFailed}</span>
                     )}
