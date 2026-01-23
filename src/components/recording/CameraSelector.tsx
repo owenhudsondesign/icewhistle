@@ -1,13 +1,9 @@
 'use client'
 
 import { Button } from '@/components/ui/button'
-import { Camera, FlipHorizontal, Layers } from 'lucide-react'
+import { Camera, FlipHorizontal } from 'lucide-react'
 import { cn } from '@/lib/utils'
-import { Capacitor } from '@capacitor/core'
 import type { CameraMode } from '@/stores/recordingStore'
-
-// Dual camera only works reliably on native apps
-const showDualCamera = Capacitor.isNativePlatform()
 
 interface CameraSelectorProps {
   selectedMode: CameraMode
@@ -16,20 +12,16 @@ interface CameraSelectorProps {
   translations?: {
     front: string
     back: string
-    both: string
     frontDesc: string
     backDesc: string
-    bothDesc: string
   }
 }
 
 const defaultTranslations = {
   front: 'Front Camera',
   back: 'Back Camera',
-  both: 'Both Cameras',
   frontDesc: 'Record yourself',
   backDesc: 'Record your surroundings',
-  bothDesc: 'Record both views',
 }
 
 export function CameraSelector({
@@ -38,7 +30,7 @@ export function CameraSelector({
   className,
   translations = defaultTranslations,
 }: CameraSelectorProps) {
-  const allOptions: { mode: CameraMode; icon: typeof Camera; label: string; desc: string }[] = [
+  const options: { mode: CameraMode; icon: typeof Camera; label: string; desc: string }[] = [
     {
       mode: 'back',
       icon: Camera,
@@ -51,18 +43,7 @@ export function CameraSelector({
       label: translations.front,
       desc: translations.frontDesc,
     },
-    {
-      mode: 'both',
-      icon: Layers,
-      label: translations.both,
-      desc: translations.bothDesc,
-    },
   ]
-
-  // Filter out 'both' option on web (only works on native apps)
-  const options = showDualCamera
-    ? allOptions
-    : allOptions.filter((opt) => opt.mode !== 'both')
 
   return (
     <div className={cn('grid grid-cols-1 gap-2', className)}>
@@ -110,16 +91,10 @@ export function CameraSelectorCompact({
   onSelect,
   className,
 }: Omit<CameraSelectorProps, 'translations'>) {
-  const allOptions: { mode: CameraMode; icon: typeof Camera; label: string }[] = [
+  const options: { mode: CameraMode; icon: typeof Camera; label: string }[] = [
     { mode: 'back', icon: Camera, label: 'Back' },
     { mode: 'front', icon: FlipHorizontal, label: 'Front' },
-    { mode: 'both', icon: Layers, label: 'Both' },
   ]
-
-  // Filter out 'both' option on web (only works on native apps)
-  const options = showDualCamera
-    ? allOptions
-    : allOptions.filter((opt) => opt.mode !== 'both')
 
   return (
     <div className={cn('flex gap-2', className)}>

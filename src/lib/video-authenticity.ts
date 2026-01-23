@@ -274,37 +274,44 @@ export function generateFilenames(timestamp: Date, cameraMode: string, mimeType:
 }
 
 /**
- * Detect iOS Safari (not in native app)
+ * Detect mobile browser (not in native app)
  */
-function isIOSWebBrowser(): boolean {
+function isMobileBrowser(): boolean {
   if (typeof navigator === 'undefined') return false
   const ua = navigator.userAgent
-  const isIOS = /iPad|iPhone|iPod/.test(ua) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1)
-  return isIOS && !Capacitor.isNativePlatform()
+  const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(ua) ||
+    (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1)
+  return isMobile && !Capacitor.isNativePlatform()
 }
 
 /**
- * Helper to trigger a download (web fallback)
+ * Helper to save file - uses Share API on mobile for better UX, download on desktop
  */
 async function triggerDownload(blob: Blob, filename: string): Promise<void> {
-  // iOS Safari: Use Web Share API if available (much more reliable)
-  if (isIOSWebBrowser() && navigator.share && navigator.canShare) {
+  // Mobile browsers: Use Web Share API for native share sheet experience
+  if (isMobileBrowser() && navigator.share && navigator.canShare) {
     try {
       const file = new File([blob], filename, { type: blob.type })
       if (navigator.canShare({ files: [file] })) {
         await navigator.share({
           files: [file],
           title: 'ICEwhistle Recording',
+          text: 'Save this recording to your device',
         })
         console.log('Shared via Web Share API')
         return
       }
     } catch (err) {
-      console.warn('Web Share failed, trying fallback:', err)
+      // User cancelled share - that's OK
+      if ((err as Error).name === 'AbortError') {
+        console.log('User cancelled share')
+        return
+      }
+      console.warn('Web Share failed, trying download:', err)
     }
   }
 
-  // Standard download for other browsers
+  // Desktop or fallback: Standard download
   const url = URL.createObjectURL(blob)
   const link = document.createElement('a')
   link.href = url
@@ -364,7 +371,24 @@ async function saveVideoToDevice(blob: Blob, filename: string): Promise<void> {
 }
 
 /**
- * Save video with manifest (saves to photo library on native, downloads on web)
+ * Store manifest in localStorage for later retrieval
+ */
+function storeManifestLocally(manifest: VideoManifest, filename: string): void {
+  try {
+    const stored = localStorage.getItem('icewhistle_manifests') || '[]'
+    const manifests = JSON.parse(stored)
+    manifests.push({ filename, manifest, savedAt: Date.now() })
+    // Keep only last 50 manifests
+    while (manifests.length > 50) manifests.shift()
+    localStorage.setItem('icewhistle_manifests', JSON.stringify(manifests))
+  } catch (e) {
+    console.warn('Could not store manifest:', e)
+  }
+}
+
+/**
+ * Save video with manifest (saves to photo library on native, share/download on web)
+ * Simplified: Only saves the video file, stores manifest locally
  */
 export async function saveVideoWithManifest(
   blob: Blob,
@@ -381,16 +405,11 @@ export async function saveVideoWithManifest(
   const timestamp = new Date(manifest.captureTimestamp)
   const { videoFilename, manifestFilename } = generateFilenames(timestamp, options.cameraMode, blob.type)
 
-  // Save video to device (photo library on native, download on web)
-  await saveVideoToDevice(blob, videoFilename)
+  // Store manifest locally (don't download it - too confusing for users)
+  storeManifestLocally(manifest, videoFilename)
 
-  // For the manifest JSON, always use download since it's not a media file
-  // Only download on web - on native, the video in photos is the priority
-  if (!Capacitor.isNativePlatform()) {
-    await new Promise(resolve => setTimeout(resolve, 500))
-    const manifestBlob = createManifestBlob(manifest)
-    await triggerDownload(manifestBlob, manifestFilename)
-  }
+  // Save video to device
+  await saveVideoToDevice(blob, videoFilename)
 
   return { manifest, videoFilename, manifestFilename }
 }

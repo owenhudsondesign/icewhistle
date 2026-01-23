@@ -56,10 +56,8 @@ const translations = {
     back: 'Back',
     frontCamera: 'Front Camera',
     backCamera: 'Back Camera',
-    bothCameras: 'Both Cameras',
     frontCameraDesc: 'Record yourself',
     backCameraDesc: 'Record your surroundings',
-    bothCamerasDesc: 'Record both views',
   },
   es: {
     title: 'Documenta este encuentro',
@@ -86,10 +84,8 @@ const translations = {
     back: 'Volver',
     frontCamera: 'Cámara frontal',
     backCamera: 'Cámara trasera',
-    bothCameras: 'Ambas cámaras',
     frontCameraDesc: 'Grábate a ti mismo',
     backCameraDesc: 'Graba tu entorno',
-    bothCamerasDesc: 'Graba ambas vistas',
   },
   pt: {
     title: 'Documente este encontro',
@@ -116,10 +112,8 @@ const translations = {
     back: 'Voltar',
     frontCamera: 'Câmera frontal',
     backCamera: 'Câmera traseira',
-    bothCameras: 'Ambas câmeras',
     frontCameraDesc: 'Grave você mesmo',
     backCameraDesc: 'Grave seu ambiente',
-    bothCamerasDesc: 'Grave ambas as vistas',
   },
 }
 
@@ -207,10 +201,8 @@ export function RecordingModal({
   const cameraTranslations = {
     front: t.frontCamera,
     back: t.backCamera,
-    both: t.bothCameras,
     frontDesc: t.frontCameraDesc,
     backDesc: t.backCameraDesc,
-    bothDesc: t.bothCamerasDesc,
   }
 
   // Show saved confirmation
