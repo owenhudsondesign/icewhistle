@@ -3,6 +3,7 @@ import Link from 'next/link'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 import { Button } from '@/components/ui/button'
+import { PageWrapper } from '@/components/shared/PageWrapper'
 import {
   AlertTriangle,
   Home,
@@ -161,7 +162,8 @@ const ifDetainedSteps = [
 
 export default function RightsPage() {
   return (
-    <div className="container mx-auto px-4 py-8 max-w-5xl">
+    <PageWrapper title="Know Your Rights">
+      <div className="container mx-auto px-4 py-8 max-w-5xl">
       <div className="mb-8">
         <h1 className="text-3xl font-bold mb-2">Know Your Rights</h1>
         <p className="text-lg text-muted-foreground">
@@ -417,5 +419,6 @@ export default function RightsPage() {
         </Button>
       </div>
     </div>
+    </PageWrapper>
   )
 }

@@ -6,6 +6,7 @@ import Link from 'next/link'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
+import { AppHeader } from '@/components/shared/AppHeader'
 import {
   AlertTriangle,
   Phone,
@@ -1082,12 +1083,15 @@ function VehicleStopFlow({ location }: { location: string | null }) {
 
 export default function EmergencyPage() {
   return (
-    <Suspense fallback={
-      <div className="container mx-auto px-4 py-8 text-center">
-        <Loader2 className="h-6 w-6 animate-spin mx-auto" />
-      </div>
-    }>
-      <EmergencyContent />
-    </Suspense>
+    <>
+      <AppHeader showBack title="Emergency" />
+      <Suspense fallback={
+        <div className="container mx-auto px-4 py-8 text-center">
+          <Loader2 className="h-6 w-6 animate-spin mx-auto" />
+        </div>
+      }>
+        <EmergencyContent />
+      </Suspense>
+    </>
   )
 }

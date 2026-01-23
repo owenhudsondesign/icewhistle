@@ -3,6 +3,7 @@
 import Link from 'next/link'
 import { Button } from '@/components/ui/button'
 import { useLanguage } from '@/hooks/use-language'
+import { AppHeader } from '@/components/shared/AppHeader'
 import {
   ChevronLeft,
   Shield,
@@ -236,16 +237,11 @@ export default function AboutPage() {
   const t = aboutTranslations[language]
 
   return (
-    <div className="min-h-screen bg-background">
-      <div className="container mx-auto px-4 py-8 max-w-3xl">
-        <Button variant="ghost" asChild className="mb-6">
-          <Link href="/">
-            <ChevronLeft className="h-4 w-4 mr-2" />
-            {t.backToHome}
-          </Link>
-        </Button>
-
-        <div className="flex items-center gap-3 mb-6">
+    <>
+      <AppHeader showBack title={t.title} />
+      <div className="min-h-screen bg-background">
+        <div className="container mx-auto px-4 py-8 max-w-3xl">
+          <div className="flex items-center gap-3 mb-6">
           <div className="p-2 rounded-lg bg-primary/10">
             <Shield className="h-6 w-6 text-primary" />
           </div>
@@ -495,5 +491,6 @@ export default function AboutPage() {
         </div>
       </div>
     </div>
+    </>
   )
 }

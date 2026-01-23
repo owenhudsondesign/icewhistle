@@ -8,6 +8,7 @@ import { RecordingIndicator } from '@/components/recording/RecordingIndicator'
 import { useRecordingStore } from '@/stores/recordingStore'
 import { useEnhancedRecording } from '@/hooks/useEnhancedRecording'
 import { useLanguage } from '@/hooks/use-language'
+import { AppHeader } from '@/components/shared/AppHeader'
 import {
   AlertTriangle,
   Phone,
@@ -416,9 +417,11 @@ export default function EncounterPage() {
   }
 
   return (
-    <div className="min-h-screen bg-background pb-8">
-      {/* Recording Indicator - Fixed at top */}
-      <RecordingIndicator onStopClick={handleStopAndSave} />
+    <>
+      <AppHeader showBack title={t.title} />
+      <div className="min-h-screen bg-background pb-8">
+        {/* Recording Indicator - Fixed at top */}
+        <RecordingIndicator onStopClick={handleStopAndSave} />
 
       {/* Save Recording Dialog */}
       {showSaveDialog && recordingBlob && (
@@ -763,5 +766,6 @@ export default function EncounterPage() {
         </div>
       </div>
     </div>
+    </>
   )
 }

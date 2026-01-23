@@ -2,6 +2,7 @@ import { Metadata } from 'next'
 import Link from 'next/link'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
+import { PageWrapper } from '@/components/shared/PageWrapper'
 import {
   FileText,
   Download,
@@ -295,9 +296,10 @@ const vulnerablePopulationResources = [
 
 export default function ResourcesPage() {
   return (
-    <div className="container mx-auto px-4 py-8 max-w-5xl">
-      <div className="mb-8">
-        <h1 className="text-3xl font-bold mb-2">Resources</h1>
+    <PageWrapper title="Resources">
+      <div className="container mx-auto px-4 py-8 max-w-5xl">
+        <div className="mb-8">
+          <h1 className="text-3xl font-bold mb-2">Resources</h1>
         <p className="text-lg text-muted-foreground">
           Legal resources, emergency contacts, and support organizations
         </p>
@@ -675,6 +677,7 @@ export default function ResourcesPage() {
           </div>
         </CardContent>
       </Card>
-    </div>
+      </div>
+    </PageWrapper>
   )
 }

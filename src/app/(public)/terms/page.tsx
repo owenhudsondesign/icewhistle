@@ -1,7 +1,8 @@
 import { Metadata } from 'next'
 import Link from 'next/link'
 import { Button } from '@/components/ui/button'
-import { FileText, ChevronLeft, AlertTriangle } from 'lucide-react'
+import { FileText, AlertTriangle } from 'lucide-react'
+import { PageWrapper } from '@/components/shared/PageWrapper'
 
 export const metadata: Metadata = {
   title: 'Terms of Service',
@@ -13,16 +14,10 @@ export default function TermsOfServicePage() {
   const effectiveDate = 'January 21, 2026'
 
   return (
-    <div className="min-h-screen bg-background">
-      <div className="container mx-auto px-4 py-8 max-w-3xl">
-        <Button variant="ghost" asChild className="mb-6">
-          <Link href="/">
-            <ChevronLeft className="h-4 w-4 mr-2" />
-            Back to Home
-          </Link>
-        </Button>
-
-        <div className="flex items-center gap-3 mb-6">
+    <PageWrapper title="Terms of Service">
+      <div className="min-h-screen bg-background">
+        <div className="container mx-auto px-4 py-8 max-w-3xl">
+          <div className="flex items-center gap-3 mb-6">
           <div className="p-2 rounded-lg bg-primary/10">
             <FileText className="h-6 w-6 text-primary" />
           </div>
@@ -317,7 +312,8 @@ export default function TermsOfServicePage() {
             </p>
           </section>
         </div>
+        </div>
       </div>
-    </div>
+    </PageWrapper>
   )
 }
