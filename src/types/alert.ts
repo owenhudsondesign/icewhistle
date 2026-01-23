@@ -14,6 +14,15 @@ export type AlertType =
 
 export type AlertStatus = 'unverified' | 'verified' | 'disputed' | 'resolved' | 'expired'
 
+export interface AlertMediaItem {
+  id: string
+  mediaType: 'image' | 'video'
+  storageUrl: string
+  thumbnailUrl?: string
+  caption?: string
+  durationSeconds?: number
+}
+
 export interface Alert {
   id: string
   latitude: number
@@ -28,6 +37,7 @@ export interface Alert {
   occurredAt: string
   expiresAt: string
   resolvedAt?: string
+  media?: AlertMediaItem[]
   // Computed on client
   timeAgo?: string
   distance?: number

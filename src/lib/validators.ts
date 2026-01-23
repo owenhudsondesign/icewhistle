@@ -20,6 +20,19 @@ export const alertStatusSchema = z.enum([
   'expired',
 ])
 
+// Media item schema for alert submissions
+export const alertMediaSchema = z.object({
+  type: z.enum(['image', 'video']),
+  url: z.string().url(),
+  caption: z.string().max(200).optional(),
+  videoId: z.string().optional(),
+  thumbnailUrl: z.string().url().optional(),
+  durationSeconds: z.number().int().positive().optional(),
+  fileSizeBytes: z.number().int().positive().optional(),
+})
+
+export type AlertMedia = z.infer<typeof alertMediaSchema>
+
 // Alert submission schema
 export const alertSubmissionSchema = z.object({
   latitude: z.number().min(-90).max(90),
@@ -28,6 +41,7 @@ export const alertSubmissionSchema = z.object({
   address: z.string().max(200).optional(),
   description: z.string().max(500).optional(),
   occurredAt: z.string().datetime().optional(),
+  media: z.array(alertMediaSchema).max(3).optional(),
 })
 
 export type AlertSubmission = z.infer<typeof alertSubmissionSchema>

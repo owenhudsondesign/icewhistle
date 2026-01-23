@@ -3,6 +3,7 @@
 import { useState } from 'react'
 import { Alert, ALERT_TYPES, getTimeAgo, getDistanceMiles } from '@/types/alert'
 import { Button } from '@/components/ui/button'
+import { AlertMedia } from './AlertMedia'
 import {
   AlertTriangle,
   Building2,
@@ -16,7 +17,8 @@ import {
   Clock,
   Users,
   ChevronRight,
-  ThumbsUp
+  ThumbsUp,
+  Image as ImageIcon
 } from 'lucide-react'
 
 interface AlertFeedProps {
@@ -146,6 +148,21 @@ export function AlertFeed({
                   <p className="text-caption text-muted-foreground mt-1 line-clamp-2">
                     {alert.description}
                   </p>
+                )}
+
+                {/* Media (photos/videos) */}
+                {alert.media && alert.media.length > 0 && (
+                  <div className="mt-2" onClick={(e) => e.stopPropagation()}>
+                    <AlertMedia
+                      media={alert.media.map((m) => ({
+                        type: m.mediaType,
+                        url: m.storageUrl,
+                        caption: m.caption,
+                        thumbnailUrl: m.thumbnailUrl,
+                        durationSeconds: m.durationSeconds,
+                      }))}
+                    />
+                  </div>
                 )}
 
                 {alert.address && (

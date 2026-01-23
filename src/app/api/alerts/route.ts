@@ -58,6 +58,17 @@ export async function GET(request: NextRequest) {
         occurredAt: true,
         expiresAt: true,
         resolvedAt: true,
+        media: {
+          where: { status: 'ready' },
+          select: {
+            id: true,
+            mediaType: true,
+            storageUrl: true,
+            thumbnailUrl: true,
+            caption: true,
+            durationSeconds: true,
+          },
+        },
       },
     })
 
@@ -85,7 +96,7 @@ export async function POST(request: NextRequest) {
       )
     }
 
-    const { latitude, longitude, alertType, address, description, occurredAt } = result.data
+    const { latitude, longitude, alertType, address, description, occurredAt, media } = result.data
 
     // Apply fuzzy location for privacy (~100m precision)
     const fuzzyLat = fuzzyLocation(latitude)
@@ -97,6 +108,7 @@ export async function POST(request: NextRequest) {
     // Get session ID from header if available (optional, for rate limiting)
     const sessionId = request.headers.get('x-session-id')
 
+    // Create alert with media if provided
     const alert = await prisma.alert.create({
       data: {
         latitude: fuzzyLat,
@@ -109,6 +121,19 @@ export async function POST(request: NextRequest) {
         reporterSessionId: sessionId,
         status: 'unverified',
         verificationCount: 1, // Reporter counts as first verification
+        // Create associated media records (anonymous - no user data)
+        media: media && media.length > 0 ? {
+          create: media.map((m) => ({
+            mediaType: m.type,
+            storageUrl: m.url,
+            thumbnailUrl: m.thumbnailUrl,
+            caption: m.caption,
+            bunnyId: m.videoId,
+            durationSeconds: m.durationSeconds,
+            fileSizeBytes: m.fileSizeBytes,
+            status: 'ready',
+          })),
+        } : undefined,
       },
       select: {
         id: true,
@@ -123,6 +148,16 @@ export async function POST(request: NextRequest) {
         reportedAt: true,
         occurredAt: true,
         expiresAt: true,
+        media: {
+          select: {
+            id: true,
+            mediaType: true,
+            storageUrl: true,
+            thumbnailUrl: true,
+            caption: true,
+            durationSeconds: true,
+          },
+        },
       },
     })
 
