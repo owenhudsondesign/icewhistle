@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from 'next'
 import { Plus_Jakarta_Sans } from 'next/font/google'
 import { Providers } from '@/components/providers/Providers'
+import { BottomNav, AppWrapper } from '@/components/shared/BottomNav'
 import './globals.css'
 
 const plusJakarta = Plus_Jakarta_Sans({
@@ -287,7 +288,10 @@ export default function RootLayout({
       </head>
       <body className={`${plusJakarta.className} ${plusJakarta.variable} antialiased`}>
         <Providers>
-          {children}
+          <AppWrapper>
+            {children}
+          </AppWrapper>
+          <BottomNav />
         </Providers>
       </body>
     </html>

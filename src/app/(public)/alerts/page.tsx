@@ -2,20 +2,16 @@
 
 import { useState, useEffect, useCallback, Suspense, useRef } from 'react'
 import { useSearchParams } from 'next/navigation'
-import Link from 'next/link'
 import { Alert as AlertType, AlertMapBounds, ALERT_TYPES } from '@/types/alert'
 import { AlertMap } from '@/components/alerts/AlertMap'
 import { ReportAlertModal } from '@/components/alerts/ReportAlertModal'
 import { AppHeader } from '@/components/shared/AppHeader'
 import { useLanguage, commonTranslations } from '@/hooks/use-language'
-import { Button } from '@/components/ui/button'
 import {
   AlertTriangle,
   Plus,
   RefreshCw,
-  Shield,
   Clock,
-  MapPin,
   Building2,
   Home,
   Car,
@@ -159,7 +155,7 @@ function AlertsPageContent() {
   }, [searchParams])
 
   return (
-    <div className="min-h-screen bg-background pb-20">
+    <div className="min-h-screen bg-background">
       <AppHeader
         showBack
         title={t.liveAlerts}
@@ -293,27 +289,6 @@ function AlertsPageContent() {
           </>
         )}
       </main>
-
-      {/* Privacy Footer - Glass Design */}
-      <div className="fixed bottom-0 left-0 right-0 glass-subtle border-t py-2 px-4">
-        <div className="flex items-center justify-center gap-4 text-small text-muted-foreground">
-          <span className="flex items-center gap-1">
-            <Shield className="h-3 w-3" />
-            {t.anonymous}
-          </span>
-          <span className="flex items-center gap-1">
-            <MapPin className="h-3 w-3" />
-            {t.precision100m}
-          </span>
-          <span className="flex items-center gap-1">
-            <Clock className="h-3 w-3" />
-            {t.autoExpire8hr}
-          </span>
-          <Link href="/about" className="text-[#00A6B4] hover:underline">
-            How it works
-          </Link>
-        </div>
-      </div>
 
       {/* Report Modal */}
       <ReportAlertModal
