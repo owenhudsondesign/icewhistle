@@ -22,6 +22,103 @@ import {
 } from 'lucide-react'
 import { AlertType, ALERT_TYPES, fuzzyLocation } from '@/types/alert'
 import { Geolocation } from '@capacitor/geolocation'
+import { useLanguage } from '@/hooks/use-language'
+
+const modalTranslations = {
+  en: {
+    reportIceActivity: 'Report ICE activity',
+    helpCommunity: 'Help your community stay safe',
+    anonymous: 'Anonymous',
+    noTracking: 'No accounts. No tracking. Location rounded to ~500m for privacy.',
+    whatType: 'What type of activity?',
+    whereHappening: 'Where is this happening?',
+    useCurrentLocation: 'Use my current location',
+    approximateLocation: 'Approximate location only (~500m precision)',
+    or: 'or',
+    enterAddress: 'Enter address, intersection, or landmark',
+    addressHint: 'Enter a street address, cross streets, or business name',
+    find: 'Find',
+    back: 'Back',
+    reporting: 'Reporting:',
+    currentLocationApprox: 'Current location (approximate)',
+    additionalDetails: 'What did you see? (optional)',
+    notePlaceholder: 'E.g., 3 officers, 2 unmarked vehicles, heading north on Main St...',
+    submitReport: 'Submit report',
+    submitting: 'Submitting your report...',
+    reportSubmitted: 'Report submitted',
+    thankYou: 'Thank you for helping keep your community safe.',
+    locationDenied: 'Location permission was denied. Please allow location access in your device settings, or enter an address instead.',
+    locationUnavailable: 'Could not determine your location. Please make sure location services are enabled on your device, or enter an address instead.',
+    locationTimeout: 'Location request timed out. Please try again or enter an address instead.',
+    locationError: 'Could not get your location. Please enter an address instead.',
+    addressError: 'Could not find that address. Please try again.',
+    geocodeError: 'Error looking up address. Please try again.',
+    submitError: 'Failed to submit report. Please try again.',
+    enterAddressError: 'Please enter an address',
+  },
+  es: {
+    reportIceActivity: 'Reportar actividad de ICE',
+    helpCommunity: 'Ayuda a tu comunidad a mantenerse segura',
+    anonymous: 'Anónimo',
+    noTracking: 'Sin cuentas. Sin rastreo. Ubicación redondeada a ~500m para privacidad.',
+    whatType: '¿Qué tipo de actividad?',
+    whereHappening: '¿Dónde está pasando?',
+    useCurrentLocation: 'Usar mi ubicación actual',
+    approximateLocation: 'Solo ubicación aproximada (~500m de precisión)',
+    or: 'o',
+    enterAddress: 'Ingresa dirección, intersección o lugar',
+    addressHint: 'Ingresa una dirección, calles cruzadas o nombre de negocio',
+    find: 'Buscar',
+    back: 'Atrás',
+    reporting: 'Reportando:',
+    currentLocationApprox: 'Ubicación actual (aproximada)',
+    additionalDetails: '¿Qué viste? (opcional)',
+    notePlaceholder: 'Ej., 3 oficiales, 2 vehículos sin marcar, yendo al norte por la calle Main...',
+    submitReport: 'Enviar reporte',
+    submitting: 'Enviando tu reporte...',
+    reportSubmitted: 'Reporte enviado',
+    thankYou: 'Gracias por ayudar a mantener segura a tu comunidad.',
+    locationDenied: 'El permiso de ubicación fue denegado. Por favor permite el acceso a la ubicación en la configuración de tu dispositivo, o ingresa una dirección.',
+    locationUnavailable: 'No se pudo determinar tu ubicación. Asegúrate de que los servicios de ubicación estén habilitados, o ingresa una dirección.',
+    locationTimeout: 'La solicitud de ubicación expiró. Intenta de nuevo o ingresa una dirección.',
+    locationError: 'No se pudo obtener tu ubicación. Por favor ingresa una dirección.',
+    addressError: 'No se encontró esa dirección. Por favor intenta de nuevo.',
+    geocodeError: 'Error al buscar la dirección. Por favor intenta de nuevo.',
+    submitError: 'Error al enviar el reporte. Por favor intenta de nuevo.',
+    enterAddressError: 'Por favor ingresa una dirección',
+  },
+  pt: {
+    reportIceActivity: 'Reportar atividade do ICE',
+    helpCommunity: 'Ajude sua comunidade a se manter segura',
+    anonymous: 'Anônimo',
+    noTracking: 'Sem contas. Sem rastreamento. Localização arredondada para ~500m para privacidade.',
+    whatType: 'Que tipo de atividade?',
+    whereHappening: 'Onde está acontecendo?',
+    useCurrentLocation: 'Usar minha localização atual',
+    approximateLocation: 'Apenas localização aproximada (~500m de precisão)',
+    or: 'ou',
+    enterAddress: 'Digite endereço, cruzamento ou ponto de referência',
+    addressHint: 'Digite um endereço, ruas cruzadas ou nome do estabelecimento',
+    find: 'Buscar',
+    back: 'Voltar',
+    reporting: 'Reportando:',
+    currentLocationApprox: 'Localização atual (aproximada)',
+    additionalDetails: 'O que você viu? (opcional)',
+    notePlaceholder: 'Ex., 3 oficiais, 2 veículos sem identificação, indo para o norte na Rua Main...',
+    submitReport: 'Enviar relatório',
+    submitting: 'Enviando seu relatório...',
+    reportSubmitted: 'Relatório enviado',
+    thankYou: 'Obrigado por ajudar a manter sua comunidade segura.',
+    locationDenied: 'A permissão de localização foi negada. Por favor, permita o acesso à localização nas configurações do seu dispositivo, ou digite um endereço.',
+    locationUnavailable: 'Não foi possível determinar sua localização. Certifique-se de que os serviços de localização estejam habilitados, ou digite um endereço.',
+    locationTimeout: 'A solicitação de localização expirou. Tente novamente ou digite um endereço.',
+    locationError: 'Não foi possível obter sua localização. Por favor, digite um endereço.',
+    addressError: 'Não foi possível encontrar esse endereço. Por favor, tente novamente.',
+    geocodeError: 'Erro ao buscar o endereço. Por favor, tente novamente.',
+    submitError: 'Falha ao enviar o relatório. Por favor, tente novamente.',
+    enterAddressError: 'Por favor, digite um endereço',
+  },
+}
 
 interface ReportAlertModalProps {
   isOpen: boolean
@@ -63,6 +160,8 @@ export function ReportAlertModal({
   onSubmit,
   initialLocation
 }: ReportAlertModalProps) {
+  const { language } = useLanguage()
+  const t = modalTranslations[language]
   const [step, setStep] = useState<'type' | 'location' | 'details' | 'submitting' | 'success'>('type')
   const [alertType, setAlertType] = useState<AlertType | null>(null)
   const [locationMethod, setLocationMethod] = useState<'gps' | 'address' | null>(null)
@@ -95,7 +194,7 @@ export function ReportAlertModal({
       const permissionStatus = await Geolocation.requestPermissions()
 
       if (permissionStatus.location === 'denied') {
-        setError('Location permission was denied. Please allow location access in your device settings, or enter an address instead.')
+        setError(t.locationDenied)
         setIsGettingLocation(false)
         return
       }
@@ -116,13 +215,13 @@ export function ReportAlertModal({
     } catch (err) {
       const errorMessage = err instanceof Error ? err.message : 'Unknown error'
       if (errorMessage.includes('denied') || errorMessage.includes('permission')) {
-        setError('Location permission was denied. Please allow location access in your device settings, or enter an address instead.')
+        setError(t.locationDenied)
       } else if (errorMessage.includes('unavailable') || errorMessage.includes('disabled')) {
-        setError('Could not determine your location. Please make sure location services are enabled on your device, or enter an address instead.')
+        setError(t.locationUnavailable)
       } else if (errorMessage.includes('timeout')) {
-        setError('Location request timed out. Please try again or enter an address instead.')
+        setError(t.locationTimeout)
       } else {
-        setError('Could not get your location. Please enter an address instead.')
+        setError(t.locationError)
       }
     } finally {
       setIsGettingLocation(false)
@@ -131,7 +230,7 @@ export function ReportAlertModal({
 
   const handleGeocodeAddress = async () => {
     if (!address.trim()) {
-      setError('Please enter an address')
+      setError(t.enterAddressError)
       return
     }
 
@@ -154,10 +253,10 @@ export function ReportAlertModal({
         setLocationMethod('address')
         setStep('details')
       } else {
-        setError('Could not find that address. Please try again.')
+        setError(t.addressError)
       }
     } catch (err) {
-      setError('Error looking up address. Please try again.')
+      setError(t.geocodeError)
     } finally {
       setIsGeocoding(false)
     }
@@ -181,7 +280,7 @@ export function ReportAlertModal({
         onClose()
       }, 2000)
     } catch (err) {
-      setError('Failed to submit report. Please try again.')
+      setError(t.submitError)
       setStep('details')
     }
   }
@@ -206,8 +305,8 @@ export function ReportAlertModal({
                 <AlertTriangle className="h-5 w-5 text-[#DC2626]" strokeWidth={2} />
               </div>
               <div>
-                <h2 className="text-headline">Report ICE activity</h2>
-                <p className="text-small text-muted-foreground">Help your community stay safe</p>
+                <h2 className="text-headline">{t.reportIceActivity}</h2>
+                <p className="text-small text-muted-foreground">{t.helpCommunity}</p>
               </div>
             </div>
             <button onClick={onClose} className="text-muted-foreground hover:text-foreground press-scale" aria-label="Close">
@@ -219,8 +318,7 @@ export function ReportAlertModal({
           <div className="flex items-start gap-2 p-3 bg-[#00A6B4]/10 rounded-[8px]">
             <Lock className="h-4 w-4 text-[#00A6B4] mt-0.5 flex-shrink-0" strokeWidth={2} />
             <p className="text-small text-muted-foreground">
-              <strong className="text-foreground">Anonymous</strong> — No accounts. No tracking.
-              Location rounded to ~500m for privacy.
+              <strong className="text-foreground">{t.anonymous}</strong> — {t.noTracking}
             </p>
           </div>
         </div>
@@ -228,7 +326,7 @@ export function ReportAlertModal({
         {/* Step 1: Select Alert Type */}
         {step === 'type' && (
           <div className="space-y-4">
-            <Label className="text-caption font-semibold">What type of activity?</Label>
+            <Label className="text-caption font-semibold">{t.whatType}</Label>
             <div className="grid grid-cols-2 gap-3">
               {ALERT_TYPE_OPTIONS.map(({ type, icon }) => {
                 const info = ALERT_TYPES[type]
@@ -260,14 +358,14 @@ export function ReportAlertModal({
             <div className="flex items-center gap-2 mb-4">
               <Button variant="ghost" size="sm" onClick={() => setStep('type')} className="rounded-[8px] press-scale">
                 <ChevronLeft className="h-4 w-4 mr-1" strokeWidth={2} />
-                Back
+                {t.back}
               </Button>
               <span className="text-small text-muted-foreground">
-                Reporting: {alertType && ALERT_TYPES[alertType].label}
+                {t.reporting} {alertType && (language === 'es' ? ALERT_TYPES[alertType].labelEs : language === 'pt' ? ALERT_TYPES[alertType].labelPt : ALERT_TYPES[alertType].label)}
               </span>
             </div>
 
-            <Label className="text-caption font-semibold">Where is this happening?</Label>
+            <Label className="text-caption font-semibold">{t.whereHappening}</Label>
 
             <div className="space-y-3">
               <button
@@ -281,9 +379,9 @@ export function ReportAlertModal({
                   <Crosshair className="h-5 w-5 text-[#00A6B4]" strokeWidth={2} />
                 )}
                 <div>
-                  <div className="text-caption font-semibold">Use my current location</div>
+                  <div className="text-caption font-semibold">{t.useCurrentLocation}</div>
                   <div className="text-small text-muted-foreground">
-                    Approximate location only (~500m precision)
+                    {t.approximateLocation}
                   </div>
                 </div>
               </button>
@@ -293,7 +391,7 @@ export function ReportAlertModal({
                   <div className="w-full border-t" />
                 </div>
                 <div className="relative flex justify-center text-small uppercase">
-                  <span className="bg-card px-2 text-muted-foreground">or</span>
+                  <span className="bg-card px-2 text-muted-foreground">{t.or}</span>
                 </div>
               </div>
 
@@ -302,7 +400,7 @@ export function ReportAlertModal({
                   <div className="relative flex-1">
                     <MapPin className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" strokeWidth={2} />
                     <Input
-                      placeholder="Enter address, intersection, or landmark"
+                      placeholder={t.enterAddress}
                       value={address}
                       onChange={(e) => setAddress(e.target.value)}
                       className="pl-10 h-12 rounded-[8px]"
@@ -314,11 +412,11 @@ export function ReportAlertModal({
                     disabled={isGeocoding || !address.trim()}
                     className="h-12 px-6 rounded-[8px] bg-[#00A6B4] hover:bg-[#00A6B4]/90 text-white"
                   >
-                    {isGeocoding ? <Loader2 className="h-4 w-4 animate-spin" /> : 'Find'}
+                    {isGeocoding ? <Loader2 className="h-4 w-4 animate-spin" /> : t.find}
                   </Button>
                 </div>
                 <p className="text-small text-muted-foreground">
-                  Enter a street address, cross streets, or business name
+                  {t.addressHint}
                 </p>
               </div>
             </div>
@@ -337,7 +435,7 @@ export function ReportAlertModal({
             <div className="flex items-center gap-2 mb-4">
               <Button variant="ghost" size="sm" onClick={() => setStep('location')} className="rounded-[8px] press-scale">
                 <ChevronLeft className="h-4 w-4 mr-1" strokeWidth={2} />
-                Back
+                {t.back}
               </Button>
             </div>
 
@@ -347,21 +445,23 @@ export function ReportAlertModal({
                 <div className={TYPE_COLORS[alertType!].text}>
                   {ALERT_TYPE_OPTIONS.find(o => o.type === alertType)?.icon}
                 </div>
-                <span className="text-caption font-semibold">{ALERT_TYPES[alertType!].label}</span>
+                <span className="text-caption font-semibold">
+                  {language === 'es' ? ALERT_TYPES[alertType!].labelEs : language === 'pt' ? ALERT_TYPES[alertType!].labelPt : ALERT_TYPES[alertType!].label}
+                </span>
               </div>
               <div className="flex items-center gap-2 text-small text-muted-foreground">
                 <MapPin className="h-4 w-4" strokeWidth={2} />
-                {locationMethod === 'address' ? address : 'Current location (approximate)'}
+                {locationMethod === 'address' ? address : t.currentLocationApprox}
               </div>
             </div>
 
             {/* Optional description */}
             <div className="space-y-2">
               <Label className="text-caption font-semibold">
-                Additional details (optional)
+                {t.additionalDetails}
               </Label>
               <textarea
-                placeholder="E.g., Number of officers, vehicles, direction of movement..."
+                placeholder={t.notePlaceholder}
                 value={description}
                 onChange={(e) => setDescription(e.target.value)}
                 className="w-full min-h-[100px] p-3 rounded-[8px] border bg-background resize-none focus:outline-none focus:ring-2 focus:ring-[#00A6B4] text-body"
@@ -383,7 +483,7 @@ export function ReportAlertModal({
               className="w-full h-12 rounded-[8px] bg-[#DC2626] hover:bg-[#DC2626]/90 text-white press-scale"
             >
               <AlertTriangle className="h-4 w-4 mr-2" strokeWidth={2} />
-              Submit report
+              {t.submitReport}
             </Button>
           </div>
         )}
@@ -392,7 +492,7 @@ export function ReportAlertModal({
         {step === 'submitting' && (
           <div className="py-8 text-center">
             <Loader2 className="h-8 w-8 animate-spin mx-auto mb-4 text-[#00A6B4]" />
-            <p className="text-caption text-muted-foreground">Submitting your report...</p>
+            <p className="text-caption text-muted-foreground">{t.submitting}</p>
           </div>
         )}
 
@@ -402,9 +502,9 @@ export function ReportAlertModal({
             <div className="w-16 h-16 rounded-full bg-[#84CC16]/20 flex items-center justify-center mx-auto mb-4">
               <CheckCircle className="h-8 w-8 text-[#84CC16]" strokeWidth={2} />
             </div>
-            <h3 className="text-headline mb-2">Report submitted</h3>
+            <h3 className="text-headline mb-2">{t.reportSubmitted}</h3>
             <p className="text-caption text-muted-foreground">
-              Thank you for helping keep your community safe.
+              {t.thankYou}
             </p>
           </div>
         )}

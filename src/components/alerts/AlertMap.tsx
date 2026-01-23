@@ -255,9 +255,10 @@ export function AlertMap({
         const typeLabel = language === 'es' ? type.labelEs : language === 'pt' ? type.labelPt : type.label
         const popup = new mapboxgl.Popup({ offset: 25, closeButton: false })
           .setHTML(`
-            <div style="padding: 8px; min-width: 180px;">
+            <div style="padding: 8px; min-width: 180px; max-width: 250px;">
               <div style="font-weight: 600; color: ${type.markerColor};">${typeLabel}</div>
               ${alert.address ? `<div style="font-size: 12px; color: #666; margin-top: 4px;">${alert.address}</div>` : ''}
+              ${alert.description ? `<div style="font-size: 12px; color: #888; margin-top: 6px; padding: 6px; background: rgba(0,0,0,0.05); border-radius: 4px; word-wrap: break-word;">"${alert.description}"</div>` : ''}
               <div style="font-size: 11px; color: #999; margin-top: 4px;">
                 ${isVerified ? t.verified + ' • ' : ''}${alert.verificationCount} ${t.confirmations}
               </div>
