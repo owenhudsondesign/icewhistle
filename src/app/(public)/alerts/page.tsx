@@ -4,6 +4,7 @@ import { useState, useEffect, useCallback, Suspense, useRef } from 'react'
 import { useSearchParams } from 'next/navigation'
 import { Alert as AlertType, AlertMapBounds, ALERT_TYPES } from '@/types/alert'
 import { AlertMap } from '@/components/alerts/AlertMap'
+import { AlertFeed } from '@/components/alerts/AlertFeed'
 import { ReportAlertModal } from '@/components/alerts/ReportAlertModal'
 import { AppHeader } from '@/components/shared/AppHeader'
 import { useLanguage, commonTranslations } from '@/hooks/use-language'
@@ -17,7 +18,9 @@ import {
   Car,
   Train,
   ShieldAlert,
-  CheckCircle
+  CheckCircle,
+  Map,
+  List
 } from 'lucide-react'
 
 function AlertsPageContent() {
@@ -34,6 +37,7 @@ function AlertsPageContent() {
   const [showReportModal, setShowReportModal] = useState(false)
   const [reportType, setReportType] = useState<string | null>(null)
   const [lastRefresh, setLastRefresh] = useState<Date>(new Date())
+  const [viewMode, setViewMode] = useState<'map' | 'feed'>('map')
 
   // Get user location on mount
   useEffect(() => {
@@ -249,22 +253,66 @@ function AlertsPageContent() {
               </div>
             </div>
 
+            {/* View Toggle */}
+            <div className="flex items-center justify-between mb-4">
+              <h2 className="text-small font-semibold text-muted-foreground uppercase tracking-wide">
+                {viewMode === 'map' ? t.mapView : t.listView}
+              </h2>
+              <div className="flex bg-muted rounded-[8px] p-1">
+                <button
+                  onClick={() => setViewMode('map')}
+                  className={`flex items-center gap-1.5 px-3 py-1.5 rounded-[6px] text-small font-medium transition-colors ${
+                    viewMode === 'map'
+                      ? 'bg-background text-foreground shadow-sm'
+                      : 'text-muted-foreground hover:text-foreground'
+                  }`}
+                >
+                  <Map className="h-4 w-4" />
+                  {t.mapView}
+                </button>
+                <button
+                  onClick={() => setViewMode('feed')}
+                  className={`flex items-center gap-1.5 px-3 py-1.5 rounded-[6px] text-small font-medium transition-colors ${
+                    viewMode === 'feed'
+                      ? 'bg-background text-foreground shadow-sm'
+                      : 'text-muted-foreground hover:text-foreground'
+                  }`}
+                >
+                  <List className="h-4 w-4" />
+                  {t.listView}
+                </button>
+              </div>
+            </div>
+
             {/* Map View */}
-            <div className="rounded-[16px] overflow-hidden border shadow-lg">
-              <AlertMap
+            {viewMode === 'map' && (
+              <div className="rounded-[16px] overflow-hidden border shadow-lg">
+                <AlertMap
+                  alerts={alerts}
+                  userLocation={userLocation}
+                  onMapMove={handleMapMove}
+                  onAlertClick={handleAlertClick}
+                  onVerifyAlert={handleVerifyAlert}
+                  selectedAlertId={selectedAlertId}
+                  onUserLocationUpdate={setUserLocation}
+                  className="h-[50vh] min-h-[400px]"
+                />
+              </div>
+            )}
+
+            {/* Feed View */}
+            {viewMode === 'feed' && (
+              <AlertFeed
                 alerts={alerts}
                 userLocation={userLocation}
-                onMapMove={handleMapMove}
                 onAlertClick={handleAlertClick}
                 onVerifyAlert={handleVerifyAlert}
                 selectedAlertId={selectedAlertId}
-                onUserLocationUpdate={setUserLocation}
-                className="h-[50vh] min-h-[400px]"
               />
-            </div>
+            )}
 
-            {/* Recent Alerts Preview */}
-            {alerts.length > 0 && (
+            {/* Recent Alerts Preview - only show in map view */}
+            {viewMode === 'map' && alerts.length > 0 && (
               <div className="mt-5">
                 <h2 className="text-small font-semibold text-muted-foreground uppercase tracking-wide mb-3">{t.recentReports}</h2>
                 <div className="flex gap-3 overflow-x-auto pb-2 -mx-4 px-4">
