@@ -16,7 +16,9 @@ import {
   Briefcase,
   Globe,
   Shield,
-  Building
+  Building,
+  MapPin,
+  Smartphone
 } from 'lucide-react'
 
 export const metadata: Metadata = {
@@ -391,6 +393,102 @@ export default function ResourcesPage() {
               </CardContent>
             </Card>
           ))}
+        </div>
+      </section>
+
+      {/* Live Location Sharing */}
+      <section className="mb-12">
+        <h2 className="text-2xl font-semibold mb-4 flex items-center gap-2">
+          <MapPin className="h-6 w-6 text-primary" />
+          Live Location Sharing
+        </h2>
+        <p className="text-muted-foreground mb-4">
+          During an emergency, share your real-time location with trusted family members or friends using apps you already have. We recommend setting this up <strong>before</strong> an emergency happens.
+        </p>
+        <div className="grid gap-4 sm:grid-cols-2">
+          {/* WhatsApp */}
+          <Card>
+            <CardHeader className="pb-2">
+              <CardTitle className="text-lg flex items-center gap-2">
+                <Smartphone className="h-5 w-5 text-green-600" />
+                WhatsApp
+              </CardTitle>
+              <CardDescription>Share for 15 min, 1 hr, or 8 hrs</CardDescription>
+            </CardHeader>
+            <CardContent className="text-sm space-y-2">
+              <ol className="list-decimal list-inside space-y-1 text-muted-foreground">
+                <li>Open a chat with your trusted contact</li>
+                <li>Tap the <strong>+</strong> (attach) button</li>
+                <li>Select <strong>Location</strong> → <strong>Share live location</strong></li>
+                <li>Choose duration and tap <strong>Send</strong></li>
+              </ol>
+            </CardContent>
+          </Card>
+
+          {/* Signal */}
+          <Card>
+            <CardHeader className="pb-2">
+              <CardTitle className="text-lg flex items-center gap-2">
+                <Smartphone className="h-5 w-5 text-blue-600" />
+                Signal
+              </CardTitle>
+              <CardDescription>Most private option - encrypted</CardDescription>
+            </CardHeader>
+            <CardContent className="text-sm space-y-2">
+              <ol className="list-decimal list-inside space-y-1 text-muted-foreground">
+                <li>Open a chat with your trusted contact</li>
+                <li>Tap the <strong>+</strong> button next to the message field</li>
+                <li>Select <strong>Location</strong></li>
+                <li>Choose to share once or as live location</li>
+              </ol>
+            </CardContent>
+          </Card>
+
+          {/* Google Maps */}
+          <Card>
+            <CardHeader className="pb-2">
+              <CardTitle className="text-lg flex items-center gap-2">
+                <Smartphone className="h-5 w-5 text-red-500" />
+                Google Maps
+              </CardTitle>
+              <CardDescription>Works on Android & iPhone</CardDescription>
+            </CardHeader>
+            <CardContent className="text-sm space-y-2">
+              <ol className="list-decimal list-inside space-y-1 text-muted-foreground">
+                <li>Open Google Maps and tap your profile picture</li>
+                <li>Select <strong>Location sharing</strong></li>
+                <li>Tap <strong>Share location</strong> and choose duration</li>
+                <li>Select contacts to share with via text or email</li>
+              </ol>
+            </CardContent>
+          </Card>
+
+          {/* Find My */}
+          <Card>
+            <CardHeader className="pb-2">
+              <CardTitle className="text-lg flex items-center gap-2">
+                <Smartphone className="h-5 w-5 text-gray-600" />
+                Find My (Apple)
+              </CardTitle>
+              <CardDescription>iPhone, iPad, Mac only</CardDescription>
+            </CardHeader>
+            <CardContent className="text-sm space-y-2">
+              <ol className="list-decimal list-inside space-y-1 text-muted-foreground">
+                <li>Open the <strong>Find My</strong> app</li>
+                <li>Go to the <strong>People</strong> tab</li>
+                <li>Tap <strong>Start Sharing Location</strong></li>
+                <li>Enter contact name and tap <strong>Send</strong></li>
+              </ol>
+              <p className="text-xs text-muted-foreground mt-2">
+                Tip: Go to Settings → [Your Name] → Find My to enable "Share My Location"
+              </p>
+            </CardContent>
+          </Card>
+        </div>
+        <div className="mt-4 p-4 bg-primary/5 rounded-lg border border-primary/20">
+          <p className="text-sm">
+            <strong>Tip:</strong> Set up location sharing with a trusted contact <em>now</em> so it's ready when you need it. Practice with a family member so everyone knows how to use it.
+          </p>
         </div>
       </section>
 
