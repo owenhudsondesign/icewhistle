@@ -80,6 +80,9 @@ model Alert {
   alertType       String    // "ice_raid", "ice_checkpoint", "ice_vehicle", "ice_transit", "ice_workplace", "ice_residence", "unconfirmed", "all_clear"
   description     String?
 
+  // Media (anonymous uploads via Bunny.net)
+  media           AlertMedia[]
+
   // Verification
   status          String    @default("unverified") // "unverified", "verified", "disputed", "resolved", "expired"
   verificationCount Int     @default(0)            // Number of confirmations from other users
@@ -101,6 +104,33 @@ model Alert {
   @@index([status, reportedAt])
   @@index([alertType])
   @@index([expiresAt])
+}
+
+// Anonymous media attachments for alerts (Bunny.net storage)
+model AlertMedia {
+  id              String    @id @default(cuid())
+  alertId         String
+  alert           Alert     @relation(fields: [alertId], references: [id], onDelete: Cascade)
+
+  // Media type
+  mediaType       String    // "image", "video"
+
+  // Bunny.net references (no user data stored)
+  bunnyId         String?   // Bunny Stream video GUID (for videos)
+  storageUrl      String    // Bunny Storage URL (for images) or Bunny Stream HLS URL (for videos)
+  thumbnailUrl    String?   // Video thumbnail or image thumbnail
+
+  // Metadata (no EXIF - stripped client-side)
+  caption         String?
+  durationSeconds Int?      // Video duration
+  fileSizeBytes   Int?
+
+  // Status
+  status          String    @default("processing") // "processing", "ready", "failed"
+  createdAt       DateTime  @default(now())
+
+  @@index([alertId])
+  @@index([status])
 }
 
 // Legal resource directory (public data)
