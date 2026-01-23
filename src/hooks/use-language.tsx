@@ -151,7 +151,7 @@ export const commonTranslations = {
     // Recording feature
     recordingFeature: 'Built-in Recording',
     recordingFeatureDesc: 'Document encounters with video or audio. Each recording includes a cryptographic signature proving it was captured in real-time — not AI-generated or edited.',
-    recordingFeature1: 'Front, back, or dual camera',
+    recordingFeature1: 'Front or back camera',
     recordingFeature2: 'Cryptographic authenticity proof',
     recordingFeature3: 'Admissible documentation',
 
@@ -296,7 +296,7 @@ export const commonTranslations = {
     // Recording feature
     recordingFeature: 'Grabación Integrada',
     recordingFeatureDesc: 'Documenta encuentros con video o audio. Cada grabación incluye una firma criptográfica que prueba que fue capturada en tiempo real — no generada por IA ni editada.',
-    recordingFeature1: 'Cámara frontal, trasera o dual',
+    recordingFeature1: 'Cámara frontal o trasera',
     recordingFeature2: 'Prueba de autenticidad criptográfica',
     recordingFeature3: 'Documentación admisible',
 
@@ -441,7 +441,7 @@ export const commonTranslations = {
     // Recording feature
     recordingFeature: 'Gravação Integrada',
     recordingFeatureDesc: 'Documente encontros com vídeo ou áudio. Cada gravação inclui uma assinatura criptográfica provando que foi capturada em tempo real — não gerada por IA nem editada.',
-    recordingFeature1: 'Câmera frontal, traseira ou dual',
+    recordingFeature1: 'Câmera frontal ou traseira',
     recordingFeature2: 'Prova de autenticidade criptográfica',
     recordingFeature3: 'Documentação admissível',
 
