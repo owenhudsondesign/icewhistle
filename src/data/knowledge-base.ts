@@ -509,6 +509,148 @@ export const knowledgeBase: KnowledgeEntry[] = [
     keywords: ['documents', 'records', 'papers', 'safe', 'copy', 'store', 'important'],
     priority: 8
   },
+
+  // === NEW: ASYLUM & PROTECTION ===
+  {
+    id: 'asylum-basics',
+    category: 'legal',
+    title: 'Asylum Basics',
+    content: 'Asylum is protection for people who have fled persecution based on race, religion, nationality, political opinion, or membership in a particular social group. You must apply within 1 year of arrival in the US (with some exceptions). There are two types: affirmative asylum (apply before deportation proceedings) and defensive asylum (in immigration court). You have the right to an attorney, but the government does not provide one. Contact legal aid organizations like NIJC or CLINIC for help.',
+    keywords: ['asylum', 'persecution', 'protection', 'refugee', 'fear', 'country', 'apply'],
+    priority: 9
+  },
+  {
+    id: 'credible-fear',
+    category: 'detention',
+    title: 'Credible Fear Interviews',
+    content: 'If you are detained and express fear of returning to your country, you may receive a credible fear interview. This is your chance to explain why you fear persecution. You have the right to: a translator, review of a negative decision by an immigration judge, contact an attorney before the interview. Prepare by: writing down what happened to you, remembering dates and details, explaining who harmed you and why. Contact Freedom for Immigrants or NIJC for guidance.',
+    keywords: ['credible fear', 'interview', 'asylum', 'persecution', 'detained', 'fear'],
+    phones: ['1-888-351-4024'],
+    priority: 9
+  },
+  {
+    id: 'expedited-removal',
+    category: 'legal',
+    title: 'Expedited Removal',
+    content: 'Expedited removal allows rapid deportation without a hearing before a judge for people who: entered without inspection, have been in the US less than 2 years, or are at or near the border. If you fear persecution, tell the officer immediately - you may be entitled to a credible fear interview. Do NOT sign voluntary departure forms. You have limited rights but can still request asylum protection.',
+    keywords: ['expedited', 'removal', 'deportation', 'border', 'quick', 'fast'],
+    priority: 8
+  },
+
+  // === NEW: LGBTQ+ SPECIFIC ===
+  {
+    id: 'lgbtq-immigration',
+    category: 'vulnerable',
+    title: 'LGBTQ+ Immigration Rights',
+    content: 'LGBTQ+ individuals may have unique immigration options: asylum based on persecution for sexual orientation or gender identity, same-sex spouse petitions, and transgender-specific considerations. Immigration Equality provides free legal services specifically for LGBTQ+ immigrants. If detained, you have the right to be housed according to your gender identity and to receive necessary medical care.',
+    keywords: ['LGBTQ', 'gay', 'lesbian', 'transgender', 'bisexual', 'queer', 'sexual orientation', 'gender identity'],
+    phones: ['917-654-9696'],
+    urls: ['https://immigrationequality.org'],
+    priority: 9
+  },
+  {
+    id: 'lgbtq-detention',
+    category: 'detention',
+    title: 'LGBTQ+ Rights in Detention',
+    content: 'If you are LGBTQ+ and detained: You have the right to be housed according to your gender identity. You can request protective custody if you face harassment. You have the right to necessary medical care including hormone therapy. Contact Immigration Equality for legal help specifically for LGBTQ+ detainees: (917) 654-9696, available Mon/Wed 9:30am-5:30pm ET, Tue 11am-5:30pm ET.',
+    keywords: ['LGBTQ', 'detention', 'transgender', 'housing', 'protection', 'medical'],
+    phones: ['917-654-9696'],
+    priority: 9
+  },
+
+  // === NEW: RAPID RESPONSE ===
+  {
+    id: 'rapid-response-networks',
+    category: 'emergency',
+    title: 'Rapid Response Networks',
+    content: 'Rapid response networks are community organizations that respond to immigration enforcement in real-time. They can: send legal observers to document enforcement, connect families with legal help, provide accompaniment and support. Contact Immigrant Defense Project for information about local rapid response networks. Report enforcement activity to United We Dream MigraWatch: 1-844-363-1423.',
+    keywords: ['rapid response', 'network', 'community', 'help', 'enforcement', 'observers'],
+    phones: ['1-844-363-1423'],
+    urls: ['https://immigrantdefenseproject.org'],
+    priority: 9
+  },
+  {
+    id: 'icewatch-raids-map',
+    category: 'emergency',
+    title: 'ICEWatch Raids Tracking',
+    content: 'ICEWatch by Immigrant Defense Project tracks reported immigration enforcement activities across the US. Community members can report and view enforcement sightings in their area. Check the ICEWatch map to stay informed about activity near you. Report enforcement to help your community stay safe.',
+    keywords: ['ICEWatch', 'raids', 'map', 'tracking', 'enforcement', 'sightings', 'report'],
+    urls: ['https://immigrantdefenseproject.org/icewatch'],
+    priority: 8
+  },
+
+  // === NEW: STATE POLICIES ===
+  {
+    id: 'sanctuary-new-york',
+    category: 'resources',
+    title: 'New York Immigrant Protections',
+    content: 'New York has multiple immigrant protections: NYC is a sanctuary city limiting cooperation with ICE. The New York State TRUST Act limits state and local cooperation with ICE detainers. New York courts are designated as sensitive locations. Contact Immigrant Defense Project (NYC-based) for New York-specific legal help.',
+    keywords: ['new york', 'NYC', 'sanctuary', 'TRUST', 'state', 'city', 'protection'],
+    urls: ['https://immigrantdefenseproject.org'],
+    priority: 7
+  },
+  {
+    id: 'sanctuary-texas-info',
+    category: 'resources',
+    title: 'Texas Immigration Enforcement',
+    content: 'Texas has stricter enforcement policies including SB4 which requires local law enforcement to cooperate with ICE. Know your rights carefully in Texas. RAICES (Refugee and Immigrant Center for Education and Legal Services) is based in Texas and provides legal services across 5 Texas cities. Contact RAICES at 1-833-RAICES (1-833-372-4237).',
+    keywords: ['texas', 'SB4', 'enforcement', 'RAICES', 'legal help'],
+    phones: ['1-833-372-4237'],
+    urls: ['https://raicestexas.org'],
+    priority: 7
+  },
+
+  // === NEW: DETENTION RESOURCES ===
+  {
+    id: 'detention-facilities-map',
+    category: 'detention',
+    title: 'Detention Facilities Map',
+    content: 'Freedom for Immigrants maintains an interactive map of 200+ immigration detention facilities across the US. The map shows ICE contracts, average bond amounts, and facility information. Use it to understand the detention landscape and find where someone may be held. If you cannot find someone, use the ICE Detainee Locator: 1-888-351-4024.',
+    keywords: ['detention', 'facilities', 'map', 'jail', 'ICE', 'where', 'held', 'prison'],
+    phones: ['1-888-351-4024'],
+    urls: ['https://freedomforimmigrants.org/map'],
+    priority: 8
+  },
+  {
+    id: 'detention-hotline',
+    category: 'detention',
+    title: 'National Immigration Detention Hotline',
+    content: 'Freedom for Immigrants operates the largest national hotline for detained immigrants. They provide: emotional support, information about your rights in detention, help connecting with legal services, and visitation programs. If you or someone you know is in detention, contact Freedom for Immigrants for support.',
+    keywords: ['detention', 'hotline', 'jail', 'help', 'support', 'detainee'],
+    urls: ['https://freedomforimmigrants.org'],
+    priority: 9
+  },
+
+  // === NEW: LEGAL RESOURCES ===
+  {
+    id: 'find-legal-help',
+    category: 'legal',
+    title: 'Find Free Immigration Legal Help',
+    content: 'Several organizations help you find free or low-cost immigration legal services: Informed Immigrant has a "Find Legal Help" directory searchable by location. CLINIC (Catholic Legal Immigration Network) has 400+ nonprofit programs nationwide. AILA (American Immigration Lawyers Association) has an attorney finder. Never pay for legal advice from "notarios" - only licensed attorneys can represent you.',
+    keywords: ['lawyer', 'attorney', 'legal', 'help', 'free', 'find', 'directory', 'search'],
+    urls: ['https://informedimmigrant.com', 'https://cliniclegal.org', 'https://aila.org'],
+    priority: 10
+  },
+  {
+    id: 'bond-fund-finder',
+    category: 'detention',
+    title: 'Find Bond Funds Near You',
+    content: 'Immigration bonds average $8,176 and can be difficult for families to pay. Community bond funds help pay bonds for detained immigrants. The National Bail Fund Network helps you find local bond funds in your area. Other funds include: Black Immigrants Bail Fund, LGBTQ Freedom Fund, and Freedom for Immigrants Bond Fund.',
+    keywords: ['bond', 'bail', 'fund', 'money', 'pay', 'help', 'detained', 'release'],
+    urls: ['https://communitybailout.org', 'https://blackimmigrantsbailfund.org', 'https://lgbtqfund.org'],
+    priority: 9
+  },
+
+  // === NEW: KNOW YOUR RIGHTS TRAININGS ===
+  {
+    id: 'kyr-trainings',
+    category: 'resources',
+    title: 'Know Your Rights Community Trainings',
+    content: 'Several organizations offer Know Your Rights trainings for communities: Immigrant Legal Resource Center (ILRC) offers train-the-trainer programs. United We Dream has community education resources. Immigrant Defense Project provides rapid response training. Informed Immigrant has downloadable guides and toolkits. Share these resources with your community to help everyone stay prepared.',
+    keywords: ['training', 'workshop', 'community', 'education', 'learn', 'teach', 'prepare'],
+    urls: ['https://ilrc.org', 'https://unitedwedream.org', 'https://informedimmigrant.com'],
+    priority: 7
+  },
 ]
 
 // Categories for filtering

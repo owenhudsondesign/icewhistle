@@ -80,6 +80,24 @@ const printableResources = [
     url: 'https://www.informedimmigrant.com/guides/power-of-attorney/',
     external: true,
   },
+  {
+    title: 'ICE Raids Toolkit (IDP)',
+    description: 'Step-by-step guidance during enforcement activities',
+    url: 'https://www.immigrantdefenseproject.org/raids-toolkit/',
+    external: true,
+  },
+  {
+    title: 'DACA Renewal Guide (Informed Immigrant)',
+    description: 'How to renew DACA and advance parole information',
+    url: 'https://www.informedimmigrant.com/guides/daca/',
+    external: true,
+  },
+  {
+    title: '"We Have Rights" Videos',
+    description: 'Know your rights videos in 8 languages',
+    url: 'https://weareheretostay.org',
+    external: true,
+  },
 ]
 
 // Updated with comprehensive hotline list from PDFs
@@ -145,6 +163,29 @@ const emergencyHotlines = [
     description: 'Legal assistance and referrals',
     available: 'Mon-Fri 9am-5pm CT',
   },
+  {
+    name: 'Immigration Equality (LGBTQ+)',
+    phone: '917-654-9696',
+    description: 'LGBTQ+ immigration legal services',
+    available: 'Mon/Wed 9:30am-5:30pm, Tue 11am-5:30pm ET',
+    url: 'https://immigrationequality.org',
+    priority: true,
+  },
+  {
+    name: 'RAICES Texas',
+    phone: '1-833-372-4237',
+    description: 'Legal services across 5 Texas cities',
+    available: 'Mon-Fri 9am-5pm CT',
+    url: 'https://raicestexas.org',
+  },
+  {
+    name: 'Freedom for Immigrants',
+    phone: '9233#',
+    description: 'Call from detention (free)',
+    available: '24/7',
+    url: 'https://freedomforimmigrants.org',
+    isDetention: true,
+  },
 ]
 
 const organizationCategories = [
@@ -159,6 +200,19 @@ const organizationCategories = [
       { name: 'American Immigration Lawyers Association', url: 'https://aila.org', description: 'Find a licensed attorney' },
       { name: 'National Immigration Law Center', url: 'https://nilc.org', description: 'Policy and legal expertise' },
       { name: 'Immigrant Legal Resource Center (ILRC)', url: 'https://ilrc.org', description: 'Red Cards and training' },
+      { name: 'Informed Immigrant', url: 'https://informedimmigrant.com', description: 'Find Legal Help directory' },
+      { name: 'RAICES Texas', url: 'https://raicestexas.org', description: 'Texas legal services, 5 cities' },
+    ],
+  },
+  {
+    id: 'rapid-response',
+    title: 'Rapid Response & Enforcement Tracking',
+    icon: AlertTriangle,
+    description: 'Real-time community support and tracking',
+    organizations: [
+      { name: 'Immigrant Defense Project', url: 'https://immigrantdefenseproject.org', description: 'Rapid response network, ICEWatch map' },
+      { name: 'United We Dream MigraWatch', url: 'https://unitedwedream.org', description: 'Report enforcement: 1-844-363-1423' },
+      { name: 'Freedom for Immigrants', url: 'https://freedomforimmigrants.org', description: 'Detention map, 200+ facilities tracked' },
     ],
   },
   {
