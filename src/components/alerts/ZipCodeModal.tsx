@@ -20,6 +20,7 @@ const translations = {
     notFound: 'Zip code not found',
     saving: 'Saving...',
     privacyNote: 'Your zip code is stored only on this device',
+    iosNote: 'Push notifications require iOS 16.4 or later',
     useCurrentLocation: 'Use my current location',
   },
   es: {
@@ -34,6 +35,7 @@ const translations = {
     notFound: 'Código postal no encontrado',
     saving: 'Guardando...',
     privacyNote: 'Tu código postal se guarda solo en este dispositivo',
+    iosNote: 'Las notificaciones push requieren iOS 16.4 o posterior',
     useCurrentLocation: 'Usar mi ubicación actual',
   },
   pt: {
@@ -48,6 +50,7 @@ const translations = {
     notFound: 'CEP não encontrado',
     saving: 'Salvando...',
     privacyNote: 'Seu CEP é armazenado apenas neste dispositivo',
+    iosNote: 'Notificações push requerem iOS 16.4 ou posterior',
     useCurrentLocation: 'Usar minha localização atual',
   },
 }
@@ -187,9 +190,10 @@ export function ZipCodeModal({ isOpen, onClose, onLocationSet }: ZipCodeModalPro
             <p className="text-small text-[#DC2626] text-center">{error}</p>
           )}
 
-          <p className="text-[11px] text-muted-foreground text-center">
-            {t.privacyNote}
-          </p>
+          <div className="text-[11px] text-muted-foreground text-center space-y-1">
+            <p>{t.privacyNote}</p>
+            <p className="text-amber-500">{t.iosNote}</p>
+          </div>
 
           {/* Buttons */}
           <div className="flex gap-2">
