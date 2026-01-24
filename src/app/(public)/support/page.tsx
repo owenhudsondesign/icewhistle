@@ -36,7 +36,7 @@ export default function SupportPage() {
 
   return (
     <div className="min-h-screen bg-background">
-      <AppHeader showBack title={t.supportTitle} />
+      <AppHeader showBack />
 
       <main className="container mx-auto px-4 py-8 max-w-2xl">
         {/* Header */}

@@ -8,16 +8,39 @@ import { useLanguage } from '@/hooks/use-language'
 import { cn } from '@/lib/utils'
 import { Capacitor } from '@capacitor/core'
 
-// Wrapper that adds bottom padding only in native app
-export function AppWrapper({ children }: { children: ReactNode }) {
-  const [isNative, setIsNative] = useState(false)
+// Check if running as installed PWA or native app
+function useIsAppMode() {
+  const [isAppMode, setIsAppMode] = useState(false)
 
   useEffect(() => {
-    setIsNative(Capacitor.isNativePlatform())
+    // Check if native Capacitor app
+    if (Capacitor.isNativePlatform()) {
+      setIsAppMode(true)
+      return
+    }
+
+    // Check if PWA installed (standalone mode)
+    if (window.matchMedia('(display-mode: standalone)').matches) {
+      setIsAppMode(true)
+      return
+    }
+
+    // Check iOS standalone (added to home screen)
+    if ((navigator as any).standalone === true) {
+      setIsAppMode(true)
+      return
+    }
   }, [])
 
+  return isAppMode
+}
+
+// Wrapper that adds bottom padding in app mode (native or PWA)
+export function AppWrapper({ children }: { children: ReactNode }) {
+  const isAppMode = useIsAppMode()
+
   return (
-    <div className={isNative ? 'pb-20' : ''}>
+    <div className={isAppMode ? 'pb-20' : ''}>
       {children}
     </div>
   )
@@ -54,15 +77,10 @@ export function BottomNav() {
   const pathname = usePathname()
   const { language } = useLanguage()
   const t = navTranslations[language]
-  const [isNative, setIsNative] = useState(false)
+  const isAppMode = useIsAppMode()
 
-  useEffect(() => {
-    // Only show bottom nav in native Capacitor app
-    setIsNative(Capacitor.isNativePlatform())
-  }, [])
-
-  // Don't render on web
-  if (!isNative) return null
+  // Only render in app mode (native or installed PWA)
+  if (!isAppMode) return null
 
   const tabs = [
     { href: '/', icon: Home, label: t.home },

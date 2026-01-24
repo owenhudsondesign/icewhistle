@@ -238,7 +238,7 @@ export default function AboutPage() {
 
   return (
     <>
-      <AppHeader showBack title={t.title} />
+      <AppHeader showBack />
       <div className="min-h-screen bg-background">
         <div className="container mx-auto px-4 py-8 max-w-3xl">
           <div className="flex items-center gap-3 mb-6">

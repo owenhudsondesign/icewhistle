@@ -82,36 +82,25 @@ export function AppHeader({ showBack, backHref = '/', title, subtitle }: AppHead
                 </Button>
               </Link>
             )}
-            {title ? (
-              <div>
-                <h1 className="text-headline flex items-center gap-2">
-                  {title}
-                </h1>
-                {subtitle && (
-                  <p className="text-small text-muted-foreground">{subtitle}</p>
-                )}
-              </div>
-            ) : (
-              <Link href="/" className="flex items-center press-scale">
-                {/* Show white logo in dark mode, dark logo in light mode */}
-                <Image
-                  src="/images/icewhistle-logo-white.svg"
-                  alt="ICEwhistle"
-                  width={140}
-                  height={32}
-                  className="h-6 sm:h-8 w-auto dark:block hidden"
-                  priority
-                />
-                <Image
-                  src="/images/icewhistle-logo-dark.svg"
-                  alt="ICEwhistle"
-                  width={140}
-                  height={32}
-                  className="h-6 sm:h-8 w-auto dark:hidden block"
-                  priority
-                />
-              </Link>
-            )}
+            <Link href="/" className="flex items-center press-scale">
+              {/* Show white logo in dark mode, dark logo in light mode */}
+              <Image
+                src="/images/icewhistle-logo-white.svg"
+                alt="ICEwhistle"
+                width={140}
+                height={32}
+                className="h-6 sm:h-8 w-auto dark:block hidden"
+                priority
+              />
+              <Image
+                src="/images/icewhistle-logo-dark.svg"
+                alt="ICEwhistle"
+                width={140}
+                height={32}
+                className="h-6 sm:h-8 w-auto dark:hidden block"
+                priority
+              />
+            </Link>
           </div>
 
           {/* Center - Language Selector (Compact on mobile) */}
