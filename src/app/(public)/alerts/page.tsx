@@ -201,13 +201,14 @@ function AlertsPageContent() {
 
   return (
     <div className="min-h-screen bg-background">
-      <AppHeader
-        showBack
-        title={t.liveAlerts}
-        subtitle={`${alerts.length} ${t.active} • ${formatTimeAgo(lastRefresh, t)}`}
-      />
+      <AppHeader showBack />
 
       <main className="container mx-auto px-4 py-4">
+        {/* Page Title */}
+        <div className="mb-4">
+          <h1 className="text-xl font-bold">{t.liveAlerts}</h1>
+          <p className="text-sm text-muted-foreground">{alerts.length} {t.active} • {formatTimeAgo(lastRefresh, t)}</p>
+        </div>
         {/* Location Indicator */}
         <button
           onClick={() => setShowZipModal(true)}

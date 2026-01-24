@@ -1,11 +1,11 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { createPortal } from 'react-dom'
 import Link from 'next/link'
 import Image from 'next/image'
 import { Button } from '@/components/ui/button'
-import { Moon, Sun, ChevronLeft, Menu, X, MessageCircleQuestion, Download, Share, Plus } from 'lucide-react'
+import { Moon, Sun, ChevronLeft, Download, Share, Plus } from 'lucide-react'
 import { useTheme } from '@/hooks/use-theme'
 import { useLanguage } from '@/hooks/use-language'
 import { usePWAInstall } from '@/hooks/use-pwa-install'
@@ -40,15 +40,12 @@ const installTranslations = {
 interface AppHeaderProps {
   showBack?: boolean
   backHref?: string
-  title?: string
-  subtitle?: string
 }
 
-export function AppHeader({ showBack, backHref = '/', title, subtitle }: AppHeaderProps) {
+export function AppHeader({ showBack, backHref = '/' }: AppHeaderProps) {
   const { toggleTheme, isDark, mounted } = useTheme()
   const { language, setLanguage } = useLanguage()
   const { canInstall, isIOS, isInstalled, promptInstall } = usePWAInstall()
-  const [menuOpen, setMenuOpen] = useState(false)
   const [showIOSModal, setShowIOSModal] = useState(false)
   const [portalRoot, setPortalRoot] = useState<HTMLElement | null>(null)
   const t = installTranslations[language]
@@ -63,10 +60,9 @@ export function AppHeader({ showBack, backHref = '/', title, subtitle }: AppHead
     } else if (isIOS) {
       setShowIOSModal(true)
     }
-    setMenuOpen(false)
   }
 
-  const showInstallButton = canInstall || isIOS
+  const showInstallButton = (canInstall || isIOS) && !isInstalled
 
   return (
     <>
@@ -128,111 +124,33 @@ export function AppHeader({ showBack, backHref = '/', title, subtitle }: AppHead
             </div>
           </div>
 
-          {/* Right - Desktop: FAQ & Dark Mode, Mobile: Hamburger */}
+          {/* Right - Install button (desktop only) & Dark Mode Toggle */}
           <div className="flex items-center gap-2 sm:flex-1 justify-end flex-shrink-0">
-            {/* Desktop - Install, FAQ Link & Dark Mode Toggle */}
-            <div className="hidden sm:flex items-center gap-2">
-              {showInstallButton && !isInstalled && (
-                <Button
-                  variant="outline"
-                  onClick={handleInstallClick}
-                  className="h-10 rounded-[8px] border-border/50 press-scale gap-2 px-3"
-                >
-                  <Download className="h-4 w-4 text-[#00A6B4]" strokeWidth={2} />
-                  <span className="text-sm">{t.install}</span>
-                </Button>
-              )}
-              <Link href="/faq">
-                <Button
-                  variant="outline"
-                  size="icon"
-                  className="h-10 w-10 rounded-[8px] border-border/50 press-scale"
-                  aria-label="FAQ"
-                >
-                  <MessageCircleQuestion className="h-5 w-5 text-[#00A6B4]" strokeWidth={2} />
-                </Button>
-              </Link>
+            {/* Install button - desktop only */}
+            {showInstallButton && (
               <Button
                 variant="outline"
-                size="icon"
-                onClick={toggleTheme}
-                className="h-10 w-10 rounded-[8px] border-border/50 press-scale"
-                aria-label={isDark ? 'Switch to light mode' : 'Switch to dark mode'}
+                onClick={handleInstallClick}
+                className="hidden sm:flex h-10 rounded-[8px] border-border/50 press-scale gap-2 px-3"
               >
-                {mounted && isDark ? (
-                  <Sun className="h-5 w-5 text-[#FF8C42]" strokeWidth={2} />
-                ) : (
-                  <Moon className="h-5 w-5 text-[#8B5CF6]" strokeWidth={2} />
-                )}
+                <Download className="h-4 w-4 text-[#00A6B4]" strokeWidth={2} />
+                <span className="text-sm">{t.install}</span>
               </Button>
-            </div>
-
-            {/* Mobile - Hamburger Menu */}
-            <div className="sm:hidden relative">
-              <Button
-                variant="ghost"
-                size="icon"
-                onClick={() => setMenuOpen(!menuOpen)}
-                className="h-10 w-10 rounded-[8px] press-scale"
-                aria-label="Menu"
-              >
-                {menuOpen ? (
-                  <X className="h-5 w-5" strokeWidth={2} />
-                ) : (
-                  <Menu className="h-5 w-5" strokeWidth={2} />
-                )}
-              </Button>
-
-              {/* Dropdown Menu */}
-              {menuOpen && (
-                <>
-                  {/* Backdrop */}
-                  <div
-                    className="fixed inset-0 z-40"
-                    onClick={() => setMenuOpen(false)}
-                  />
-                  {/* Menu Content */}
-                  <div className="absolute right-0 top-12 z-50 w-48 rounded-[12px] border border-border/50 bg-background shadow-lg overflow-hidden">
-                    {showInstallButton && !isInstalled && (
-                      <button
-                        onClick={handleInstallClick}
-                        className="w-full flex items-center gap-3 px-4 py-3 hover:bg-muted/50 transition-colors border-b border-border/30"
-                      >
-                        <Download className="h-4 w-4 text-[#00A6B4]" strokeWidth={2} />
-                        <span className="text-sm font-medium">{t.install}</span>
-                      </button>
-                    )}
-                    <Link
-                      href="/faq"
-                      onClick={() => setMenuOpen(false)}
-                      className="w-full flex items-center gap-3 px-4 py-3 hover:bg-muted/50 transition-colors"
-                    >
-                      <MessageCircleQuestion className="h-4 w-4 text-[#00A6B4]" strokeWidth={2} />
-                      <span className="text-sm">FAQ</span>
-                    </Link>
-                    <button
-                      onClick={() => {
-                        toggleTheme()
-                        setMenuOpen(false)
-                      }}
-                      className="w-full flex items-center gap-3 px-4 py-3 hover:bg-muted/50 transition-colors"
-                    >
-                      {mounted && isDark ? (
-                        <>
-                          <Sun className="h-4 w-4 text-[#FF8C42]" strokeWidth={2} />
-                          <span className="text-sm">Light Mode</span>
-                        </>
-                      ) : (
-                        <>
-                          <Moon className="h-4 w-4 text-[#8B5CF6]" strokeWidth={2} />
-                          <span className="text-sm">Dark Mode</span>
-                        </>
-                      )}
-                    </button>
-                  </div>
-                </>
+            )}
+            {/* Dark mode toggle - always visible */}
+            <Button
+              variant="ghost"
+              size="icon"
+              onClick={toggleTheme}
+              className="h-10 w-10 rounded-[8px] press-scale"
+              aria-label={isDark ? 'Switch to light mode' : 'Switch to dark mode'}
+            >
+              {mounted && isDark ? (
+                <Sun className="h-5 w-5 text-[#FF8C42]" strokeWidth={2} />
+              ) : (
+                <Moon className="h-5 w-5 text-[#8B5CF6]" strokeWidth={2} />
               )}
-            </div>
+            </Button>
           </div>
         </div>
       </div>
