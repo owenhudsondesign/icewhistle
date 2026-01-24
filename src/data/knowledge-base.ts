@@ -996,6 +996,67 @@ export const knowledgeBase: KnowledgeEntry[] = [
     urls: ['https://raicestexas.org'],
     priority: 7
   },
+  {
+    id: 'arizona-phoenix-resources',
+    category: 'resources',
+    title: 'Arizona & Phoenix Immigration Resources',
+    titleEs: 'Recursos de Inmigración en Arizona y Phoenix',
+    titlePt: 'Recursos de Imigração no Arizona e Phoenix',
+    content: 'Arizona has active immigration enforcement. Key Phoenix resources: The Florence Project (firrp.org) provides FREE legal services to detained immigrants. PLAN - Phoenix Legal Action Network (planphx.org) provides FREE legal representation to non-detained immigrants in Maricopa County. Friendly House Immigration Department: (602) 257-1870. For ICE sightings in Phoenix, contact Puente\'s Migra Watch hotline or the National Immigrant Aid Hotline: 1-888-624-4752.',
+    contentEs: 'Arizona tiene aplicación activa de inmigración. Recursos clave en Phoenix: The Florence Project (firrp.org) proporciona servicios legales GRATUITOS a inmigrantes detenidos. PLAN - Phoenix Legal Action Network (planphx.org) proporciona representación legal GRATUITA a inmigrantes no detenidos en el Condado de Maricopa. Departamento de Inmigración de Friendly House: (602) 257-1870. Para avistamientos de ICE en Phoenix, contacta la línea de Migra Watch de Puente o la Línea Nacional de Ayuda a Inmigrantes: 1-888-624-4752.',
+    contentPt: 'Arizona tem aplicação ativa de imigração. Recursos principais em Phoenix: The Florence Project (firrp.org) fornece serviços jurídicos GRATUITOS para imigrantes detidos. PLAN - Phoenix Legal Action Network (planphx.org) fornece representação jurídica GRATUITA para imigrantes não detidos no Condado de Maricopa. Departamento de Imigração da Friendly House: (602) 257-1870. Para avistamentos do ICE em Phoenix, contate a linha Migra Watch do Puente ou a Linha Nacional de Ajuda a Imigrantes: 1-888-624-4752.',
+    keywords: ['arizona', 'phoenix', 'maricopa', 'florence project', 'PLAN', 'puente', 'AZ', 'southwest'],
+    keywordsEs: ['arizona', 'phoenix', 'maricopa', 'florence project', 'PLAN', 'puente', 'AZ', 'suroeste'],
+    keywordsPt: ['arizona', 'phoenix', 'maricopa', 'florence project', 'PLAN', 'puente', 'AZ', 'sudoeste'],
+    phones: ['1-888-624-4752', '602-257-1870'],
+    urls: ['https://firrp.org', 'https://planphx.org'],
+    priority: 8
+  },
+  {
+    id: 'phoenix-florence-project',
+    category: 'legal',
+    title: 'The Florence Project - Free Legal Help (Arizona)',
+    titleEs: 'The Florence Project - Ayuda Legal Gratuita (Arizona)',
+    titlePt: 'The Florence Project - Ajuda Jurídica Gratuita (Arizona)',
+    content: 'The Florence Project provides FREE legal and social services to immigrants facing detention and deportation in Arizona. Without the right to a public defender in immigration court, many face deportation alone. The Florence Project offers: legal education, direct representation for adults and children in detention, social workers for trauma-informed services, and advocacy. They serve people in Arizona detention facilities.',
+    contentEs: 'The Florence Project proporciona servicios legales y sociales GRATUITOS a inmigrantes que enfrentan detención y deportación en Arizona. Sin derecho a un defensor público en la corte de inmigración, muchos enfrentan la deportación solos. The Florence Project ofrece: educación legal, representación directa para adultos y niños en detención, trabajadores sociales para servicios informados por trauma, y abogacía. Sirven a personas en centros de detención de Arizona.',
+    contentPt: 'O Florence Project fornece serviços jurídicos e sociais GRATUITOS para imigrantes que enfrentam detenção e deportação no Arizona. Sem direito a um defensor público no tribunal de imigração, muitos enfrentam a deportação sozinhos. O Florence Project oferece: educação jurídica, representação direta para adultos e crianças em detenção, assistentes sociais para serviços informados por trauma, e advocacia. Eles servem pessoas em centros de detenção do Arizona.',
+    keywords: ['florence project', 'arizona', 'phoenix', 'detention', 'free lawyer', 'legal aid', 'detained', 'deportation defense'],
+    keywordsEs: ['florence project', 'arizona', 'phoenix', 'detención', 'abogado gratis', 'ayuda legal', 'detenido', 'defensa de deportación'],
+    keywordsPt: ['florence project', 'arizona', 'phoenix', 'detenção', 'advogado grátis', 'ajuda jurídica', 'detido', 'defesa de deportação'],
+    urls: ['https://firrp.org'],
+    priority: 9
+  },
+  {
+    id: 'phoenix-plan-legal',
+    category: 'legal',
+    title: 'PLAN - Phoenix Legal Action Network',
+    titleEs: 'PLAN - Red de Acción Legal de Phoenix',
+    titlePt: 'PLAN - Rede de Ação Legal de Phoenix',
+    content: 'PLAN (Phoenix Legal Action Network) provides FREE legal representation in immigration matters to non-detained, low-income immigrants living in Maricopa County or with cases before the Phoenix Immigration Court. There is no free public defender in immigration court - PLAN fills this gap. A non-detained immigrant with an attorney is 5 times more likely to win their case.',
+    contentEs: 'PLAN (Phoenix Legal Action Network) proporciona representación legal GRATUITA en asuntos de inmigración a inmigrantes no detenidos de bajos ingresos que viven en el Condado de Maricopa o con casos ante la Corte de Inmigración de Phoenix. No hay defensor público gratuito en la corte de inmigración - PLAN llena este vacío. Un inmigrante no detenido con un abogado tiene 5 veces más probabilidades de ganar su caso.',
+    contentPt: 'PLAN (Phoenix Legal Action Network) fornece representação jurídica GRATUITA em questões de imigração para imigrantes não detidos de baixa renda que vivem no Condado de Maricopa ou com casos perante o Tribunal de Imigração de Phoenix. Não há defensor público gratuito no tribunal de imigração - PLAN preenche essa lacuna. Um imigrante não detido com um advogado tem 5 vezes mais chances de ganhar seu caso.',
+    keywords: ['PLAN', 'phoenix', 'maricopa', 'free lawyer', 'legal aid', 'immigration court', 'arizona', 'non-detained'],
+    keywordsEs: ['PLAN', 'phoenix', 'maricopa', 'abogado gratis', 'ayuda legal', 'corte de inmigración', 'arizona', 'no detenido'],
+    keywordsPt: ['PLAN', 'phoenix', 'maricopa', 'advogado grátis', 'ajuda jurídica', 'tribunal de imigração', 'arizona', 'não detido'],
+    urls: ['https://planphx.org'],
+    priority: 9
+  },
+  {
+    id: 'phoenix-puente-migra-watch',
+    category: 'emergency',
+    title: 'Phoenix Migra Watch - ICE Sighting Hotline',
+    titleEs: 'Phoenix Migra Watch - Línea de Avistamientos de ICE',
+    titlePt: 'Phoenix Migra Watch - Linha de Avistamentos do ICE',
+    content: 'Puente Human Rights Movement operates the Migra Watch hotline in the Phoenix area. Call to report ICE sightings in your community and help alert others. Confirmed sightings are shared through community networks including the Phoenix Rapid Response Instagram. Over 1,500 trained volunteers take calls and verify reports. For rural Arizona, contact RAZE Protect Our Pueblos: text or call 520-607-0507.',
+    contentEs: 'Puente Human Rights Movement opera la línea Migra Watch en el área de Phoenix. Llama para reportar avistamientos de ICE en tu comunidad y ayudar a alertar a otros. Los avistamientos confirmados se comparten a través de redes comunitarias incluyendo el Instagram de Phoenix Rapid Response. Más de 1,500 voluntarios entrenados toman llamadas y verifican reportes. Para Arizona rural, contacta a RAZE Protect Our Pueblos: mensaje de texto o llamada al 520-607-0507.',
+    contentPt: 'Puente Human Rights Movement opera a linha Migra Watch na área de Phoenix. Ligue para reportar avistamentos do ICE em sua comunidade e ajudar a alertar outros. Avistamentos confirmados são compartilhados através de redes comunitárias incluindo o Instagram do Phoenix Rapid Response. Mais de 1.500 voluntários treinados atendem chamadas e verificam relatórios. Para Arizona rural, contate RAZE Protect Our Pueblos: mensagem de texto ou ligação para 520-607-0507.',
+    keywords: ['phoenix', 'puente', 'migra watch', 'ICE', 'sighting', 'report', 'hotline', 'arizona', 'rapid response', 'raid'],
+    keywordsEs: ['phoenix', 'puente', 'migra watch', 'ICE', 'avistamiento', 'reportar', 'línea', 'arizona', 'respuesta rápida', 'redada'],
+    keywordsPt: ['phoenix', 'puente', 'migra watch', 'ICE', 'avistamento', 'reportar', 'linha', 'arizona', 'resposta rápida', 'batida'],
+    phones: ['520-607-0507'],
+    priority: 9
+  },
 
   // === NEW: DETENTION RESOURCES ===
   {

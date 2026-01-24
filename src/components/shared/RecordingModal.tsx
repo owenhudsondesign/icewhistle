@@ -1,9 +1,10 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { useRouter } from 'next/navigation'
 import { useEnhancedRecording, formatRecordingTime } from '@/hooks/useEnhancedRecording'
 import { useRecordingStore, type CameraMode, type RecordingType } from '@/stores/recordingStore'
+import { recordingManager } from '@/lib/recording-manager'
 import { CameraSelector } from '@/components/recording/CameraSelector'
 import { Button } from '@/components/ui/button'
 import {
@@ -129,6 +130,9 @@ export function RecordingModal({
   const [step, setStep] = useState<ModalStep>('choose-type')
   const [selectedType, setSelectedType] = useState<RecordingType>('video')
   const [selectedCamera, setSelectedCamera] = useState<CameraMode>('back')
+  const [previewStream, setPreviewStream] = useState<MediaStream | null>(null)
+  const [previewError, setPreviewError] = useState(false)
+  const videoRef = useRef<HTMLVideoElement>(null)
 
   const {
     isRecording,
@@ -147,6 +151,46 @@ export function RecordingModal({
   } = useEnhancedRecording()
 
   const store = useRecordingStore()
+
+  // Get camera preview when on camera selection step
+  useEffect(() => {
+    if (step === 'choose-camera' && isOpen) {
+      const facingMode = selectedCamera === 'front' ? 'user' : 'environment'
+      setPreviewError(false)
+
+      recordingManager.getPreviewStream(facingMode).then((stream) => {
+        if (stream) {
+          setPreviewStream(stream)
+          if (videoRef.current) {
+            videoRef.current.srcObject = stream
+          }
+        } else {
+          setPreviewError(true)
+        }
+      })
+    }
+
+    return () => {
+      // Don't stop on camera change, only on leaving camera step
+    }
+  }, [step, selectedCamera, isOpen])
+
+  // Cleanup preview when modal closes or leaves camera step
+  useEffect(() => {
+    if (!isOpen || step !== 'choose-camera') {
+      if (previewStream) {
+        recordingManager.stopPreviewStream()
+        setPreviewStream(null)
+      }
+    }
+  }, [isOpen, step])
+
+  // Attach stream to video element when stream changes
+  useEffect(() => {
+    if (videoRef.current && previewStream) {
+      videoRef.current.srcObject = previewStream
+    }
+  }, [previewStream])
 
   if (!isOpen) return null
 
@@ -312,25 +356,46 @@ export function RecordingModal({
     )
   }
 
-  // Show camera selection
+  // Show camera selection with live preview
   if (step === 'choose-camera') {
     return (
       <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm p-4">
         <div className="card-glass p-6 max-w-sm w-full relative">
           <button
             onClick={onClose}
-            className="absolute top-4 right-4 text-muted-foreground hover:text-foreground press-scale"
+            className="absolute top-4 right-4 z-10 text-muted-foreground hover:text-foreground press-scale"
             aria-label="Close"
           >
             <X className="h-6 w-6" strokeWidth={2} />
           </button>
 
-          <div className="text-center mb-6">
-            <div className="w-16 h-16 rounded-full bg-[#DC2626]/20 flex items-center justify-center mx-auto mb-4">
-              <Camera className="h-8 w-8 text-[#DC2626]" strokeWidth={2} />
-            </div>
+          <div className="text-center mb-4">
             <h2 className="text-title mb-1">{t.chooseCamera}</h2>
             <p className="text-caption text-muted-foreground">{t.chooseCameraDesc}</p>
+          </div>
+
+          {/* Camera Preview */}
+          <div className="relative mb-4 rounded-xl overflow-hidden bg-black aspect-[4/3]">
+            {previewError ? (
+              <div className="absolute inset-0 flex flex-col items-center justify-center text-muted-foreground">
+                <Camera className="h-12 w-12 mb-2 opacity-50" strokeWidth={1.5} />
+                <p className="text-sm">{t.permissionDenied}</p>
+              </div>
+            ) : (
+              <video
+                ref={videoRef}
+                autoPlay
+                playsInline
+                muted
+                className={`w-full h-full object-cover ${selectedCamera === 'front' ? 'scale-x-[-1]' : ''}`}
+              />
+            )}
+            {/* Camera mode badge */}
+            <div className="absolute bottom-2 left-2 bg-black/60 backdrop-blur-sm px-2 py-1 rounded-md">
+              <span className="text-xs text-white font-medium">
+                {selectedCamera === 'front' ? t.frontCamera : t.backCamera}
+              </span>
+            </div>
           </div>
 
           <CameraSelector

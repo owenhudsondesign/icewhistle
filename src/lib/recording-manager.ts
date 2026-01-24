@@ -14,6 +14,7 @@ let primaryRecorder: MediaRecorder | null = null
 let secondaryRecorder: MediaRecorder | null = null
 let primaryStream: MediaStream | null = null
 let secondaryStream: MediaStream | null = null
+let previewStream: MediaStream | null = null
 let primaryChunks: Blob[] = []
 let secondaryChunks: Blob[] = []
 let timerInterval: NodeJS.Timeout | null = null
@@ -211,6 +212,39 @@ function stopAllStreams() {
   }
 }
 
+function stopPreviewStream() {
+  previewStream?.getTracks().forEach(track => track.stop())
+  previewStream = null
+}
+
+/**
+ * Get a preview stream for the camera selector
+ * This is a lightweight stream just for showing the preview
+ */
+async function getPreviewStream(facingMode: 'user' | 'environment'): Promise<MediaStream | null> {
+  // Stop any existing preview
+  stopPreviewStream()
+
+  try {
+    // Use lower resolution for preview to reduce resource usage
+    const constraints: MediaStreamConstraints = {
+      video: {
+        facingMode,
+        width: { ideal: 640, max: 1280 },
+        height: { ideal: 480, max: 720 },
+        frameRate: { ideal: 30 },
+      },
+      audio: false, // No audio needed for preview
+    }
+
+    previewStream = await navigator.mediaDevices.getUserMedia(constraints)
+    return previewStream
+  } catch (err) {
+    console.error('Failed to get preview stream:', err)
+    return null
+  }
+}
+
 /**
  * Find the widest angle camera for a given facing mode
  */
@@ -319,6 +353,9 @@ async function startBrowserRecording(
   cameraMode: CameraMode
 ): Promise<boolean> {
   try {
+    // Stop any preview stream before starting recording
+    stopPreviewStream()
+
     primaryChunks = []
     secondaryChunks = []
 
@@ -554,5 +591,17 @@ export const recordingManager = {
       return recordRTCInstance.state === 'recording' || recordRTCInstance.state === 'paused'
     }
     return primaryRecorder?.state === 'recording' || primaryRecorder?.state === 'paused'
+  },
+
+  async getPreviewStream(facingMode: 'user' | 'environment'): Promise<MediaStream | null> {
+    return getPreviewStream(facingMode)
+  },
+
+  stopPreviewStream() {
+    stopPreviewStream()
+  },
+
+  getActivePreviewStream(): MediaStream | null {
+    return previewStream
   },
 }
