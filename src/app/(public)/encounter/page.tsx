@@ -469,14 +469,14 @@ export default function EncounterPage() {
         </div>
 
         {/* Alert Contacts Button */}
-        <AlertContactsButton className="mb-4" />
+        <AlertContactsButton className="mb-6" />
 
         {/* Quick Action Buttons */}
         <div className="grid grid-cols-2 gap-3 mb-6">
           <Button
             onClick={handleReportICE}
             disabled={reportStatus === 'loading' || reportStatus === 'success' || reportStatus === 'rate_limited'}
-            className={`h-14 text-sm font-semibold ${
+            className={`h-auto min-h-[56px] py-2 text-xs font-semibold ${
               reportStatus === 'success'
                 ? 'bg-[#84CC16] hover:bg-[#84CC16]'
                 : reportStatus === 'rate_limited'
@@ -486,30 +486,30 @@ export default function EncounterPage() {
           >
             {reportStatus === 'loading' ? (
               <>
-                <Loader2 className="h-5 w-5 mr-2 animate-spin" />
-                {t.reporting}
+                <Loader2 className="h-4 w-4 mr-2 animate-spin flex-shrink-0" />
+                <span className="truncate">{t.reporting}</span>
               </>
             ) : reportStatus === 'success' ? (
               <>
-                <Check className="h-5 w-5 mr-2" />
-                {t.reported}
+                <Check className="h-4 w-4 mr-2 flex-shrink-0" />
+                <span className="truncate">{t.reported}</span>
               </>
             ) : reportStatus === 'rate_limited' ? (
               <>
-                <MapPin className="h-5 w-5 mr-2" />
-                {t.rateLimited.replace('{minutes}', cooldownMinutes.toString())}
+                <MapPin className="h-4 w-4 mr-2 flex-shrink-0" />
+                <span className="truncate">{t.rateLimited.replace('{minutes}', cooldownMinutes.toString())}</span>
               </>
             ) : reportStatus === 'error' ? (
               <>
-                <MapPin className="h-5 w-5 mr-2" />
-                {t.locationError}
+                <MapPin className="h-4 w-4 mr-2 flex-shrink-0" />
+                <span className="truncate">{t.locationError}</span>
               </>
             ) : (
               <>
-                <MapPin className="h-5 w-5 mr-2" />
-                <span className="flex flex-col items-start leading-tight">
-                  <span>{t.reportHere}</span>
-                  <span className="text-[10px] font-normal opacity-80">{t.reportHereDesc}</span>
+                <MapPin className="h-4 w-4 mr-2 flex-shrink-0" />
+                <span className="flex flex-col items-start leading-tight min-w-0">
+                  <span className="truncate w-full">{t.reportHere}</span>
+                  <span className="text-[9px] font-normal opacity-80 truncate w-full">{t.reportHereDesc}</span>
                 </span>
               </>
             )}
@@ -517,11 +517,11 @@ export default function EncounterPage() {
           <Button
             asChild
             variant="outline"
-            className="h-14 text-sm font-semibold border-2"
+            className="h-auto min-h-[56px] py-2 text-xs font-semibold border-2"
           >
             <Link href="/alerts">
-              <Map className="h-5 w-5 mr-2" />
-              {t.viewMap}
+              <Map className="h-4 w-4 mr-2 flex-shrink-0" />
+              <span className="truncate">{t.viewMap}</span>
             </Link>
           </Button>
         </div>
@@ -572,41 +572,41 @@ export default function EncounterPage() {
         </Card>
 
         {/* WARRANT COMPARISON */}
-        <div className="grid grid-cols-2 gap-3 mb-4">
+        <div className="grid grid-cols-2 gap-2 mb-4">
           <Card className="border-[#84CC16]/30">
-            <CardHeader className="pb-1 pt-3 px-3 bg-[#84CC16]/10">
-              <CardTitle className="text-[#84CC16] text-sm font-bold">
+            <CardHeader className="pb-1 pt-2 px-2 bg-[#84CC16]/10">
+              <CardTitle className="text-[#84CC16] text-xs font-bold leading-tight break-words">
                 {t.judicialWarrant}
               </CardTitle>
             </CardHeader>
-            <CardContent className="pt-2 px-3 pb-3">
-              <ul className="text-xs space-y-1">
-                <li className="flex items-center gap-1">
-                  <CheckCircle2 className="h-3 w-3 text-[#84CC16]" />
-                  {t.judicialSigned}
+            <CardContent className="pt-2 px-2 pb-2">
+              <ul className="text-[10px] space-y-1">
+                <li className="flex items-start gap-1">
+                  <CheckCircle2 className="h-3 w-3 text-[#84CC16] flex-shrink-0 mt-0.5" />
+                  <span className="break-words">{t.judicialSigned}</span>
                 </li>
-                <li className="flex items-center gap-1">
-                  <CheckCircle2 className="h-3 w-3 text-[#84CC16]" />
-                  {t.judicialCourt}
+                <li className="flex items-start gap-1">
+                  <CheckCircle2 className="h-3 w-3 text-[#84CC16] flex-shrink-0 mt-0.5" />
+                  <span className="break-words">{t.judicialCourt}</span>
                 </li>
               </ul>
             </CardContent>
           </Card>
           <Card className="border-[#DC2626]/30">
-            <CardHeader className="pb-1 pt-3 px-3 bg-[#DC2626]/10">
-              <CardTitle className="text-[#DC2626] text-sm font-bold">
+            <CardHeader className="pb-1 pt-2 px-2 bg-[#DC2626]/10">
+              <CardTitle className="text-[#DC2626] text-xs font-bold leading-tight break-words">
                 {t.iceWarrant}
               </CardTitle>
             </CardHeader>
-            <CardContent className="pt-2 px-3 pb-3">
-              <ul className="text-xs space-y-1">
-                <li className="flex items-center gap-1">
-                  <XCircle className="h-3 w-3 text-[#DC2626]" />
-                  {t.iceSigned}
+            <CardContent className="pt-2 px-2 pb-2">
+              <ul className="text-[10px] space-y-1">
+                <li className="flex items-start gap-1">
+                  <XCircle className="h-3 w-3 text-[#DC2626] flex-shrink-0 mt-0.5" />
+                  <span className="break-words">{t.iceSigned}</span>
                 </li>
-                <li className="flex items-center gap-1">
-                  <XCircle className="h-3 w-3 text-[#DC2626]" />
-                  {t.iceNoEntry}
+                <li className="flex items-start gap-1">
+                  <XCircle className="h-3 w-3 text-[#DC2626] flex-shrink-0 mt-0.5" />
+                  <span className="break-words">{t.iceNoEntry}</span>
                 </li>
               </ul>
             </CardContent>
@@ -622,32 +622,32 @@ export default function EncounterPage() {
             </CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="grid grid-cols-2 gap-3">
-              <div className="p-3 bg-[#00A6B4]/5 rounded-lg">
-                <div className="flex items-center gap-1 mb-2">
-                  <User className="h-4 w-4 text-[#00A6B4]" />
-                  <span className="font-bold text-sm text-[#00A6B4]">{t.driverTitle}</span>
+            <div className="grid grid-cols-2 gap-2">
+              <div className="p-2 bg-[#00A6B4]/5 rounded-lg">
+                <div className="flex items-center gap-1 mb-1.5">
+                  <User className="h-3 w-3 text-[#00A6B4] flex-shrink-0" />
+                  <span className="font-bold text-xs text-[#00A6B4] break-words">{t.driverTitle}</span>
                 </div>
-                <p className="text-xs font-medium mb-1">{t.driverMust}</p>
-                <ul className="text-xs space-y-0.5 text-muted-foreground">
-                  <li>• {t.driverLicense}</li>
-                  <li>• {t.driverReg}</li>
-                  <li>• {t.driverIns}</li>
+                <p className="text-[10px] font-medium mb-1 break-words">{t.driverMust}</p>
+                <ul className="text-[10px] space-y-0.5 text-muted-foreground">
+                  <li className="break-words">• {t.driverLicense}</li>
+                  <li className="break-words">• {t.driverReg}</li>
+                  <li className="break-words">• {t.driverIns}</li>
                 </ul>
-                <p className="text-xs mt-2 text-[#DC2626]">{t.driverNote}</p>
+                <p className="text-[10px] mt-1.5 text-[#DC2626] break-words">{t.driverNote}</p>
               </div>
-              <div className="p-3 bg-[#84CC16]/5 rounded-lg">
-                <div className="flex items-center gap-1 mb-2">
-                  <Users className="h-4 w-4 text-[#84CC16]" />
-                  <span className="font-bold text-sm text-[#84CC16]">{t.passengerTitle}</span>
+              <div className="p-2 bg-[#84CC16]/5 rounded-lg">
+                <div className="flex items-center gap-1 mb-1.5">
+                  <Users className="h-3 w-3 text-[#84CC16] flex-shrink-0" />
+                  <span className="font-bold text-xs text-[#84CC16] break-words">{t.passengerTitle}</span>
                 </div>
-                <p className="text-xs font-medium mb-1">{t.passengerNote}</p>
-                <ul className="text-xs space-y-0.5 text-muted-foreground">
-                  <li>• {t.passengerNoId}</li>
-                  <li>• {t.passengerNoName}</li>
-                  <li>• {t.passengerNoAnswer}</li>
+                <p className="text-[10px] font-medium mb-1 break-words">{t.passengerNote}</p>
+                <ul className="text-[10px] space-y-0.5 text-muted-foreground">
+                  <li className="break-words">• {t.passengerNoId}</li>
+                  <li className="break-words">• {t.passengerNoName}</li>
+                  <li className="break-words">• {t.passengerNoAnswer}</li>
                 </ul>
-                <p className="text-xs mt-2 font-bold text-[#84CC16]">{t.passengerSilent}</p>
+                <p className="text-[10px] mt-1.5 font-bold text-[#84CC16] break-words">{t.passengerSilent}</p>
               </div>
             </div>
           </CardContent>

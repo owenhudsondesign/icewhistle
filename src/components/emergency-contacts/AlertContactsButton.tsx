@@ -116,8 +116,8 @@ export function AlertContactsButton({
             variant="outline"
             className="w-full h-12 rounded-[8px] border-dashed border-[#FF8C42]/50 text-[#FF8C42] hover:bg-[#FF8C42]/10"
           >
-            <Users className="h-4 w-4 mr-2" />
-            {t.noContacts}
+            <Users className="h-4 w-4 mr-2 flex-shrink-0" />
+            <span className="truncate">{t.noContacts}</span>
           </Button>
         </Link>
       )
@@ -127,14 +127,14 @@ export function AlertContactsButton({
       <Link href="/emergency-contacts" className={className}>
         <div className="p-4 rounded-[12px] bg-[#FF8C42]/10 border border-[#FF8C42]/30 hover:bg-[#FF8C42]/20 transition-colors cursor-pointer">
           <div className="flex items-center gap-3">
-            <div className="w-12 h-12 rounded-full bg-[#FF8C42]/20 flex items-center justify-center">
+            <div className="w-12 h-12 rounded-full bg-[#FF8C42]/20 flex items-center justify-center flex-shrink-0">
               <Users className="h-6 w-6 text-[#FF8C42]" />
             </div>
-            <div className="flex-1">
-              <p className="font-semibold text-[#FF8C42]">{t.noContacts}</p>
-              <p className="text-small text-muted-foreground">{t.noContactsDesc}</p>
+            <div className="flex-1 min-w-0">
+              <p className="font-semibold text-[#FF8C42] text-sm leading-tight break-words">{t.noContacts}</p>
+              <p className="text-xs text-muted-foreground leading-tight break-words mt-0.5">{t.noContactsDesc}</p>
             </div>
-            <ChevronRight className="h-5 w-5 text-[#FF8C42]" />
+            <ChevronRight className="h-5 w-5 text-[#FF8C42] flex-shrink-0" />
           </div>
         </div>
       </Link>
@@ -151,18 +151,18 @@ export function AlertContactsButton({
       >
         {status === 'locating' ? (
           <>
-            <MapPin className="h-4 w-4 mr-2 animate-pulse" />
-            {t.gettingLocation}
+            <MapPin className="h-4 w-4 mr-2 animate-pulse flex-shrink-0" />
+            <span className="truncate">{t.gettingLocation}</span>
           </>
         ) : status === 'sent' ? (
           <>
-            <Check className="h-4 w-4 mr-2" />
-            {t.alertSent}
+            <Check className="h-4 w-4 mr-2 flex-shrink-0" />
+            <span className="truncate">{t.alertSent}</span>
           </>
         ) : (
           <>
-            <MessageSquare className="h-4 w-4 mr-2" />
-            {t.alertContacts} ({contacts.length})
+            <MessageSquare className="h-4 w-4 mr-2 flex-shrink-0" />
+            <span className="truncate">{t.alertContacts} ({contacts.length})</span>
           </>
         )}
       </Button>
@@ -176,7 +176,7 @@ export function AlertContactsButton({
       className={`w-full p-4 rounded-[12px] bg-[#FF8C42] hover:bg-[#FF8C42]/90 text-white transition-colors disabled:opacity-70 ${className}`}
     >
       <div className="flex items-center gap-3">
-        <div className="w-12 h-12 rounded-full bg-white/20 flex items-center justify-center">
+        <div className="w-12 h-12 rounded-full bg-white/20 flex items-center justify-center flex-shrink-0">
           {status === 'locating' ? (
             <MapPin className="h-6 w-6 animate-pulse" />
           ) : status === 'sent' ? (
@@ -185,19 +185,19 @@ export function AlertContactsButton({
             <MessageSquare className="h-6 w-6" />
           )}
         </div>
-        <div className="flex-1 text-left">
-          <p className="font-semibold">
+        <div className="flex-1 min-w-0 text-left">
+          <p className="font-semibold text-sm leading-tight break-words">
             {status === 'locating'
               ? t.gettingLocation
               : status === 'sent'
               ? t.alertSent
               : t.alertContacts}
           </p>
-          <p className="text-small text-white/80">
+          <p className="text-xs text-white/80 leading-tight">
             {status === 'idle' && `${contacts.length} ${t.contacts}`}
           </p>
         </div>
-        {status === 'idle' && <ChevronRight className="h-5 w-5 text-white/70" />}
+        {status === 'idle' && <ChevronRight className="h-5 w-5 text-white/70 flex-shrink-0" />}
       </div>
     </button>
   )

@@ -91,48 +91,48 @@ export default function Home() {
           {/* Traffic Stop - Bondi Blue */}
           <button
             onClick={() => handleEmergencyClick('vehicle')}
-            className="col-span-1 bg-[#00A6B4] text-white rounded-[16px] p-5 flex flex-col items-center justify-center gap-3 press-scale hover-scale shadow-lg hover:glow-bondi"
+            className="col-span-1 bg-[#00A6B4] text-white rounded-[16px] p-4 flex flex-col items-center justify-center gap-2 press-scale hover-scale shadow-lg hover:glow-bondi min-h-[120px]"
           >
-            <Car className="h-10 w-10" strokeWidth={2} />
-            <div className="text-center">
-              <div className="text-headline">{t.trafficStop}</div>
-              <div className="text-small text-white/80">{t.trafficStopSub}</div>
+            <Car className="h-8 w-8 flex-shrink-0" strokeWidth={2} />
+            <div className="text-center w-full">
+              <div className="text-sm font-semibold leading-tight break-words">{t.trafficStop}</div>
+              <div className="text-xs text-white/80 leading-tight mt-0.5 break-words">{t.trafficStopSub}</div>
             </div>
           </button>
 
           {/* Someone Taken - Tangerine */}
           <button
             onClick={() => handleEmergencyClick('taken')}
-            className="col-span-1 bg-[#FF8C42] text-white rounded-[16px] p-5 flex flex-col items-center justify-center gap-3 press-scale hover-scale shadow-lg hover:glow-tangerine"
+            className="col-span-1 bg-[#FF8C42] text-white rounded-[16px] p-4 flex flex-col items-center justify-center gap-2 press-scale hover-scale shadow-lg hover:glow-tangerine min-h-[120px]"
           >
-            <Building className="h-10 w-10" strokeWidth={2} />
-            <div className="text-center">
-              <div className="text-headline">{t.someoneTaken}</div>
-              <div className="text-small text-white/80">{t.someoneTakenSub}</div>
+            <Building className="h-8 w-8 flex-shrink-0" strokeWidth={2} />
+            <div className="text-center w-full">
+              <div className="text-sm font-semibold leading-tight break-words">{t.someoneTaken}</div>
+              <div className="text-xs text-white/80 leading-tight mt-0.5 break-words">{t.someoneTakenSub}</div>
             </div>
           </button>
 
           {/* Live Alerts - Grape */}
           <Link
             href="/alerts"
-            className="col-span-1 bg-[#8B5CF6] text-white rounded-[16px] p-5 flex flex-col items-center justify-center gap-3 press-scale hover-scale shadow-lg hover:glow-grape"
+            className="col-span-1 bg-[#8B5CF6] text-white rounded-[16px] p-4 flex flex-col items-center justify-center gap-2 press-scale hover-scale shadow-lg hover:glow-grape min-h-[120px]"
           >
-            <Map className="h-10 w-10" strokeWidth={2} />
-            <div className="text-center">
-              <div className="text-headline">{t.liveAlerts}</div>
-              <div className="text-small text-white/80">{t.liveAlertsSub}</div>
+            <Map className="h-8 w-8 flex-shrink-0" strokeWidth={2} />
+            <div className="text-center w-full">
+              <div className="text-sm font-semibold leading-tight break-words">{t.liveAlerts}</div>
+              <div className="text-xs text-white/80 leading-tight mt-0.5 break-words">{t.liveAlertsSub}</div>
             </div>
           </Link>
 
           {/* Know Your Rights - Lime */}
           <Link
             href="/rights"
-            className="col-span-1 bg-[#84CC16] text-white rounded-[16px] p-5 flex flex-col items-center justify-center gap-3 press-scale hover-scale shadow-lg hover:glow-lime"
+            className="col-span-1 bg-[#84CC16] text-white rounded-[16px] p-4 flex flex-col items-center justify-center gap-2 press-scale hover-scale shadow-lg hover:glow-lime min-h-[120px]"
           >
-            <Shield className="h-10 w-10" strokeWidth={2} />
-            <div className="text-center">
-              <div className="text-headline">{t.knowRights}</div>
-              <div className="text-small text-white/80">{t.knowRightsSub}</div>
+            <Shield className="h-8 w-8 flex-shrink-0" strokeWidth={2} />
+            <div className="text-center w-full">
+              <div className="text-sm font-semibold leading-tight break-words">{t.knowRights}</div>
+              <div className="text-xs text-white/80 leading-tight mt-0.5 break-words">{t.knowRightsSub}</div>
             </div>
           </Link>
         </div>
@@ -157,37 +157,37 @@ export default function Home() {
         </div>
 
         {/* Secondary Bento - Resources - Glass Cards with Category Bars */}
-        <div className="grid grid-cols-3 gap-3 mb-4">
+        <div className="grid grid-cols-3 gap-2 mb-4">
           <Link
             href="/resources#legal"
-            className="card-glass p-4 flex flex-col items-center justify-center gap-2 press-scale hover:bg-accent/50"
+            className="card-glass p-3 flex flex-col items-center justify-center gap-1.5 press-scale hover:bg-accent/50 min-h-[100px]"
           >
-            <Scale className="h-8 w-8 text-[#8B5CF6]" strokeWidth={2} />
-            <div className="text-center">
-              <div className="text-caption font-semibold">{t.findLawyer}</div>
-              <div className="text-small text-muted-foreground">{t.findLawyerSub}</div>
+            <Scale className="h-7 w-7 text-[#8B5CF6] flex-shrink-0" strokeWidth={2} />
+            <div className="text-center w-full">
+              <div className="text-xs font-semibold leading-tight break-words">{t.findLawyer}</div>
+              <div className="text-[10px] text-muted-foreground leading-tight mt-0.5 break-words">{t.findLawyerSub}</div>
             </div>
           </Link>
 
           <Link
             href="/resources"
-            className="card-glass p-4 flex flex-col items-center justify-center gap-2 press-scale hover:bg-accent/50"
+            className="card-glass p-3 flex flex-col items-center justify-center gap-1.5 press-scale hover:bg-accent/50 min-h-[100px]"
           >
-            <Phone className="h-8 w-8 text-[#DC2626]" strokeWidth={2} />
-            <div className="text-center">
-              <div className="text-caption font-semibold">{t.emergencyHotlines}</div>
-              <div className="text-small text-muted-foreground">{t.available247}</div>
+            <Phone className="h-7 w-7 text-[#DC2626] flex-shrink-0" strokeWidth={2} />
+            <div className="text-center w-full">
+              <div className="text-xs font-semibold leading-tight break-words">{t.emergencyHotlines}</div>
+              <div className="text-[10px] text-muted-foreground leading-tight mt-0.5 break-words">{t.available247}</div>
             </div>
           </Link>
 
           <Link
             href="/resources#bond"
-            className="card-glass p-4 flex flex-col items-center justify-center gap-2 press-scale hover:bg-accent/50"
+            className="card-glass p-3 flex flex-col items-center justify-center gap-1.5 press-scale hover:bg-accent/50 min-h-[100px]"
           >
-            <Heart className="h-8 w-8 text-[#FF8C42]" strokeWidth={2} />
-            <div className="text-center">
-              <div className="text-caption font-semibold">{t.bondFunds}</div>
-              <div className="text-small text-muted-foreground">{t.bondFundsSub}</div>
+            <Heart className="h-7 w-7 text-[#FF8C42] flex-shrink-0" strokeWidth={2} />
+            <div className="text-center w-full">
+              <div className="text-xs font-semibold leading-tight break-words">{t.bondFunds}</div>
+              <div className="text-[10px] text-muted-foreground leading-tight mt-0.5 break-words">{t.bondFundsSub}</div>
             </div>
           </Link>
         </div>
@@ -195,56 +195,56 @@ export default function Home() {
         {/* How It Works - Simple 3-step explanation */}
         <div className="card-glass p-4 mb-4">
           <h2 className="text-headline mb-4 text-center">{t.howItWorks}</h2>
-          <div className="grid grid-cols-3 gap-3">
+          <div className="grid grid-cols-3 gap-2">
             <div className="text-center">
-              <div className="w-12 h-12 mx-auto rounded-full bg-[#DC2626]/10 flex items-center justify-center mb-2">
-                <Eye className="h-6 w-6 text-[#DC2626]" strokeWidth={2} />
+              <div className="w-10 h-10 mx-auto rounded-full bg-[#DC2626]/10 flex items-center justify-center mb-2">
+                <Eye className="h-5 w-5 text-[#DC2626]" strokeWidth={2} />
               </div>
-              <div className="text-caption font-bold text-[#DC2626]">1. {t.step1Title}</div>
-              <p className="text-[11px] text-muted-foreground mt-1">{t.step1Desc}</p>
+              <div className="text-xs font-bold text-[#DC2626] leading-tight">1. {t.step1Title}</div>
+              <p className="text-[10px] text-muted-foreground mt-1 leading-tight break-words">{t.step1Desc}</p>
             </div>
             <div className="text-center">
-              <div className="w-12 h-12 mx-auto rounded-full bg-[#FF8C42]/10 flex items-center justify-center mb-2">
-                <Bell className="h-6 w-6 text-[#FF8C42]" strokeWidth={2} />
+              <div className="w-10 h-10 mx-auto rounded-full bg-[#FF8C42]/10 flex items-center justify-center mb-2">
+                <Bell className="h-5 w-5 text-[#FF8C42]" strokeWidth={2} />
               </div>
-              <div className="text-caption font-bold text-[#FF8C42]">2. {t.step2Title}</div>
-              <p className="text-[11px] text-muted-foreground mt-1">{t.step2Desc}</p>
+              <div className="text-xs font-bold text-[#FF8C42] leading-tight">2. {t.step2Title}</div>
+              <p className="text-[10px] text-muted-foreground mt-1 leading-tight break-words">{t.step2Desc}</p>
             </div>
             <div className="text-center">
-              <div className="w-12 h-12 mx-auto rounded-full bg-[#84CC16]/10 flex items-center justify-center mb-2">
-                <Users className="h-6 w-6 text-[#84CC16]" strokeWidth={2} />
+              <div className="w-10 h-10 mx-auto rounded-full bg-[#84CC16]/10 flex items-center justify-center mb-2">
+                <Users className="h-5 w-5 text-[#84CC16]" strokeWidth={2} />
               </div>
-              <div className="text-caption font-bold text-[#84CC16]">3. {t.step3Title}</div>
-              <p className="text-[11px] text-muted-foreground mt-1">{t.step3Desc}</p>
+              <div className="text-xs font-bold text-[#84CC16] leading-tight">3. {t.step3Title}</div>
+              <p className="text-[10px] text-muted-foreground mt-1 leading-tight break-words">{t.step3Desc}</p>
             </div>
           </div>
-          <div className="mt-4 pt-3 border-t border-border/30 flex items-center justify-center gap-2 text-small text-muted-foreground">
-            <Lock className="h-4 w-4" />
-            <span><strong className="text-foreground">{t.privacyFirst}:</strong> {t.privacyDesc}</span>
+          <div className="mt-4 pt-3 border-t border-border/30 flex items-center justify-center gap-2 text-xs text-muted-foreground text-center">
+            <Lock className="h-4 w-4 flex-shrink-0" />
+            <span className="break-words"><strong className="text-foreground">{t.privacyFirst}:</strong> {t.privacyDesc}</span>
           </div>
         </div>
 
         {/* Recording Feature - Authenticity */}
         <div className="card-glass p-4 mb-4">
-          <div className="flex items-start gap-4">
-            <div className="w-12 h-12 rounded-full bg-[#00A6B4]/10 flex items-center justify-center flex-shrink-0">
-              <Video className="h-6 w-6 text-[#00A6B4]" strokeWidth={2} />
+          <div className="flex items-start gap-3">
+            <div className="w-10 h-10 rounded-full bg-[#00A6B4]/10 flex items-center justify-center flex-shrink-0">
+              <Video className="h-5 w-5 text-[#00A6B4]" strokeWidth={2} />
             </div>
-            <div className="flex-1">
-              <h2 className="text-headline mb-1">{t.recordingFeature}</h2>
-              <p className="text-small text-muted-foreground mb-3">{t.recordingFeatureDesc}</p>
-              <div className="flex flex-wrap gap-2">
-                <span className="inline-flex items-center gap-1.5 text-xs bg-[#00A6B4]/10 text-[#00A6B4] px-2 py-1 rounded-full">
-                  <Video className="h-3 w-3" />
-                  {t.recordingFeature1}
+            <div className="flex-1 min-w-0">
+              <h2 className="text-sm font-semibold mb-1">{t.recordingFeature}</h2>
+              <p className="text-xs text-muted-foreground mb-3 break-words">{t.recordingFeatureDesc}</p>
+              <div className="flex flex-wrap gap-1.5">
+                <span className="inline-flex items-center gap-1 text-[10px] bg-[#00A6B4]/10 text-[#00A6B4] px-2 py-1 rounded-full whitespace-nowrap">
+                  <Video className="h-3 w-3 flex-shrink-0" />
+                  <span className="truncate max-w-[100px] sm:max-w-none">{t.recordingFeature1}</span>
                 </span>
-                <span className="inline-flex items-center gap-1.5 text-xs bg-[#84CC16]/10 text-[#84CC16] px-2 py-1 rounded-full">
-                  <CheckCircle className="h-3 w-3" />
-                  {t.recordingFeature2}
+                <span className="inline-flex items-center gap-1 text-[10px] bg-[#84CC16]/10 text-[#84CC16] px-2 py-1 rounded-full whitespace-nowrap">
+                  <CheckCircle className="h-3 w-3 flex-shrink-0" />
+                  <span className="truncate max-w-[100px] sm:max-w-none">{t.recordingFeature2}</span>
                 </span>
-                <span className="inline-flex items-center gap-1.5 text-xs bg-[#8B5CF6]/10 text-[#8B5CF6] px-2 py-1 rounded-full">
-                  <FileCheck className="h-3 w-3" />
-                  {t.recordingFeature3}
+                <span className="inline-flex items-center gap-1 text-[10px] bg-[#8B5CF6]/10 text-[#8B5CF6] px-2 py-1 rounded-full whitespace-nowrap">
+                  <FileCheck className="h-3 w-3 flex-shrink-0" />
+                  <span className="truncate max-w-[100px] sm:max-w-none">{t.recordingFeature3}</span>
                 </span>
               </div>
             </div>
@@ -254,15 +254,15 @@ export default function Home() {
         {/* Emergency Hotlines - Structured with explanations */}
         <div className="card-glass p-4 mb-4">
           <div className="flex items-center gap-2 mb-1">
-            <span className="px-2 py-0.5 bg-[#DC2626] text-white text-[10px] font-bold rounded-full tracking-wide">
+            <span className="px-2 py-0.5 bg-[#DC2626] text-white text-[10px] font-bold rounded-full tracking-wide whitespace-nowrap">
               {t.badgeHotlines}
             </span>
           </div>
-          <h2 className="text-headline mb-1 flex items-center gap-2">
-            <Phone className="h-5 w-5 text-[#DC2626]" strokeWidth={2} />
-            {t.emergencyHotlines}
+          <h2 className="text-sm font-semibold mb-1 flex items-center gap-2">
+            <Phone className="h-5 w-5 text-[#DC2626] flex-shrink-0" strokeWidth={2} />
+            <span className="break-words">{t.emergencyHotlines}</span>
           </h2>
-          <p className="text-small text-muted-foreground mb-3">{t.callFree247}</p>
+          <p className="text-xs text-muted-foreground mb-3">{t.callFree247}</p>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
             {[
               { name: t.iceDetaineeLocator, desc: t.iceDetaineeDesc, phone: '1-888-351-4024', color: 'bg-[#DC2626]' },
@@ -273,15 +273,15 @@ export default function Home() {
               <a
                 key={hotline.phone}
                 href={`tel:${hotline.phone.replace(/\D/g, '')}`}
-                className="flex items-start gap-3 p-3 rounded-[12px] bg-background/50 hover:bg-background press-scale border border-border/30"
+                className="flex items-start gap-2 p-3 rounded-[12px] bg-background/50 hover:bg-background press-scale border border-border/30"
               >
-                <div className={`w-10 h-10 rounded-full ${hotline.color} flex items-center justify-center flex-shrink-0`}>
-                  <Phone className="h-5 w-5 text-white" strokeWidth={2} />
+                <div className={`w-9 h-9 rounded-full ${hotline.color} flex items-center justify-center flex-shrink-0`}>
+                  <Phone className="h-4 w-4 text-white" strokeWidth={2} />
                 </div>
                 <div className="flex-1 min-w-0">
-                  <div className="font-semibold text-small">{hotline.name}</div>
-                  <div className="text-[11px] text-muted-foreground">{hotline.desc}</div>
-                  <div className="font-bold text-caption text-primary mt-1">{hotline.phone}</div>
+                  <div className="font-semibold text-xs leading-tight break-words">{hotline.name}</div>
+                  <div className="text-[10px] text-muted-foreground leading-tight break-words">{hotline.desc}</div>
+                  <div className="font-bold text-xs text-primary mt-1">{hotline.phone}</div>
                 </div>
               </a>
             ))}
@@ -291,61 +291,61 @@ export default function Home() {
         {/* Quick Rights Reminder - Structured Q&A style */}
         <div className="card-glass p-4 mb-4">
           <div className="flex items-center gap-2 mb-1">
-            <span className="px-2 py-0.5 bg-[#84CC16] text-white text-[10px] font-bold rounded-full tracking-wide">
+            <span className="px-2 py-0.5 bg-[#84CC16] text-white text-[10px] font-bold rounded-full tracking-wide whitespace-nowrap">
               {t.badgeRights}
             </span>
           </div>
-          <h2 className="text-headline mb-3 flex items-center gap-2">
-            <Shield className="h-5 w-5 text-[#84CC16]" strokeWidth={2} />
-            {t.knowRights}
+          <h2 className="text-sm font-semibold mb-3 flex items-center gap-2">
+            <Shield className="h-5 w-5 text-[#84CC16] flex-shrink-0" strokeWidth={2} />
+            <span className="break-words">{t.knowRights}</span>
           </h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
             <div className="p-3 rounded-[12px] bg-[#84CC16]/10 border border-[#84CC16]/20">
-              <p className="text-small font-bold text-[#84CC16] mb-2 flex items-center gap-2">
-                <Shield className="h-4 w-4" />
-                {t.youCanSay}
+              <p className="text-xs font-bold text-[#84CC16] mb-2 flex items-center gap-2">
+                <Shield className="h-4 w-4 flex-shrink-0" />
+                <span className="break-words">{t.youCanSay}</span>
               </p>
-              <ul className="text-small space-y-1.5">
+              <ul className="text-xs space-y-1.5">
                 <li className="flex items-start gap-2">
-                  <span className="text-[#84CC16] mt-0.5">✓</span>
-                  <span>{t.rightSilent}</span>
+                  <span className="text-[#84CC16] mt-0.5 flex-shrink-0">✓</span>
+                  <span className="break-words">{t.rightSilent}</span>
                 </li>
                 <li className="flex items-start gap-2">
-                  <span className="text-[#84CC16] mt-0.5">✓</span>
-                  <span>{t.rightLawyer}</span>
+                  <span className="text-[#84CC16] mt-0.5 flex-shrink-0">✓</span>
+                  <span className="break-words">{t.rightLawyer}</span>
                 </li>
                 <li className="flex items-start gap-2">
-                  <span className="text-[#84CC16] mt-0.5">✓</span>
-                  <span>{t.rightNoEntry}</span>
+                  <span className="text-[#84CC16] mt-0.5 flex-shrink-0">✓</span>
+                  <span className="break-words">{t.rightNoEntry}</span>
                 </li>
               </ul>
             </div>
             <div className="p-3 rounded-[12px] bg-[#DC2626]/10 border border-[#DC2626]/20">
-              <p className="text-small font-bold text-[#DC2626] mb-2 flex items-center gap-2">
-                <AlertTriangle className="h-4 w-4" />
-                {t.never}
+              <p className="text-xs font-bold text-[#DC2626] mb-2 flex items-center gap-2">
+                <AlertTriangle className="h-4 w-4 flex-shrink-0" />
+                <span className="break-words">{t.never}</span>
               </p>
-              <ul className="text-small space-y-1.5">
+              <ul className="text-xs space-y-1.5">
                 <li className="flex items-start gap-2">
-                  <span className="text-[#DC2626] mt-0.5">✗</span>
-                  <span>{t.neverOpenDoor}</span>
+                  <span className="text-[#DC2626] mt-0.5 flex-shrink-0">✗</span>
+                  <span className="break-words">{t.neverOpenDoor}</span>
                 </li>
                 <li className="flex items-start gap-2">
-                  <span className="text-[#DC2626] mt-0.5">✗</span>
-                  <span>{t.neverSign}</span>
+                  <span className="text-[#DC2626] mt-0.5 flex-shrink-0">✗</span>
+                  <span className="break-words">{t.neverSign}</span>
                 </li>
                 <li className="flex items-start gap-2">
-                  <span className="text-[#DC2626] mt-0.5">✗</span>
-                  <span>{t.neverLie}</span>
+                  <span className="text-[#DC2626] mt-0.5 flex-shrink-0">✗</span>
+                  <span className="break-words">{t.neverLie}</span>
                 </li>
               </ul>
             </div>
           </div>
           <Link
             href="/rights"
-            className="inline-flex items-center text-small text-[#00A6B4] hover:underline mt-4 font-semibold"
+            className="inline-flex items-center text-xs text-[#00A6B4] hover:underline mt-4 font-semibold"
           >
-            {t.learnMore} <ChevronRight className="h-4 w-4 ml-1" />
+            {t.learnMore} <ChevronRight className="h-4 w-4 ml-1 flex-shrink-0" />
           </Link>
         </div>
 

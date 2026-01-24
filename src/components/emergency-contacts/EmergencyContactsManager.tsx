@@ -169,11 +169,11 @@ export function EmergencyContactsManager() {
     <div className="space-y-6">
       {/* Header */}
       <div>
-        <h2 className="text-headline flex items-center gap-2">
-          <Phone className="h-5 w-5 text-[#DC2626]" />
-          {t.title}
+        <h2 className="text-base font-semibold flex items-center gap-2">
+          <Phone className="h-5 w-5 text-[#DC2626] flex-shrink-0" />
+          <span className="break-words">{t.title}</span>
         </h2>
-        <p className="text-small text-muted-foreground mt-1">{t.subtitle}</p>
+        <p className="text-xs text-muted-foreground mt-1 break-words">{t.subtitle}</p>
       </div>
 
       {/* Contact List */}
@@ -181,8 +181,8 @@ export function EmergencyContactsManager() {
         {contacts.length === 0 && !isAdding ? (
           <div className="text-center py-8 px-4 rounded-[12px] bg-muted/30 border border-dashed border-border">
             <AlertTriangle className="h-8 w-8 text-muted-foreground mx-auto mb-2" />
-            <p className="text-caption font-medium">{t.noContacts}</p>
-            <p className="text-small text-muted-foreground mt-1">{t.noContactsDesc}</p>
+            <p className="text-sm font-medium break-words">{t.noContacts}</p>
+            <p className="text-xs text-muted-foreground mt-1 break-words">{t.noContactsDesc}</p>
           </div>
         ) : (
           contacts.map(contact => (
@@ -343,7 +343,7 @@ export function EmergencyContactsManager() {
       {/* Privacy Note */}
       <div className="flex items-start gap-2 p-3 rounded-[8px] bg-[#84CC16]/10 border border-[#84CC16]/20">
         <Shield className="h-4 w-4 text-[#84CC16] mt-0.5 flex-shrink-0" />
-        <p className="text-small text-[#84CC16]">{t.privacyNote}</p>
+        <p className="text-xs text-[#84CC16] break-words">{t.privacyNote}</p>
       </div>
     </div>
   )
