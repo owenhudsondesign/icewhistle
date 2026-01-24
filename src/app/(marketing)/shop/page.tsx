@@ -162,7 +162,7 @@ const pageTranslations = {
 
 export default function ShopPage() {
   const { language } = useLanguage()
-  const t = pageTranslations[language]
+  const t = pageTranslations[language as keyof typeof pageTranslations] || pageTranslations.en
   const [email, setEmail] = useState('')
 
   return (

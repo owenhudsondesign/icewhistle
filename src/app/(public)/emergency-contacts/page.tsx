@@ -21,7 +21,7 @@ const translations = {
 
 export default function EmergencyContactsPage() {
   const { language } = useLanguage()
-  const t = translations[language]
+  const t = translations[language as keyof typeof translations] || translations.en
 
   return (
     <div className="min-h-screen bg-background pb-8">

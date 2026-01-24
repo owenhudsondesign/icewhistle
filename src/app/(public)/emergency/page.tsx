@@ -34,66 +34,6 @@ import {
 import { fuzzyLocation, ALERT_EXPIRY_HOURS } from '@/types/alert'
 import { useLanguage } from '@/hooks/use-language'
 
-const emergencyTranslations = {
-  en: {
-    backToHome: 'Back to Home',
-    gettingLocation: 'Getting Location...',
-    sharing: 'Sharing...',
-    shareMyLocation: 'Share My Location Now',
-    locationShared: 'Location Shared!',
-    reportWillAppear: 'Your report will appear on the map for',
-    hours: 'hours',
-    thankYou: 'Thank you for helping keep the community safe.',
-    viewMap: 'View Map',
-    alertCommunity: 'Alert Your Community',
-    shareAnonymously: 'Share your location anonymously to warn others. The alert will appear on the community map for',
-    oneTimeSnapshot: 'One-time snapshot only',
-    neverTrack: 'we never track your location.',
-    anonymous100m: 'Anonymous • Location rounded to ~500m for privacy',
-    locationError: 'Could not access your location. Please enable location services.',
-    submitError: 'Failed to submit report. Please try again.',
-    loading: 'Loading...',
-  },
-  es: {
-    backToHome: 'Volver al Inicio',
-    gettingLocation: 'Obteniendo ubicación...',
-    sharing: 'Compartiendo...',
-    shareMyLocation: 'Compartir Mi Ubicación',
-    locationShared: '¡Ubicación Compartida!',
-    reportWillAppear: 'Tu reporte aparecerá en el mapa por',
-    hours: 'horas',
-    thankYou: 'Gracias por ayudar a mantener segura a la comunidad.',
-    viewMap: 'Ver Mapa',
-    alertCommunity: 'Alerta a Tu Comunidad',
-    shareAnonymously: 'Comparte tu ubicación de forma anónima para advertir a otros. La alerta aparecerá en el mapa comunitario por',
-    oneTimeSnapshot: 'Solo una captura única',
-    neverTrack: 'nunca rastreamos tu ubicación.',
-    anonymous100m: 'Anónimo • Ubicación redondeada a ~500m para privacidad',
-    locationError: 'No se pudo acceder a tu ubicación. Por favor habilita los servicios de ubicación.',
-    submitError: 'Error al enviar el reporte. Por favor intenta de nuevo.',
-    loading: 'Cargando...',
-  },
-  pt: {
-    backToHome: 'Voltar ao Início',
-    gettingLocation: 'Obtendo localização...',
-    sharing: 'Compartilhando...',
-    shareMyLocation: 'Compartilhar Minha Localização',
-    locationShared: 'Localização Compartilhada!',
-    reportWillAppear: 'Seu relatório aparecerá no mapa por',
-    hours: 'horas',
-    thankYou: 'Obrigado por ajudar a manter a comunidade segura.',
-    viewMap: 'Ver Mapa',
-    alertCommunity: 'Alerte Sua Comunidade',
-    shareAnonymously: 'Compartilhe sua localização anonimamente para alertar outros. O alerta aparecerá no mapa comunitário por',
-    oneTimeSnapshot: 'Apenas uma captura única',
-    neverTrack: 'nunca rastreamos sua localização.',
-    anonymous100m: 'Anônimo • Localização arredondada para ~500m para privacidade',
-    locationError: 'Não foi possível acessar sua localização. Por favor habilite os serviços de localização.',
-    submitError: 'Falha ao enviar o relatório. Por favor tente novamente.',
-    loading: 'Carregando...',
-  },
-}
-
 function EmergencyContent() {
   const searchParams = useSearchParams()
   const type = searchParams.get('type') || 'near'
@@ -111,8 +51,8 @@ function EmergencyContent() {
 }
 
 function ICENearMeFlow({ location }: { location: string | null }) {
-  const { language } = useLanguage()
-  const t = emergencyTranslations[language]
+  const { language, t: translations } = useLanguage()
+  const t = translations.emergency || {}
   const [reportStatus, setReportStatus] = useState<'idle' | 'getting-location' | 'submitting' | 'success' | 'error'>('idle')
   const [errorMessage, setErrorMessage] = useState<string | null>(null)
 
@@ -479,6 +419,9 @@ function ICENearMeFlow({ location }: { location: string | null }) {
 }
 
 function SomeoneTakenFlow({ location }: { location: string | null }) {
+  const { t: translations } = useLanguage()
+  const t = translations.emergency || {}
+
   return (
     <div className="container mx-auto px-4 py-6 max-w-3xl">
       {/* Back Button */}
@@ -487,7 +430,7 @@ function SomeoneTakenFlow({ location }: { location: string | null }) {
         className="inline-flex items-center text-sm text-muted-foreground hover:text-foreground mb-6"
       >
         <ArrowLeft className="h-4 w-4 mr-1" />
-        Back to Home
+        {t.backToHome || 'Back to Home'}
       </Link>
 
       {/* Header */}
@@ -496,10 +439,10 @@ function SomeoneTakenFlow({ location }: { location: string | null }) {
           <Building className="h-8 w-8 text-amber-600" />
         </div>
         <h1 className="text-2xl md:text-3xl font-bold text-amber-700 dark:text-amber-500 mb-2">
-          Someone Was Taken by ICE
+          {t.someoneTakenTitle || 'Someone Was Taken by ICE'}
         </h1>
         <p className="text-muted-foreground">
-          Here's how to find them and get help.
+          {t.someoneTakenSubtitle || "Here's how to find them and get help."}
         </p>
         {location && (
           <p className="text-sm text-muted-foreground mt-2">
@@ -514,22 +457,21 @@ function SomeoneTakenFlow({ location }: { location: string | null }) {
           <div className="flex items-center gap-3">
             <span className="flex-shrink-0 w-8 h-8 rounded-full bg-primary text-primary-foreground flex items-center justify-center font-bold">1</span>
             <div>
-              <CardTitle>Get the A-Number</CardTitle>
-              <CardDescription>The Alien Registration Number</CardDescription>
+              <CardTitle>{t.takenStep1Title || 'Gather Information'}</CardTitle>
+              <CardDescription>{t.gatherInfoDesc || 'Full legal name, date of birth, country of origin, A-number if known'}</CardDescription>
             </div>
           </div>
         </CardHeader>
         <CardContent>
           <p className="text-sm text-muted-foreground mb-3">
-            The A-Number is a 9-digit number starting with "A" (e.g., A123456789).
-            This is critical for finding someone in custody.
+            {t.takenStep1Desc || 'The A-Number is a 9-digit number starting with "A" (e.g., A123456789). This is critical for finding someone in custody.'}
           </p>
           <div className="p-3 bg-muted rounded-lg text-sm">
-            <p className="font-medium">Where to find it:</p>
+            <p className="font-medium">{t.whereToFind || 'Where to find it:'}</p>
             <ul className="mt-1 space-y-1 text-muted-foreground">
-              <li>• Previous immigration documents</li>
-              <li>• Work permit (EAD card)</li>
-              <li>• Any court papers</li>
+              <li>• {t.immigrationDocs || 'Previous immigration documents'}</li>
+              <li>• {t.workPermit || 'Work permit (EAD card)'}</li>
+              <li>• {t.courtPapers || 'Any court papers'}</li>
             </ul>
           </div>
         </CardContent>
@@ -541,8 +483,8 @@ function SomeoneTakenFlow({ location }: { location: string | null }) {
           <div className="flex items-center gap-3">
             <span className="flex-shrink-0 w-8 h-8 rounded-full bg-primary text-primary-foreground flex items-center justify-center font-bold">2</span>
             <div>
-              <CardTitle>Find Them in ICE Custody</CardTitle>
-              <CardDescription>Use the official ICE Detainee Locator</CardDescription>
+              <CardTitle>{t.useLocator || 'Use ICE Detainee Locator'}</CardTitle>
+              <CardDescription>{t.locatorDesc || 'Online or call 1-888-351-4024 (this can take 24-72 hours to update)'}</CardDescription>
             </div>
           </div>
         </CardHeader>
@@ -557,7 +499,7 @@ function SomeoneTakenFlow({ location }: { location: string | null }) {
               <div className="flex items-center gap-3">
                 <Globe className="h-6 w-6 text-primary" />
                 <div>
-                  <p className="font-medium">ICE Online Detainee Locator</p>
+                  <p className="font-medium">{t.detentionLocator || 'ICE Online Detainee Locator'}</p>
                   <p className="text-sm text-muted-foreground">locator.ice.gov</p>
                 </div>
               </div>
@@ -571,8 +513,8 @@ function SomeoneTakenFlow({ location }: { location: string | null }) {
               <div className="flex items-center gap-3">
                 <Phone className="h-6 w-6 text-primary" />
                 <div>
-                  <p className="font-medium">ICE Detainee Locator Hotline</p>
-                  <p className="text-sm text-muted-foreground">Available 24/7</p>
+                  <p className="font-medium">{t.detentionLocatorDesc || 'ICE Detainee Locator Hotline'}</p>
+                  <p className="text-sm text-muted-foreground">{translations.common?.available247 || '24/7'}</p>
                 </div>
               </div>
               <span className="font-bold text-primary">1-888-351-4024</span>
@@ -580,10 +522,9 @@ function SomeoneTakenFlow({ location }: { location: string | null }) {
           </div>
 
           <div className="mt-4 p-3 bg-amber-500/10 rounded-lg text-sm">
-            <p className="font-medium text-amber-700 dark:text-amber-500">Note:</p>
+            <p className="font-medium text-amber-700 dark:text-amber-500">{t.note || 'Note'}:</p>
             <p className="text-muted-foreground">
-              It may take 24-72 hours for someone to appear in the system after arrest.
-              Also check local jails as ICE sometimes holds people in county facilities.
+              {t.locatorNote || 'It may take 24-72 hours for someone to appear in the system after arrest. Also check local jails as ICE sometimes holds people in county facilities.'}
             </p>
           </div>
         </CardContent>
@@ -757,6 +698,9 @@ function SomeoneTakenFlow({ location }: { location: string | null }) {
 }
 
 function VehicleStopFlow({ location }: { location: string | null }) {
+  const { t: translations } = useLanguage()
+  const t = translations.emergency || {}
+
   return (
     <div className="container mx-auto px-4 py-6 max-w-3xl">
       {/* Back Button */}
@@ -765,7 +709,7 @@ function VehicleStopFlow({ location }: { location: string | null }) {
         className="inline-flex items-center text-sm text-muted-foreground hover:text-foreground mb-6"
       >
         <ArrowLeft className="h-4 w-4 mr-1" />
-        Back to Home
+        {t.backToHome || 'Back to Home'}
       </Link>
 
       {/* Header */}
@@ -774,10 +718,10 @@ function VehicleStopFlow({ location }: { location: string | null }) {
           <Car className="h-8 w-8 text-blue-600" />
         </div>
         <h1 className="text-2xl md:text-3xl font-bold text-blue-700 dark:text-blue-400 mb-2">
-          Traffic Stop by ICE
+          {t.trafficStopTitle || 'Traffic Stop'}
         </h1>
         <p className="text-muted-foreground">
-          ICE uses unmarked cars and license plate readers. Know your rights.
+          {t.trafficStopSubtitle || 'Know your rights as a driver or passenger'}
         </p>
         {location && (
           <p className="text-sm text-muted-foreground mt-2">

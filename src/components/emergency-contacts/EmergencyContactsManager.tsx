@@ -93,7 +93,7 @@ const MAX_CONTACTS = 5
 
 export function EmergencyContactsManager() {
   const { language } = useLanguage()
-  const t = translations[language]
+  const t = translations[language as keyof typeof translations] || translations.en
   const {
     contacts,
     customMessage,
@@ -334,7 +334,7 @@ export function EmergencyContactsManager() {
           <div className="p-3 rounded-[8px] bg-muted/50 border border-border/50">
             <p className="text-[11px] text-muted-foreground mb-1">{t.defaultMessagePreview}</p>
             <p className="text-small italic">
-              {customMessage || defaultMessages[language]}
+              {customMessage || (defaultMessages[language as keyof typeof defaultMessages] || defaultMessages.en)}
             </p>
           </div>
         </div>

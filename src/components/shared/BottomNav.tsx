@@ -46,45 +46,21 @@ export function AppWrapper({ children }: { children: ReactNode }) {
   )
 }
 
-const navTranslations = {
-  en: {
-    home: 'Home',
-    alerts: 'Alerts',
-    report: 'Report',
-    rights: 'Rights',
-    faq: 'FAQ',
-  },
-  es: {
-    home: 'Inicio',
-    alerts: 'Alertas',
-    report: 'Reportar',
-    rights: 'Derechos',
-    faq: 'Preguntas',
-  },
-  pt: {
-    home: 'Início',
-    alerts: 'Alertas',
-    report: 'Reportar',
-    rights: 'Direitos',
-    faq: 'Perguntas',
-  },
-}
-
 export function BottomNav() {
   const pathname = usePathname()
-  const { language } = useLanguage()
-  const t = navTranslations[language]
+  const { t } = useLanguage()
+  const nav = t.nav
   const isAppMode = useIsAppMode()
 
   // Only render in app mode (native or installed PWA)
   if (!isAppMode) return null
 
   const tabs = [
-    { href: '/', icon: Home, label: t.home },
-    { href: '/alerts', icon: MapPin, label: t.alerts },
-    { href: '/alerts?report=true', icon: AlertTriangle, label: t.report, isReport: true },
-    { href: '/rights', icon: Shield, label: t.rights },
-    { href: '/faq', icon: MessageCircleQuestion, label: t.faq },
+    { href: '/', icon: Home, label: nav.home },
+    { href: '/alerts', icon: MapPin, label: nav.alerts },
+    { href: '/alerts?report=true', icon: AlertTriangle, label: nav.report, isReport: true },
+    { href: '/rights', icon: Shield, label: nav.rights },
+    { href: '/faq', icon: MessageCircleQuestion, label: nav.faq },
   ]
 
   const isActive = (href: string) => {

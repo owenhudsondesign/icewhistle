@@ -433,7 +433,7 @@ const iconMap = {
 
 export default function RightsPage() {
   const { language } = useLanguage()
-  const t = translations[language]
+  const t = translations[language as keyof typeof translations] || translations.en
 
   const coreRightIcons = [Volume2, Phone, FileX, ShieldAlert]
 

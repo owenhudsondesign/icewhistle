@@ -47,7 +47,7 @@ export function AlertContactsButton({
   variant = 'default',
 }: AlertContactsButtonProps) {
   const { language } = useLanguage()
-  const t = translations[language]
+  const t = translations[language as keyof typeof translations] || translations.en
   const { contacts, hasContacts, sendAlert, isLoaded } = useEmergencyContacts()
   const [status, setStatus] = useState<'idle' | 'locating' | 'sent'>('idle')
   const [location, setLocation] = useState<{ lat: number; lng: number } | null>(null)

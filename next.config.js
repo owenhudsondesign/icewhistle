@@ -5,6 +5,19 @@ const withPWA = require('next-pwa')({
   disable: process.env.NODE_ENV === 'development',
   runtimeCaching: [
     {
+      // Cache all language files for offline use
+      // Pre-loaded in background so users can switch languages offline
+      urlPattern: /\/locales\/.*\.json$/,
+      handler: 'CacheFirst',
+      options: {
+        cacheName: 'translations',
+        expiration: {
+          maxEntries: 50, // Support all languages
+          maxAgeSeconds: 60 * 60 * 24 * 30, // 30 days
+        },
+      },
+    },
+    {
       urlPattern: /^https:\/\/.*\/(rights|resources)/,
       handler: 'CacheFirst',
       options: {

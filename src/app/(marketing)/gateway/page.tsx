@@ -3,9 +3,20 @@
 import { useState, useEffect, useMemo } from 'react'
 import Link from 'next/link'
 import { Shield, Heart, ArrowRight } from 'lucide-react'
-import { useLanguage } from '@/hooks/use-language'
+import { useLanguage, Language, PRIMARY_LANGUAGES } from '@/hooks/use-language'
 
-const translations = {
+type GatewayTranslation = {
+  title: string
+  subtitle: string
+  urgentButton: string
+  urgentDesc: string
+  supportButton: string
+  supportDesc: string
+  languageLabel: string
+  tagline: string
+}
+
+const translations: Record<string, GatewayTranslation> = {
   en: {
     title: 'ICEWHISTLE',
     subtitle: 'Know Your Rights. Protect Your Community.',
@@ -14,6 +25,7 @@ const translations = {
     supportButton: 'Support the Cause',
     supportDesc: 'Get a whistle. 100% of profits fund immigrant bail bonds.',
     languageLabel: 'Language',
+    tagline: 'By the community. For the community.',
   },
   es: {
     title: 'ICEWHISTLE',
@@ -23,6 +35,7 @@ const translations = {
     supportButton: 'Apoya la Causa',
     supportDesc: 'Obtén un silbato. 100% de las ganancias financian fianzas de inmigrantes.',
     languageLabel: 'Idioma',
+    tagline: 'Por la comunidad. Para la comunidad.',
   },
   pt: {
     title: 'ICEWHISTLE',
@@ -32,7 +45,13 @@ const translations = {
     supportButton: 'Apoie a Causa',
     supportDesc: 'Obtenha um apito. 100% dos lucros financiam fianças de imigrantes.',
     languageLabel: 'Idioma',
+    tagline: 'Pela comunidade. Para a comunidade.',
   },
+}
+
+// Get translation with fallback to English
+const getTranslation = (lang: Language): GatewayTranslation => {
+  return translations[lang] || translations.en
 }
 
 const heroWords = [
@@ -97,7 +116,7 @@ function SplitFlapDisplay({ text }: { text: string }) {
 
 export default function GatewayPage() {
   const { language, setLanguage } = useLanguage()
-  const t = translations[language]
+  const t = getTranslation(language)
   const [currentWordIndex, setCurrentWordIndex] = useState(0)
 
   useEffect(() => {
@@ -126,11 +145,11 @@ export default function GatewayPage() {
         }}
       />
 
-      {/* Language selector */}
+      {/* Language selector - shows primary languages with current selection */}
       <div className="absolute top-4 right-4 z-20">
         <select
-          value={language}
-          onChange={(e) => setLanguage(e.target.value as 'en' | 'es' | 'pt')}
+          value={PRIMARY_LANGUAGES.includes(language as typeof PRIMARY_LANGUAGES[number]) ? language : 'en'}
+          onChange={(e) => setLanguage(e.target.value as Language)}
           className="bg-white/10 backdrop-blur-sm border border-white/20 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:ring-2 focus:ring-[#00A6B4]"
         >
           <option value="en" className="bg-gray-900">English</option>
@@ -228,9 +247,7 @@ export default function GatewayPage() {
         {/* Bottom tagline */}
         <div className="mt-16 text-center">
           <p className="text-gray-500 text-sm">
-            {language === 'en' && 'By the community. For the community.'}
-            {language === 'es' && 'Por la comunidad. Para la comunidad.'}
-            {language === 'pt' && 'Pela comunidade. Para a comunidade.'}
+            {t.tagline}
           </p>
         </div>
       </div>

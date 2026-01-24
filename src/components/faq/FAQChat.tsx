@@ -66,8 +66,8 @@ const suggestedQuestions = {
 
 export function FAQChat() {
   const { language } = useLanguage()
-  const t = faqTranslations[language]
-  const questions = suggestedQuestions[language]
+  const t = faqTranslations[language as keyof typeof faqTranslations] || faqTranslations.en
+  const questions = suggestedQuestions[language as keyof typeof suggestedQuestions] || suggestedQuestions.en
 
   const [messages, setMessages] = useState<ChatMessage[]>([])
   const [input, setInput] = useState('')
@@ -254,9 +254,9 @@ export function FAQChat() {
 }
 
 // Result Card Component
-function ResultCard({ entry, learnMoreText, language }: { entry: KnowledgeEntry; learnMoreText: string; language: 'en' | 'es' | 'pt' }) {
+function ResultCard({ entry, learnMoreText, language }: { entry: KnowledgeEntry; learnMoreText: string; language: string }) {
   const route = categoryRoutes[entry.category]
-  const translatedEntry = getTranslatedEntry(entry, language)
+  const translatedEntry = getTranslatedEntry(entry, language as 'en' | 'es' | 'pt')
 
   return (
     <div className="bg-card border rounded-xl p-3 space-y-2 text-left">

@@ -102,7 +102,7 @@ interface OnboardingScreenProps {
 export function OnboardingScreen({ onComplete }: OnboardingScreenProps) {
   const { language, setLanguage } = useLanguage()
   const { setSavedLocation } = useLocation()
-  const t = translations[language]
+  const t = translations[language as keyof typeof translations] || translations.en
 
   const [zipCode, setZipCode] = useState('')
   const [zipError, setZipError] = useState('')

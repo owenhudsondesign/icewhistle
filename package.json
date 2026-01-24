@@ -18,7 +18,10 @@
     "cap:open:ios": "npx cap open ios",
     "cap:open:android": "npx cap open android",
     "cap:build:ios": "npx cap sync ios && npx cap open ios",
-    "cap:build:android": "npx cap sync android && npx cap open android"
+    "cap:build:android": "npx cap sync android && npx cap open android",
+    "translate": "ts-node scripts/translate.ts",
+    "translate:force": "ts-node scripts/translate.ts --force",
+    "translate:preview": "ts-node scripts/translate.ts --dry-run"
   },
   "keywords": [
     "immigration",
@@ -76,6 +79,7 @@
     "zustand": "^5.0.10"
   },
   "devDependencies": {
+    "@anthropic-ai/sdk": "^0.52.0",
     "@capacitor/assets": "^3.0.5",
     "@eslint/eslintrc": "^3.3.3",
     "@types/node": "^25.0.9",
@@ -83,6 +87,7 @@
     "@types/react-dom": "^19.2.3",
     "eslint": "^9.39.2",
     "eslint-config-next": "^16.1.4",
+    "ts-node": "^10.9.2",
     "typescript": "^5.9.3"
   }
 }

@@ -26,7 +26,7 @@ interface RecordingModalProps {
   isOpen: boolean
   onClose: () => void
   onContinueWithoutRecording: () => void
-  language: 'en' | 'es' | 'pt'
+  language: string
 }
 
 type ModalStep = 'choose-type' | 'choose-camera' | 'recording' | 'complete' | 'saved'
@@ -125,7 +125,7 @@ export function RecordingModal({
   language
 }: RecordingModalProps) {
   const router = useRouter()
-  const t = translations[language]
+  const t = translations[language as keyof typeof translations] || translations.en
 
   const [step, setStep] = useState<ModalStep>('choose-type')
   const [selectedType, setSelectedType] = useState<RecordingType>('video')

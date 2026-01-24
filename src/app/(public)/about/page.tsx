@@ -234,7 +234,7 @@ const aboutTranslations = {
 
 export default function AboutPage() {
   const { language } = useLanguage()
-  const t = aboutTranslations[language]
+  const t = aboutTranslations[language as keyof typeof aboutTranslations] || aboutTranslations.en
 
   return (
     <>

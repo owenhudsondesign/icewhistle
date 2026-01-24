@@ -121,10 +121,8 @@ const translations = {
   },
 }
 
-type Language = 'en' | 'es' | 'pt'
-
 interface OnboardingData {
-  language: Language
+  language: string
   zip: string
   zipEntries: ZipEntry[]
   alertsEnabled: boolean
@@ -139,7 +137,7 @@ interface OnboardingFlowProps {
 
 export function OnboardingFlow({ onComplete, onSkip }: OnboardingFlowProps) {
   const [step, setStep] = useState(1)
-  const [language, setLanguage] = useState<Language>('en')
+  const [language, setLanguage] = useState('en')
   const [zip, setZip] = useState('')
   const [zipEntries, setZipEntries] = useState<ZipEntry[]>([{ zipCode: '', label: 'home' }])
   const [zipError, setZipError] = useState('')
@@ -151,7 +149,7 @@ export function OnboardingFlow({ onComplete, onSkip }: OnboardingFlowProps) {
   const pushNotifications = usePushNotifications()
   const showPushOption = isPushSupported()
 
-  const t = translations[language]
+  const t = translations[language as keyof typeof translations] || translations.en
   const totalSteps = 4
 
   // Validate ZIP code (US format)
@@ -329,9 +327,9 @@ export function OnboardingFlow({ onComplete, onSkip }: OnboardingFlowProps) {
             <CardContent className="space-y-4">
               <div className="space-y-2">
                 {[
-                  { code: 'en' as Language, name: 'English', native: 'English' },
-                  { code: 'es' as Language, name: 'Spanish', native: 'Español' },
-                  { code: 'pt' as Language, name: 'Portuguese', native: 'Português' },
+                  { code: 'en', name: 'English', native: 'English' },
+                  { code: 'es', name: 'Spanish', native: 'Español' },
+                  { code: 'pt', name: 'Portuguese', native: 'Português' },
                 ].map((lang) => (
                   <button
                     key={lang.code}

@@ -138,7 +138,7 @@ export function useEmergencyContacts() {
    * Opens native SMS app with pre-filled recipients and message
    */
   const generateSmsUrl = useCallback((
-    language: 'en' | 'es' | 'pt' = 'en',
+    language: string = 'en',
     location?: { lat: number; lng: number } | null
   ): string | null => {
     if (state.contacts.length === 0) return null
@@ -146,8 +146,9 @@ export function useEmergencyContacts() {
     // Build recipient list
     const recipients = state.contacts.map(c => c.phone).join(',')
 
-    // Build message
-    let message = state.customMessage || defaultMessages[language]
+    // Build message - fallback to English for unsupported languages
+    const defaultMsg = defaultMessages[language as keyof typeof defaultMessages] || defaultMessages.en
+    let message = state.customMessage || defaultMsg
 
     // Replace location placeholder
     if (location) {
@@ -169,7 +170,7 @@ export function useEmergencyContacts() {
    * Open SMS app with pre-filled alert
    */
   const sendAlert = useCallback((
-    language: 'en' | 'es' | 'pt' = 'en',
+    language: string = 'en',
     location?: { lat: number; lng: number } | null
   ): boolean => {
     const url = generateSmsUrl(language, location)

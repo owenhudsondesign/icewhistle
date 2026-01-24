@@ -188,7 +188,7 @@ export function AlertMap({
   onUserLocationUpdate
 }: AlertMapProps) {
   const { language } = useLanguage()
-  const t = mapTranslations[language]
+  const t = mapTranslations[language as keyof typeof mapTranslations] || mapTranslations.en
   const mapContainer = useRef<HTMLDivElement>(null)
   const map = useRef<mapboxgl.Map | null>(null)
   const popup = useRef<mapboxgl.Popup | null>(null)

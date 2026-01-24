@@ -302,7 +302,7 @@ const translations = {
 
 export default function EncounterPage() {
   const { language } = useLanguage()
-  const t = translations[language]
+  const t = translations[language as keyof typeof translations] || translations.en
   const { isRecording, showSaveDialog, recordingBlob } = useRecordingStore()
   const { stopRecording, saveRecording, discardRecording } = useEnhancedRecording()
   const [reportStatus, setReportStatus] = useState<'idle' | 'loading' | 'success' | 'error' | 'rate_limited'>('idle')

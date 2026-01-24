@@ -200,7 +200,7 @@ const pageTranslations = {
 
 export default function LandingPage() {
   const { language } = useLanguage()
-  const t = pageTranslations[language]
+  const t = pageTranslations[language as keyof typeof pageTranslations] || pageTranslations.en
 
   const [currentIndex, setCurrentIndex] = useState(0)
 

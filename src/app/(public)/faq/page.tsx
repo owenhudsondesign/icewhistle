@@ -26,7 +26,7 @@ const pageTranslations = {
 
 function FAQContent() {
   const { language } = useLanguage()
-  const t = pageTranslations[language]
+  const t = pageTranslations[language as keyof typeof pageTranslations] || pageTranslations.en
 
   return (
     <div className="flex flex-col h-[calc(100vh-4rem)] max-h-[calc(100dvh-4rem)]">

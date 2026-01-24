@@ -183,7 +183,7 @@ const bomData = [
 
 export default function TransparencyPage() {
   const { language } = useLanguage()
-  const t = pageTranslations[language]
+  const t = pageTranslations[language as keyof typeof pageTranslations] || pageTranslations.en
 
   const bomTotal = bomData.reduce((sum, item) => sum + item.cost, 0)
 

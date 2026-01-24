@@ -180,7 +180,7 @@ export function ReportAlertModal({
   initialLocation
 }: ReportAlertModalProps) {
   const { language } = useLanguage()
-  const t = modalTranslations[language]
+  const t = modalTranslations[language as keyof typeof modalTranslations] || modalTranslations.en
   const [step, setStep] = useState<'type' | 'location' | 'details' | 'submitting' | 'success'>('type')
   const [alertType, setAlertType] = useState<AlertType | null>(null)
   const [locationMethod, setLocationMethod] = useState<'gps' | 'address' | null>(null)

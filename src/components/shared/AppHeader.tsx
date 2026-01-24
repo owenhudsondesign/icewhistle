@@ -10,33 +10,6 @@ import { useTheme } from '@/hooks/use-theme'
 import { useLanguage } from '@/hooks/use-language'
 import { usePWAInstall } from '@/hooks/use-pwa-install'
 
-const installTranslations = {
-  en: {
-    install: 'Install App',
-    iosTitle: 'Install on iPhone/iPad',
-    iosStep1: '1. Tap the Share button',
-    iosStep2: '2. Scroll down and tap "Add to Home Screen"',
-    iosStep3: '3. Tap "Add" to install',
-    close: 'Got it',
-  },
-  es: {
-    install: 'Instalar App',
-    iosTitle: 'Instalar en iPhone/iPad',
-    iosStep1: '1. Toca el botón Compartir',
-    iosStep2: '2. Desplázate y toca "Añadir a la pantalla de inicio"',
-    iosStep3: '3. Toca "Añadir" para instalar',
-    close: 'Entendido',
-  },
-  pt: {
-    install: 'Instalar App',
-    iosTitle: 'Instalar no iPhone/iPad',
-    iosStep1: '1. Toque no botão Compartilhar',
-    iosStep2: '2. Role para baixo e toque em "Adicionar à Tela de Início"',
-    iosStep3: '3. Toque em "Adicionar" para instalar',
-    close: 'Entendi',
-  },
-}
-
 interface AppHeaderProps {
   showBack?: boolean
   backHref?: string
@@ -44,11 +17,11 @@ interface AppHeaderProps {
 
 export function AppHeader({ showBack, backHref = '/' }: AppHeaderProps) {
   const { toggleTheme, isDark, mounted } = useTheme()
-  const { language, setLanguage } = useLanguage()
+  const { language, setLanguage, t } = useLanguage()
   const { canInstall, isIOS, isInstalled, promptInstall } = usePWAInstall()
   const [showIOSModal, setShowIOSModal] = useState(false)
   const [portalRoot, setPortalRoot] = useState<HTMLElement | null>(null)
-  const t = installTranslations[language]
+  const nav = t.nav
 
   useEffect(() => {
     setPortalRoot(document.body)
@@ -134,7 +107,7 @@ export function AppHeader({ showBack, backHref = '/' }: AppHeaderProps) {
                 className="hidden sm:flex h-10 rounded-[8px] border-border/50 press-scale gap-2 px-3"
               >
                 <Download className="h-4 w-4 text-[#00A6B4]" strokeWidth={2} />
-                <span className="text-sm">{t.install}</span>
+                <span className="text-sm">{nav.install}</span>
               </Button>
             )}
             {/* Dark mode toggle - always visible */}
@@ -168,32 +141,32 @@ export function AppHeader({ showBack, backHref = '/' }: AppHeaderProps) {
             className="w-full max-w-sm bg-background rounded-2xl p-6 shadow-xl border border-border"
             onClick={(e) => e.stopPropagation()}
           >
-            <h3 className="text-lg font-semibold mb-4">{t.iosTitle}</h3>
+            <h3 className="text-lg font-semibold mb-4">{nav.iosTitle}</h3>
             <div className="space-y-4 mb-6">
               <div className="flex items-start gap-3">
                 <div className="w-8 h-8 rounded-lg bg-blue-500/10 flex items-center justify-center flex-shrink-0">
                   <Share className="w-4 h-4 text-blue-500" />
                 </div>
-                <p className="text-sm text-muted-foreground pt-1">{t.iosStep1}</p>
+                <p className="text-sm text-muted-foreground pt-1">{nav.iosStep1}</p>
               </div>
               <div className="flex items-start gap-3">
                 <div className="w-8 h-8 rounded-lg bg-blue-500/10 flex items-center justify-center flex-shrink-0">
                   <Plus className="w-4 h-4 text-blue-500" />
                 </div>
-                <p className="text-sm text-muted-foreground pt-1">{t.iosStep2}</p>
+                <p className="text-sm text-muted-foreground pt-1">{nav.iosStep2}</p>
               </div>
               <div className="flex items-start gap-3">
                 <div className="w-8 h-8 rounded-lg bg-green-500/10 flex items-center justify-center flex-shrink-0">
                   <Download className="w-4 h-4 text-green-500" />
                 </div>
-                <p className="text-sm text-muted-foreground pt-1">{t.iosStep3}</p>
+                <p className="text-sm text-muted-foreground pt-1">{nav.iosStep3}</p>
               </div>
             </div>
             <Button
               onClick={() => setShowIOSModal(false)}
               className="w-full"
             >
-              {t.close}
+              {nav.gotIt}
             </Button>
           </div>
         </div>,

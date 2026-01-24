@@ -63,7 +63,7 @@ interface ZipCodeModalProps {
 
 export function ZipCodeModal({ isOpen, onClose, onLocationSet }: ZipCodeModalProps) {
   const { language } = useLanguage()
-  const t = translations[language]
+  const t = translations[language as keyof typeof translations] || translations.en
   const { savedLocation, setSavedLocation, clearSavedLocation } = useLocation()
 
   const [zipCode, setZipCode] = useState(savedLocation?.zipCode || '')

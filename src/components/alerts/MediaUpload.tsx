@@ -106,7 +106,7 @@ export function MediaUpload({
   disabled = false,
 }: MediaUploadProps) {
   const { language } = useLanguage()
-  const t = translations[language]
+  const t = translations[language as keyof typeof translations] || translations.en
   const photoInputRef = useRef<HTMLInputElement>(null)
   const videoInputRef = useRef<HTMLInputElement>(null)
   const [error, setError] = useState<string | null>(null)

@@ -8,7 +8,7 @@ import { AlertFeed } from '@/components/alerts/AlertFeed'
 import { ReportAlertModal } from '@/components/alerts/ReportAlertModal'
 import { ZipCodeModal } from '@/components/alerts/ZipCodeModal'
 import { AppHeader } from '@/components/shared/AppHeader'
-import { useLanguage, commonTranslations } from '@/hooks/use-language'
+import { useLanguage } from '@/hooks/use-language'
 import { useLocation } from '@/hooks/use-location'
 import {
   AlertTriangle,
@@ -28,9 +28,10 @@ import {
 
 function AlertsPageContent() {
   const searchParams = useSearchParams()
-  const { language } = useLanguage()
+  const { language, t } = useLanguage()
   const { savedLocation, mounted: locationMounted } = useLocation()
-  const t = commonTranslations[language]
+  const alerts_t = t.alerts
+  const common_t = t.common
   const [alerts, setAlerts] = useState<AlertType[]>([])
   const [loading, setLoading] = useState(true)
   const [refreshing, setRefreshing] = useState(false)
@@ -206,8 +207,8 @@ function AlertsPageContent() {
       <main className="container mx-auto px-4 py-4">
         {/* Page Title */}
         <div className="mb-4">
-          <h1 className="text-xl font-bold">{t.liveAlerts}</h1>
-          <p className="text-sm text-muted-foreground">{alerts.length} {t.active} • {formatTimeAgo(lastRefresh, t)}</p>
+          <h1 className="text-xl font-bold">{alerts_t.liveAlerts}</h1>
+          <p className="text-sm text-muted-foreground">{alerts.length} {common_t.active} • {formatTimeAgo(lastRefresh, alerts_t)}</p>
         </div>
         {/* Location Indicator */}
         <button
@@ -241,7 +242,7 @@ function AlertsPageContent() {
           <div className="flex items-center justify-center h-[60vh]">
             <div className="text-center">
               <RefreshCw className="h-8 w-8 animate-spin mx-auto mb-4 text-muted-foreground" />
-              <p className="text-muted-foreground">{t.loadingAlerts}</p>
+              <p className="text-muted-foreground">{alerts_t.loadingAlerts}</p>
             </div>
           </div>
         ) : (
@@ -258,8 +259,8 @@ function AlertsPageContent() {
                   <Plus className="h-10 w-10" strokeWidth={2.5} />
                 </div>
                 <div className="relative z-10 text-center">
-                  <div className="text-title">{t.reportActivity}</div>
-                  <div className="text-caption text-white/80">{t.reportActivityAlt}</div>
+                  <div className="text-title">{alerts_t.reportActivity}</div>
+                  <div className="text-caption text-white/80">{alerts_t.reportActivityAlt}</div>
                 </div>
               </button>
 
@@ -267,39 +268,39 @@ function AlertsPageContent() {
               <div className="card-glass category-bar category-bar-tangerine p-5 flex flex-col items-center justify-center">
                 <AlertTriangle className="h-7 w-7 text-[#FF8C42] mb-1" strokeWidth={2} />
                 <div className="text-title font-extrabold">{raidCount}</div>
-                <div className="text-small text-muted-foreground font-medium">{t.raids}</div>
+                <div className="text-small text-muted-foreground font-medium">{alerts_t.raids}</div>
               </div>
 
               <div className="card-glass category-bar category-bar-bondi p-5 flex flex-col items-center justify-center">
                 <ShieldAlert className="h-7 w-7 text-[#00A6B4] mb-1" strokeWidth={2} />
                 <div className="text-title font-extrabold">{checkpointCount}</div>
-                <div className="text-small text-muted-foreground font-medium">{t.checkpoints}</div>
+                <div className="text-small text-muted-foreground font-medium">{alerts_t.checkpoints}</div>
               </div>
 
               <div className="card-glass category-bar category-bar-grape p-5 flex flex-col items-center justify-center">
                 <Car className="h-7 w-7 text-[#8B5CF6] mb-1" strokeWidth={2} />
                 <div className="text-title font-extrabold">{vehicleCount}</div>
-                <div className="text-small text-muted-foreground font-medium">{t.vehicles}</div>
+                <div className="text-small text-muted-foreground font-medium">{alerts_t.vehicles}</div>
               </div>
 
               <div className="card-glass category-bar category-bar-lime p-5 flex flex-col items-center justify-center">
                 <CheckCircle className="h-7 w-7 text-[#84CC16] mb-1" strokeWidth={2} />
                 <div className="text-title font-extrabold">{verifiedCount}</div>
-                <div className="text-small text-muted-foreground font-medium">{t.verified}</div>
+                <div className="text-small text-muted-foreground font-medium">{common_t.verified}</div>
               </div>
             </div>
 
             {/* Quick Report Type Buttons */}
             <div className="mb-5">
-              <h2 className="text-small font-semibold mb-3 text-muted-foreground uppercase tracking-wide">{t.quickReport}</h2>
+              <h2 className="text-small font-semibold mb-3 text-muted-foreground uppercase tracking-wide">{alerts_t.quickReport}</h2>
               <div className="grid grid-cols-3 gap-3">
                 {[
-                  { type: 'ice_raid', icon: AlertTriangle, label: t.raid, color: 'text-[#DC2626] bg-[#DC2626]/10 hover:bg-[#DC2626]/20' },
-                  { type: 'ice_workplace', icon: Building2, label: t.workplace, color: 'text-[#DC2626] bg-[#DC2626]/10 hover:bg-[#DC2626]/20' },
-                  { type: 'ice_residence', icon: Home, label: t.residence, color: 'text-[#DC2626] bg-[#DC2626]/10 hover:bg-[#DC2626]/20' },
-                  { type: 'ice_checkpoint', icon: ShieldAlert, label: t.checkpoint, color: 'text-[#FF8C42] bg-[#FF8C42]/10 hover:bg-[#FF8C42]/20' },
-                  { type: 'ice_vehicle', icon: Car, label: t.vehicle, color: 'text-[#8B5CF6] bg-[#8B5CF6]/10 hover:bg-[#8B5CF6]/20' },
-                  { type: 'ice_transit', icon: Train, label: t.transit, color: 'text-[#00A6B4] bg-[#00A6B4]/10 hover:bg-[#00A6B4]/20' },
+                  { type: 'ice_raid', icon: AlertTriangle, label: alerts_t.raid, color: 'text-[#DC2626] bg-[#DC2626]/10 hover:bg-[#DC2626]/20' },
+                  { type: 'ice_workplace', icon: Building2, label: alerts_t.workplace, color: 'text-[#DC2626] bg-[#DC2626]/10 hover:bg-[#DC2626]/20' },
+                  { type: 'ice_residence', icon: Home, label: alerts_t.residence, color: 'text-[#DC2626] bg-[#DC2626]/10 hover:bg-[#DC2626]/20' },
+                  { type: 'ice_checkpoint', icon: ShieldAlert, label: alerts_t.checkpoint, color: 'text-[#FF8C42] bg-[#FF8C42]/10 hover:bg-[#FF8C42]/20' },
+                  { type: 'ice_vehicle', icon: Car, label: alerts_t.vehicle, color: 'text-[#8B5CF6] bg-[#8B5CF6]/10 hover:bg-[#8B5CF6]/20' },
+                  { type: 'ice_transit', icon: Train, label: alerts_t.transit, color: 'text-[#00A6B4] bg-[#00A6B4]/10 hover:bg-[#00A6B4]/20' },
                 ].map(({ type, icon: Icon, label, color }) => (
                   <button
                     key={type}
@@ -316,7 +317,7 @@ function AlertsPageContent() {
             {/* View Toggle */}
             <div className="flex items-center justify-between mb-4">
               <h2 className="text-small font-semibold text-muted-foreground uppercase tracking-wide">
-                {viewMode === 'map' ? t.mapView : t.listView}
+                {viewMode === 'map' ? alerts_t.mapView : alerts_t.listView}
               </h2>
               <div className="flex bg-muted rounded-[8px] p-1">
                 <button
@@ -328,7 +329,7 @@ function AlertsPageContent() {
                   }`}
                 >
                   <Map className="h-4 w-4" />
-                  {t.mapView}
+                  {alerts_t.mapView}
                 </button>
                 <button
                   onClick={() => setViewMode('feed')}
@@ -339,7 +340,7 @@ function AlertsPageContent() {
                   }`}
                 >
                   <List className="h-4 w-4" />
-                  {t.listView}
+                  {alerts_t.listView}
                 </button>
               </div>
             </div>
@@ -376,7 +377,7 @@ function AlertsPageContent() {
             {/* Recent Alerts Preview - only show in map view */}
             {viewMode === 'map' && alerts.length > 0 && (
               <div className="mt-5">
-                <h2 className="text-small font-semibold text-muted-foreground uppercase tracking-wide mb-3">{t.recentReports}</h2>
+                <h2 className="text-small font-semibold text-muted-foreground uppercase tracking-wide mb-3">{alerts_t.recentReports}</h2>
                 <div className="flex gap-3 overflow-x-auto pb-2 -mx-4 px-4">
                   {alerts.slice(0, 5).map((alert) => {
                     const type = ALERT_TYPES[alert.alertType]
@@ -395,9 +396,9 @@ function AlertsPageContent() {
                         )}
                         <div className="flex items-center gap-2 text-small text-muted-foreground">
                           <Clock className="h-3 w-3" />
-                          <span>{formatTimeAgo(new Date(alert.reportedAt), t)}</span>
+                          <span>{formatTimeAgo(new Date(alert.reportedAt), alerts_t)}</span>
                           {alert.verificationCount >= 3 && (
-                            <span className="text-[#84CC16] font-medium">{t.verified}</span>
+                            <span className="text-[#84CC16] font-medium">{common_t.verified}</span>
                           )}
                         </div>
                       </button>
@@ -435,7 +436,7 @@ function AlertsPageContent() {
   )
 }
 
-function formatTimeAgo(date: Date, t?: typeof commonTranslations['en']): string {
+function formatTimeAgo(date: Date, t?: Record<string, string>): string {
   const seconds = Math.floor((new Date().getTime() - date.getTime()) / 1000)
   if (seconds < 60) return t?.justNow || 'just now'
   if (seconds < 3600) return `${Math.floor(seconds / 60)}${t?.minsAgo || 'm ago'}`

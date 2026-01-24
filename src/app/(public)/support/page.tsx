@@ -4,7 +4,7 @@ import Link from 'next/link'
 import { AppHeader } from '@/components/shared/AppHeader'
 import { Card, CardContent } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
-import { useLanguage, commonTranslations } from '@/hooks/use-language'
+import { useLanguage } from '@/hooks/use-language'
 import {
   Server,
   Globe,
@@ -17,21 +17,21 @@ import {
 } from 'lucide-react'
 
 export default function SupportPage() {
-  const { language } = useLanguage()
-  const t = commonTranslations[language]
+  const { t } = useLanguage()
+  const support = t.support
 
   const supportItems = [
-    { icon: Server, label: t.supportHosting },
-    { icon: Globe, label: t.supportTranslation },
-    { icon: Wrench, label: t.supportMaintenance },
-    { icon: FileCheck, label: t.supportLegal },
+    { icon: Server, label: support.hosting },
+    { icon: Globe, label: support.translation },
+    { icon: Wrench, label: support.maintenance },
+    { icon: FileCheck, label: support.legal },
   ]
 
   const trustItems = [
-    t.donationsOptional,
-    t.donationsSecure,
-    t.noStoreDonorInfo,
-    t.accessNeverGated,
+    support.donationsOptional,
+    support.donationsSecure,
+    support.noStoreDonorInfo,
+    support.accessNeverGated,
   ]
 
   return (
@@ -41,9 +41,9 @@ export default function SupportPage() {
       <main className="container mx-auto px-4 py-8 max-w-2xl">
         {/* Header */}
         <div className="text-center mb-8">
-          <h1 className="text-2xl font-bold mb-3">{t.supportTitle}</h1>
+          <h1 className="text-2xl font-bold mb-3">{support.title}</h1>
           <p className="text-muted-foreground">
-            {t.supportIntro}
+            {support.intro}
           </p>
         </div>
 
@@ -51,16 +51,16 @@ export default function SupportPage() {
         <Card className="mb-6">
           <CardContent className="p-5">
             <p className="text-sm leading-relaxed">
-              {t.supportMission}
+              {support.mission}
             </p>
           </CardContent>
         </Card>
 
         {/* How support is used */}
         <div className="mb-6">
-          <h2 className="text-lg font-semibold mb-4">{t.howSupportUsed}</h2>
+          <h2 className="text-lg font-semibold mb-4">{support.howUsed}</h2>
           <p className="text-sm text-muted-foreground mb-4">
-            {t.supportHelps}
+            {support.helps}
           </p>
           <div className="grid grid-cols-2 gap-3">
             {supportItems.map(({ icon: Icon, label }) => (
@@ -79,7 +79,7 @@ export default function SupportPage() {
         <Card className="mb-6 bg-muted/20">
           <CardContent className="p-4">
             <p className="text-sm text-muted-foreground leading-relaxed">
-              {t.supportTransparency}
+              {support.transparency}
             </p>
           </CardContent>
         </Card>
@@ -88,7 +88,7 @@ export default function SupportPage() {
         <div className="mb-8">
           <h2 className="text-lg font-semibold mb-4 flex items-center gap-2">
             <Shield className="h-5 w-5 text-[#84CC16]" />
-            {t.privacyTrust}
+            {support.privacyTrust}
           </h2>
           <ul className="space-y-2">
             {trustItems.map((item) => (
@@ -102,13 +102,13 @@ export default function SupportPage() {
 
         {/* Closing statement */}
         <p className="text-sm text-muted-foreground text-center mb-8">
-          {t.supportClosing}
+          {support.closing}
         </p>
 
         {/* Donation section */}
         <div className="border-t pt-8">
           <p className="text-xs text-muted-foreground text-center mb-4">
-            {t.donationsProcessed}
+            {support.processed}
           </p>
 
           {/* OpenCollective iframe */}
@@ -123,7 +123,7 @@ export default function SupportPage() {
           {/* Alternative: External link */}
           <div className="text-center">
             <p className="text-xs text-muted-foreground mb-3">
-              {t.preferDirect}
+              {support.preferDirect}
             </p>
             <Button variant="outline" size="sm" asChild>
               <a
@@ -133,7 +133,7 @@ export default function SupportPage() {
                 className="inline-flex items-center gap-2"
               >
                 <ExternalLink className="h-4 w-4" />
-                {t.openInOC}
+                {support.openInOC}
               </a>
             </Button>
           </div>
@@ -143,7 +143,7 @@ export default function SupportPage() {
         <div className="mt-8 pt-6 border-t">
           <div className="flex items-center justify-center gap-2 text-xs text-muted-foreground">
             <Lock className="h-3 w-3" />
-            <span>{t.supportInfrastructure}</span>
+            <span>{support.infrastructure}</span>
           </div>
         </div>
       </main>
