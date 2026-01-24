@@ -117,7 +117,7 @@ export function AlertContactsButton({
             className="w-full h-12 rounded-[8px] border-dashed border-[#FF8C42]/50 text-[#FF8C42] hover:bg-[#FF8C42]/10"
           >
             <Users className="h-4 w-4 mr-2 flex-shrink-0" />
-            <span className="truncate">{t.noContacts}</span>
+            <span className="line-clamp-1">{t.noContacts}</span>
           </Button>
         </Link>
       )
@@ -152,17 +152,17 @@ export function AlertContactsButton({
         {status === 'locating' ? (
           <>
             <MapPin className="h-4 w-4 mr-2 animate-pulse flex-shrink-0" />
-            <span className="truncate">{t.gettingLocation}</span>
+            <span className="line-clamp-1">{t.gettingLocation}</span>
           </>
         ) : status === 'sent' ? (
           <>
             <Check className="h-4 w-4 mr-2 flex-shrink-0" />
-            <span className="truncate">{t.alertSent}</span>
+            <span className="line-clamp-1">{t.alertSent}</span>
           </>
         ) : (
           <>
             <MessageSquare className="h-4 w-4 mr-2 flex-shrink-0" />
-            <span className="truncate">{t.alertContacts} ({contacts.length})</span>
+            <span className="line-clamp-1">{t.alertContacts} ({contacts.length})</span>
           </>
         )}
       </Button>

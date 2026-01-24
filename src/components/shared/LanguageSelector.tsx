@@ -94,8 +94,8 @@ export function LanguageSelector({ className }: { className?: string }) {
                       : "hover:bg-muted"
                   )}
                 >
-                  <span className="font-bold min-w-[2.5rem]">{label}</span>
-                  <span className="flex-1">{nativeName}</span>
+                  <span className="font-bold shrink-0">{label}</span>
+                  <span className="flex-1 break-words">{nativeName}</span>
                   {language === code && <Check className="h-4 w-4" />}
                 </button>
               ))}
@@ -150,9 +150,9 @@ export function FloatingLanguageSelector() {
                       : "hover:bg-muted"
                   )}
                 >
-                  <span className="font-bold min-w-[2rem]">{label}</span>
-                  <span className={language === code ? "text-primary-foreground/80" : "text-muted-foreground"}>{nativeName}</span>
-                  {language === code && <Check className="h-4 w-4 ml-auto" />}
+                  <span className="font-bold shrink-0">{label}</span>
+                  <span className={`break-words ${language === code ? "text-primary-foreground/80" : "text-muted-foreground"}`}>{nativeName}</span>
+                  {language === code && <Check className="h-4 w-4 ml-auto shrink-0" />}
                 </button>
               ))}
             </div>
@@ -176,9 +176,9 @@ export function FloatingLanguageSelector() {
                       : "hover:bg-muted"
                   )}
                 >
-                  <span className="font-bold min-w-[2rem]">{label}</span>
-                  <span className={language === code ? "text-primary-foreground/80" : "text-muted-foreground"}>{nativeName}</span>
-                  {language === code && <Check className="h-4 w-4 ml-auto" />}
+                  <span className="font-bold shrink-0">{label}</span>
+                  <span className={`break-words ${language === code ? "text-primary-foreground/80" : "text-muted-foreground"}`}>{nativeName}</span>
+                  {language === code && <Check className="h-4 w-4 ml-auto shrink-0" />}
                 </button>
               ))}
             </div>

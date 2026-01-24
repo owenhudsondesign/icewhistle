@@ -181,9 +181,9 @@ export function AlertFeed({
                 )}
 
                 {alert.address && (
-                  <p className="text-small text-muted-foreground mt-1 flex items-center gap-1">
-                    <MapPin className="h-3 w-3" strokeWidth={2} />
-                    {alert.address}
+                  <p className="text-small text-muted-foreground mt-1 flex items-start gap-1">
+                    <MapPin className="h-3 w-3 flex-shrink-0 mt-0.5" strokeWidth={2} />
+                    <span className="break-words line-clamp-2">{alert.address}</span>
                   </p>
                 )}
 
@@ -228,7 +228,8 @@ export function AlertFeed({
                       disabled={clearingId === alert.id}
                     >
                       <CheckCircle className="h-4 w-4 mr-1" strokeWidth={2} />
-                      {clearingId === alert.id ? 'Voting...' : `They've Left (${alert.clearVoteCount || 0}/${CLEAR_VOTES_REQUIRED})`}
+                      <span className="break-words">{clearingId === alert.id ? 'Voting...' : `They've Left`}</span>
+                      <span className="text-xs opacity-70">({alert.clearVoteCount || 0}/{CLEAR_VOTES_REQUIRED})</span>
                     </Button>
                   )}
                 </div>

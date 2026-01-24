@@ -85,7 +85,7 @@ export function BottomNav() {
                 <div className="w-11 h-11 rounded-full bg-[#DC2626] flex items-center justify-center shadow-md press-scale">
                   <Icon className="h-5 w-5 text-white" strokeWidth={2.5} />
                 </div>
-                <span className="text-[10px] font-semibold text-[#DC2626]">{label}</span>
+                <span className="text-[10px] font-semibold text-[#DC2626] text-center line-clamp-1">{label}</span>
               </Link>
             )
           }
@@ -102,7 +102,7 @@ export function BottomNav() {
               )}
             >
               <Icon className={cn("h-6 w-6 flex-shrink-0", active && "text-primary")} strokeWidth={active ? 2.5 : 2} />
-              <span className={cn("text-[10px]", active ? "font-semibold" : "font-medium")}>{label}</span>
+              <span className={cn("text-[10px] text-center line-clamp-1", active ? "font-semibold" : "font-medium")}>{label}</span>
             </Link>
           )
         })}

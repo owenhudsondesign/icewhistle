@@ -392,7 +392,7 @@ function AlertsPageContent() {
                           <span className="text-caption font-semibold">{language === 'en' ? type.label : type.labelEs}</span>
                         </div>
                         {alert.address && (
-                          <p className="text-small text-muted-foreground truncate mb-2">{alert.address}</p>
+                          <p className="text-small text-muted-foreground break-words line-clamp-2 mb-2">{alert.address}</p>
                         )}
                         <div className="flex items-center gap-2 text-small text-muted-foreground">
                           <Clock className="h-3 w-3" />

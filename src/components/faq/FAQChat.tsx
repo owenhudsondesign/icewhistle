@@ -220,7 +220,7 @@ export function FAQChat() {
               <button
                 key={index}
                 onClick={() => handleSuggestionClick(question)}
-                className="text-xs px-3 py-1.5 bg-muted hover:bg-muted/80 rounded-full text-foreground transition-colors press-scale"
+                className="text-xs px-3 py-1.5 bg-muted hover:bg-muted/80 rounded-full text-foreground transition-colors press-scale text-left break-words"
               >
                 {question}
               </button>

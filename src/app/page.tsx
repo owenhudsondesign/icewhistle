@@ -236,17 +236,17 @@ export default function Home() {
               <h2 className="text-sm font-semibold mb-1">{home.recordingFeature}</h2>
               <p className="text-xs text-muted-foreground mb-3 break-words">{home.recordingFeatureDesc}</p>
               <div className="flex flex-wrap gap-1.5">
-                <span className="inline-flex items-center gap-1 text-[10px] bg-[#00A6B4]/10 text-[#00A6B4] px-2 py-1 rounded-full whitespace-nowrap">
+                <span className="inline-flex items-center gap-1 text-[10px] bg-[#00A6B4]/10 text-[#00A6B4] px-2 py-1 rounded-full">
                   <Video className="h-3 w-3 flex-shrink-0" />
-                  <span className="truncate max-w-[100px] sm:max-w-none">{home.recordingFeature1}</span>
+                  <span className="break-words">{home.recordingFeature1}</span>
                 </span>
-                <span className="inline-flex items-center gap-1 text-[10px] bg-[#84CC16]/10 text-[#84CC16] px-2 py-1 rounded-full whitespace-nowrap">
+                <span className="inline-flex items-center gap-1 text-[10px] bg-[#84CC16]/10 text-[#84CC16] px-2 py-1 rounded-full">
                   <CheckCircle className="h-3 w-3 flex-shrink-0" />
-                  <span className="truncate max-w-[100px] sm:max-w-none">{home.recordingFeature2}</span>
+                  <span className="break-words">{home.recordingFeature2}</span>
                 </span>
-                <span className="inline-flex items-center gap-1 text-[10px] bg-[#8B5CF6]/10 text-[#8B5CF6] px-2 py-1 rounded-full whitespace-nowrap">
+                <span className="inline-flex items-center gap-1 text-[10px] bg-[#8B5CF6]/10 text-[#8B5CF6] px-2 py-1 rounded-full">
                   <FileCheck className="h-3 w-3 flex-shrink-0" />
-                  <span className="truncate max-w-[100px] sm:max-w-none">{home.recordingFeature3}</span>
+                  <span className="break-words">{home.recordingFeature3}</span>
                 </span>
               </div>
             </div>
@@ -256,7 +256,7 @@ export default function Home() {
         {/* Emergency Hotlines - Structured with explanations */}
         <div className="card-glass p-4 mb-4">
           <div className="flex items-center gap-2 mb-1">
-            <span className="px-2 py-0.5 bg-[#DC2626] text-white text-[10px] font-bold rounded-full tracking-wide whitespace-nowrap">
+            <span className="px-2 py-0.5 bg-[#DC2626] text-white text-[10px] font-bold rounded-full tracking-wide">
               {home.badgeHotlines}
             </span>
           </div>
@@ -293,7 +293,7 @@ export default function Home() {
         {/* Quick Rights Reminder - Structured Q&A style */}
         <div className="card-glass p-4 mb-4">
           <div className="flex items-center gap-2 mb-1">
-            <span className="px-2 py-0.5 bg-[#84CC16] text-white text-[10px] font-bold rounded-full tracking-wide whitespace-nowrap">
+            <span className="px-2 py-0.5 bg-[#84CC16] text-white text-[10px] font-bold rounded-full tracking-wide">
               {home.badgeRights}
             </span>
           </div>

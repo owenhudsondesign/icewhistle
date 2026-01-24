@@ -487,29 +487,29 @@ export default function EncounterPage() {
             {reportStatus === 'loading' ? (
               <>
                 <Loader2 className="h-4 w-4 mr-2 animate-spin flex-shrink-0" />
-                <span className="truncate">{t.reporting}</span>
+                <span className="line-clamp-1">{t.reporting}</span>
               </>
             ) : reportStatus === 'success' ? (
               <>
                 <Check className="h-4 w-4 mr-2 flex-shrink-0" />
-                <span className="truncate">{t.reported}</span>
+                <span className="line-clamp-1">{t.reported}</span>
               </>
             ) : reportStatus === 'rate_limited' ? (
               <>
                 <MapPin className="h-4 w-4 mr-2 flex-shrink-0" />
-                <span className="truncate">{t.rateLimited.replace('{minutes}', cooldownMinutes.toString())}</span>
+                <span className="line-clamp-1">{t.rateLimited.replace('{minutes}', cooldownMinutes.toString())}</span>
               </>
             ) : reportStatus === 'error' ? (
               <>
                 <MapPin className="h-4 w-4 mr-2 flex-shrink-0" />
-                <span className="truncate">{t.locationError}</span>
+                <span className="line-clamp-1">{t.locationError}</span>
               </>
             ) : (
               <>
                 <MapPin className="h-4 w-4 mr-2 flex-shrink-0" />
                 <span className="flex flex-col items-start leading-tight min-w-0">
-                  <span className="truncate w-full">{t.reportHere}</span>
-                  <span className="text-[9px] font-normal opacity-80 truncate w-full">{t.reportHereDesc}</span>
+                  <span className="line-clamp-1 w-full">{t.reportHere}</span>
+                  <span className="text-[9px] font-normal opacity-80 line-clamp-1 w-full">{t.reportHereDesc}</span>
                 </span>
               </>
             )}
@@ -521,7 +521,7 @@ export default function EncounterPage() {
           >
             <Link href="/alerts">
               <Map className="h-4 w-4 mr-2 flex-shrink-0" />
-              <span className="truncate">{t.viewMap}</span>
+              <span className="line-clamp-1">{t.viewMap}</span>
             </Link>
           </Button>
         </div>

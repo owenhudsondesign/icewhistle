@@ -232,8 +232,8 @@ export function EmergencyContactsManager() {
                     <User className="h-5 w-5 text-[#00A6B4]" />
                   </div>
                   <div className="flex-1 min-w-0">
-                    <p className="font-medium truncate">{contact.name}</p>
-                    <p className="text-small text-muted-foreground">
+                    <p className="font-medium break-words line-clamp-1">{contact.name}</p>
+                    <p className="text-small text-muted-foreground break-words">
                       {formatPhoneNumber(contact.phone)}
                     </p>
                   </div>
