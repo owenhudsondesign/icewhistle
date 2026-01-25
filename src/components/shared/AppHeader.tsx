@@ -5,9 +5,9 @@ import { createPortal } from 'react-dom'
 import Link from 'next/link'
 import Image from 'next/image'
 import { Button } from '@/components/ui/button'
-import { Moon, Sun, ChevronLeft, Download, Share, Plus } from 'lucide-react'
+import { Moon, Sun, ChevronLeft, Download, Share, Plus, ChevronDown, Check, Globe } from 'lucide-react'
 import { useTheme } from '@/hooks/use-theme'
-import { useLanguage } from '@/hooks/use-language'
+import { useLanguage, LANGUAGE_META, SUPPORTED_LANGUAGES } from '@/hooks/use-language'
 import { usePWAInstall } from '@/hooks/use-pwa-install'
 
 interface AppHeaderProps {
@@ -20,8 +20,17 @@ export function AppHeader({ showBack, backHref = '/' }: AppHeaderProps) {
   const { language, setLanguage, t } = useLanguage()
   const { canInstall, isIOS, isInstalled, promptInstall } = usePWAInstall()
   const [showIOSModal, setShowIOSModal] = useState(false)
+  const [showLangDropdown, setShowLangDropdown] = useState(false)
   const [portalRoot, setPortalRoot] = useState<HTMLElement | null>(null)
   const nav = t.nav
+
+  // All languages except EN/ES for the dropdown
+  const otherLanguages = SUPPORTED_LANGUAGES.filter(code => code !== 'en' && code !== 'es').map(code => ({
+    code,
+    ...LANGUAGE_META[code]
+  }))
+  const currentLang = LANGUAGE_META[language]
+  const isOtherLanguage = language !== 'en' && language !== 'es'
 
   useEffect(() => {
     setPortalRoot(document.body)
@@ -72,29 +81,82 @@ export function AppHeader({ showBack, backHref = '/' }: AppHeaderProps) {
             </Link>
           </div>
 
-          {/* Center - Language Selector (Compact on mobile) */}
-          <div className="flex justify-center">
+          {/* Center - Language Selector: EN | ES | Dropdown */}
+          <div className="flex justify-center relative">
             <div className="flex rounded-[12px] overflow-hidden border border-border/50 bg-muted/30">
-              {([
-                { code: 'en' as const, label: 'EN', name: 'English' },
-                { code: 'es' as const, label: 'ES', name: 'Español' },
-                { code: 'pt' as const, label: 'PT', name: 'Português' },
-              ]).map(({ code, label, name }) => (
-                <button
-                  key={code}
-                  onClick={() => setLanguage(code)}
-                  className={`px-3 sm:px-3 py-2 sm:py-1.5 transition-all min-h-[44px] sm:min-h-[44px] min-w-[44px] sm:min-w-[52px] flex flex-col items-center justify-center ${
-                    language === code
-                      ? 'bg-[#00A6B4] text-white'
-                      : 'hover:bg-muted text-foreground'
-                  }`}
-                  aria-label={name}
-                >
-                  <span className="text-sm sm:text-caption font-bold">{label}</span>
-                  <span className={`hidden sm:block text-[10px] ${language === code ? 'text-white/80' : 'text-muted-foreground'}`}>{name}</span>
-                </button>
-              ))}
+              {/* English */}
+              <button
+                onClick={() => setLanguage('en')}
+                className={`px-3 py-2 transition-all min-h-[44px] min-w-[44px] flex items-center justify-center ${
+                  language === 'en'
+                    ? 'bg-[#00A6B4] text-white'
+                    : 'hover:bg-muted text-foreground'
+                }`}
+                aria-label="English"
+              >
+                <span className="text-sm font-bold">EN</span>
+              </button>
+              {/* Spanish */}
+              <button
+                onClick={() => setLanguage('es')}
+                className={`px-3 py-2 transition-all min-h-[44px] min-w-[44px] flex items-center justify-center border-l border-border/50 ${
+                  language === 'es'
+                    ? 'bg-[#00A6B4] text-white'
+                    : 'hover:bg-muted text-foreground'
+                }`}
+                aria-label="Español"
+              >
+                <span className="text-sm font-bold">ES</span>
+              </button>
+              {/* More languages dropdown */}
+              <button
+                onClick={() => setShowLangDropdown(!showLangDropdown)}
+                className={`px-3 py-2 transition-all min-h-[44px] flex items-center justify-center gap-1 border-l border-border/50 ${
+                  isOtherLanguage
+                    ? 'bg-[#00A6B4] text-white'
+                    : 'hover:bg-muted text-foreground'
+                }`}
+                aria-label="More languages"
+              >
+                <span className="text-sm font-bold">{isOtherLanguage ? currentLang.label : '+'}</span>
+                <ChevronDown className={`h-3 w-3 transition-transform ${showLangDropdown ? 'rotate-180' : ''}`} />
+              </button>
             </div>
+
+            {/* Dropdown */}
+            {showLangDropdown && (
+              <>
+                <div
+                  className="fixed inset-0 z-40"
+                  onClick={() => setShowLangDropdown(false)}
+                />
+                <div className="absolute top-full mt-2 right-0 z-50 bg-background border rounded-xl shadow-xl max-h-80 overflow-y-auto min-w-[200px]">
+                  <div className="p-2 border-b sticky top-0 bg-background">
+                    <span className="text-xs text-muted-foreground font-medium">Select Language</span>
+                  </div>
+                  <div className="p-1">
+                    {otherLanguages.map(({ code, nativeName, label }) => (
+                      <button
+                        key={code}
+                        onClick={() => {
+                          setLanguage(code)
+                          setShowLangDropdown(false)
+                        }}
+                        className={`w-full flex items-center gap-2 px-3 py-2 rounded-lg text-sm transition-colors text-left ${
+                          language === code
+                            ? 'bg-[#00A6B4] text-white'
+                            : 'hover:bg-muted'
+                        }`}
+                      >
+                        <span className="font-bold shrink-0">{label}</span>
+                        <span className="flex-1 break-words">{nativeName}</span>
+                        {language === code && <Check className="h-4 w-4" />}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              </>
+            )}
           </div>
 
           {/* Right - Install button (desktop only) & Dark Mode Toggle */}
