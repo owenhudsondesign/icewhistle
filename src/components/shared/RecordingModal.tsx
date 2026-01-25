@@ -20,7 +20,9 @@ import {
   ChevronRight,
   ChevronLeft,
   Camera,
+  MessageSquare,
 } from 'lucide-react'
+import { AlertContactsButton } from '@/components/emergency-contacts'
 
 interface RecordingModalProps {
   isOpen: boolean
@@ -33,8 +35,8 @@ type ModalStep = 'choose-type' | 'choose-camera' | 'recording' | 'complete' | 's
 
 const translations = {
   en: {
-    title: 'Document this encounter',
-    subtitle: 'Recording can protect your rights',
+    title: 'Protect Yourself',
+    subtitle: 'Alert contacts or record this encounter',
     recordVideo: 'Record video',
     recordAudio: 'Record audio only',
     continueWithout: 'Continue without recording',
@@ -61,8 +63,8 @@ const translations = {
     backCameraDesc: 'Record your surroundings',
   },
   es: {
-    title: 'Documenta este encuentro',
-    subtitle: 'Grabar puede proteger tus derechos',
+    title: 'Protégete',
+    subtitle: 'Alerta contactos o graba este encuentro',
     recordVideo: 'Grabar video',
     recordAudio: 'Solo grabar audio',
     continueWithout: 'Continuar sin grabar',
@@ -89,8 +91,8 @@ const translations = {
     backCameraDesc: 'Graba tu entorno',
   },
   pt: {
-    title: 'Documente este encontro',
-    subtitle: 'Gravar pode proteger seus direitos',
+    title: 'Proteja-se',
+    subtitle: 'Alerte contatos ou grave este encontro',
     recordVideo: 'Gravar vídeo',
     recordAudio: 'Gravar apenas áudio',
     continueWithout: 'Continuar sem gravar',
@@ -453,6 +455,9 @@ export function RecordingModal({
             {t.permissionDenied}
           </div>
         )}
+
+        {/* Alert Contacts */}
+        <AlertContactsButton className="mb-4" />
 
         <div className="space-y-3 mb-4">
           <button
