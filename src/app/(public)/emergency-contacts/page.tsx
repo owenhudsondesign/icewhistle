@@ -24,7 +24,7 @@ export default function EmergencyContactsPage() {
   const t = translations[language as keyof typeof translations] || translations.en
 
   return (
-    <div className="min-h-screen bg-background pb-8">
+    <div className="min-h-screen bg-background pb-28">
       <AppHeader showBack backHref="/" />
 
       <main className="container mx-auto px-4 py-4 max-w-lg">

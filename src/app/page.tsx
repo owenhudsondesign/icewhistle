@@ -62,7 +62,7 @@ export default function Home() {
   }
 
   return (
-    <div className="min-h-screen bg-background pb-8">
+    <div className="min-h-screen bg-background pb-28">
       <AppHeader />
 
       <main className="container mx-auto px-4 py-4 max-w-4xl">

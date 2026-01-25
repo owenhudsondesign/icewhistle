@@ -420,7 +420,7 @@ export default function EncounterPage() {
   return (
     <>
       <AppHeader showBack />
-      <div className="min-h-screen bg-background pb-8">
+      <div className="min-h-screen bg-background pb-28">
         {/* Recording Indicator - Fixed at top */}
         <RecordingIndicator onStopClick={handleStopAndSave} />
 

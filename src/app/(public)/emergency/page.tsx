@@ -1027,7 +1027,7 @@ function VehicleStopFlow({ location }: { location: string | null }) {
 
 export default function EmergencyPage() {
   return (
-    <>
+    <div className="pb-28">
       <AppHeader showBack />
       <Suspense fallback={
         <div className="container mx-auto px-4 py-8 text-center">
@@ -1036,6 +1036,6 @@ export default function EmergencyPage() {
       }>
         <EmergencyContent />
       </Suspense>
-    </>
+    </div>
   )
 }

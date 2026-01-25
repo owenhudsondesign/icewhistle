@@ -28,8 +28,9 @@ function FAQContent() {
   const { language } = useLanguage()
   const t = pageTranslations[language as keyof typeof pageTranslations] || pageTranslations.en
 
+  // Account for bottom nav (h-20 = 80px + safe area padding)
   return (
-    <div className="flex flex-col h-[calc(100vh-4rem)] max-h-[calc(100dvh-4rem)]">
+    <div className="flex flex-col h-[calc(100vh-4rem-6rem)] max-h-[calc(100dvh-4rem-6rem)]">
       {/* Header */}
       <div className="flex items-center gap-3 p-4 border-b bg-background">
         <Link
