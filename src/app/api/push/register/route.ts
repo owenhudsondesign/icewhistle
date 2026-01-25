@@ -11,7 +11,8 @@ interface RegisterPushRequest {
   alertsEnabled?: boolean
   quietHoursStart?: string | null
   quietHoursEnd?: string | null
-  zipCodes?: { zipCode: string; label?: string }[]
+  // Labels are stored client-side only (localStorage) for privacy
+  zipCodes?: string[]
 }
 
 /**
@@ -99,10 +100,10 @@ export async function POST(request: NextRequest) {
       },
     })
 
-    // Add ZIP preferences
+    // Add ZIP preferences (labels stored client-side only)
     if (zipCodes.length > 0) {
-      for (const { zipCode, label } of zipCodes) {
-        await addZipPreference(subscription.id, zipCode, label)
+      for (const zipCode of zipCodes) {
+        await addZipPreference(subscription.id, zipCode)
       }
     }
 

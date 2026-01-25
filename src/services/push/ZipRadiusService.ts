@@ -167,11 +167,11 @@ export async function findSubscriptionsNearAlert(
 
 /**
  * Add a ZIP preference for a subscription and geocode it
+ * Note: Labels are stored client-side only (localStorage) for privacy
  */
 export async function addZipPreference(
   subscriptionId: string,
-  zipCode: string,
-  label?: string
+  zipCode: string
 ): Promise<ZipPreference | null> {
   // Geocode the ZIP code
   const geo = await geocodeZipCode(zipCode)
@@ -185,7 +185,7 @@ export async function addZipPreference(
     data: {
       subscriptionId,
       zipCode,
-      label,
+      // No label stored server-side - kept in localStorage only
       latitude: geo?.latitude,
       longitude: geo?.longitude,
     },
@@ -196,10 +196,11 @@ export async function addZipPreference(
 
 /**
  * Update ZIP preferences for a subscription
+ * Note: Labels are stored client-side only (localStorage) for privacy
  */
 export async function updateZipPreferences(
   subscriptionId: string,
-  zipCodes: { zipCode: string; label?: string }[]
+  zipCodes: string[]
 ): Promise<ZipPreference[]> {
   // Delete existing preferences
   await prisma.zipPreference.deleteMany({
@@ -208,8 +209,8 @@ export async function updateZipPreferences(
 
   // Create new preferences
   const preferences: ZipPreference[] = []
-  for (const { zipCode, label } of zipCodes) {
-    const pref = await addZipPreference(subscriptionId, zipCode, label)
+  for (const zipCode of zipCodes) {
+    const pref = await addZipPreference(subscriptionId, zipCode)
     if (pref) {
       preferences.push(pref)
     }
