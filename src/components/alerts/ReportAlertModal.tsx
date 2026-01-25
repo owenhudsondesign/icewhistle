@@ -19,9 +19,7 @@ import {
   Lock,
   CheckCircle,
   ChevronLeft,
-  Camera
 } from 'lucide-react'
-import { MediaUpload, MediaItem } from './MediaUpload'
 import { AlertType, ALERT_TYPES, fuzzyLocation } from '@/types/alert'
 import { Geolocation } from '@capacitor/geolocation'
 import { useLanguage } from '@/hooks/use-language'
@@ -57,8 +55,6 @@ const modalTranslations = {
     geocodeError: 'Error looking up address. Please try again.',
     submitError: 'Failed to submit report. Please try again.',
     enterAddressError: 'Please enter an address',
-    addPhotoVideo: 'Add photo or video (optional)',
-    mediaPrivacy: 'Photos and videos are 100% anonymous. No metadata, no account, no way to trace back to you.',
   },
   es: {
     reportIceActivity: 'Reportar actividad de ICE',
@@ -90,8 +86,6 @@ const modalTranslations = {
     geocodeError: 'Error al buscar la dirección. Por favor intenta de nuevo.',
     submitError: 'Error al enviar el reporte. Por favor intenta de nuevo.',
     enterAddressError: 'Por favor ingresa una dirección',
-    addPhotoVideo: 'Agregar foto o video (opcional)',
-    mediaPrivacy: 'Fotos y videos son 100% anónimos. Sin metadatos, sin cuenta, sin forma de rastrearte.',
   },
   pt: {
     reportIceActivity: 'Reportar atividade do ICE',
@@ -123,19 +117,7 @@ const modalTranslations = {
     geocodeError: 'Erro ao buscar o endereço. Por favor, tente novamente.',
     submitError: 'Falha ao enviar o relatório. Por favor, tente novamente.',
     enterAddressError: 'Por favor, digite um endereço',
-    addPhotoVideo: 'Adicionar foto ou vídeo (opcional)',
-    mediaPrivacy: 'Fotos e vídeos são 100% anônimos. Sem metadados, sem conta, sem forma de rastrear você.',
   },
-}
-
-export interface ReportMediaData {
-  type: 'image' | 'video'
-  url: string
-  caption?: string
-  videoId?: string
-  thumbnailUrl?: string
-  durationSeconds?: number
-  fileSizeBytes?: number
 }
 
 interface ReportAlertModalProps {
@@ -147,7 +129,6 @@ interface ReportAlertModalProps {
     longitude: number
     address?: string
     description?: string
-    media?: ReportMediaData[]
   }) => Promise<void>
   initialLocation?: { lat: number; lng: number } | null
 }
@@ -190,7 +171,6 @@ export function ReportAlertModal({
   const [isGettingLocation, setIsGettingLocation] = useState(false)
   const [isGeocoding, setIsGeocoding] = useState(false)
   const [error, setError] = useState<string | null>(null)
-  const [media, setMedia] = useState<MediaItem[]>([])
 
   // Reset state when modal opens
   useEffect(() => {
@@ -202,7 +182,6 @@ export function ReportAlertModal({
       setAddress('')
       setDescription('')
       setError(null)
-      setMedia([])
     }
   }, [isOpen, initialLocation])
 
@@ -335,35 +314,15 @@ export function ReportAlertModal({
   const handleSubmit = async () => {
     if (!alertType || !location) return
 
-    // Check if any media is still uploading
-    const hasUploadingMedia = media.some(m => m.status === 'uploading')
-    if (hasUploadingMedia) {
-      return // Wait for uploads to complete
-    }
-
     setStep('submitting')
 
     try {
-      // Only include successfully uploaded media
-      const uploadedMedia: ReportMediaData[] = media
-        .filter(m => m.status === 'ready' && m.publicUrl)
-        .map(m => ({
-          type: m.type,
-          url: m.publicUrl!,
-          caption: m.caption || undefined,
-          videoId: m.videoId,
-          thumbnailUrl: m.thumbnailUrl,
-          durationSeconds: m.durationSeconds,
-          fileSizeBytes: m.fileSizeBytes,
-        }))
-
       await onSubmit({
         alertType,
         latitude: location.lat,
         longitude: location.lng,
         address: locationMethod === 'address' ? address : undefined,
         description: description.trim() || undefined,
-        media: uploadedMedia.length > 0 ? uploadedMedia : undefined,
       })
       setStep('success')
       setTimeout(() => {
@@ -562,24 +521,6 @@ export function ReportAlertModal({
               </p>
             </div>
 
-            {/* Photo/Video Upload */}
-            <div className="space-y-2">
-              <div className="flex items-center gap-2">
-                <Camera className="h-4 w-4 text-muted-foreground" strokeWidth={2} />
-                <Label className="text-caption font-semibold">
-                  {t.addPhotoVideo}
-                </Label>
-              </div>
-              <p className="text-small text-muted-foreground mb-2">
-                {t.mediaPrivacy}
-              </p>
-              <MediaUpload
-                media={media}
-                onChange={setMedia}
-                maxItems={3}
-              />
-            </div>
-
             {error && (
               <div className="p-3 bg-[#DC2626]/10 text-[#DC2626] text-caption rounded-[8px]">
                 {error}
@@ -588,14 +529,9 @@ export function ReportAlertModal({
 
             <Button
               onClick={handleSubmit}
-              disabled={media.some(m => m.status === 'uploading')}
-              className="w-full h-12 rounded-[8px] bg-[#DC2626] hover:bg-[#DC2626]/90 text-white press-scale disabled:opacity-50"
+              className="w-full h-12 rounded-[8px] bg-[#DC2626] hover:bg-[#DC2626]/90 text-white press-scale"
             >
-              {media.some(m => m.status === 'uploading') ? (
-                <Loader2 className="h-4 w-4 mr-2 animate-spin" />
-              ) : (
-                <AlertTriangle className="h-4 w-4 mr-2" strokeWidth={2} />
-              )}
+              <AlertTriangle className="h-4 w-4 mr-2" strokeWidth={2} />
               {t.submitReport}
             </Button>
           </div>
