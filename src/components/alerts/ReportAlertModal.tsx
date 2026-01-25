@@ -210,26 +210,69 @@ export function ReportAlertModal({
     setIsGettingLocation(true)
     setError(null)
 
-    try {
-      // Request permission first - this triggers the system dialog
-      const permissionStatus = await Geolocation.requestPermissions()
-
-      if (permissionStatus.location === 'denied') {
-        setError(t.locationDenied)
-        setIsGettingLocation(false)
-        return
+    // Try Capacitor first (for native apps), fall back to browser API
+    const tryCapacitorGeolocation = async (): Promise<{ lat: number; lng: number } | null> => {
+      try {
+        const permissionStatus = await Geolocation.requestPermissions()
+        if (permissionStatus.location === 'denied') {
+          return null
+        }
+        const position = await Geolocation.getCurrentPosition({
+          enableHighAccuracy: true,
+          timeout: 15000
+        })
+        return {
+          lat: position.coords.latitude,
+          lng: position.coords.longitude
+        }
+      } catch {
+        return null
       }
+    }
 
-      // Get the current position
-      const position = await Geolocation.getCurrentPosition({
-        enableHighAccuracy: true,
-        timeout: 15000
+    // Browser fallback
+    const tryBrowserGeolocation = (): Promise<{ lat: number; lng: number }> => {
+      return new Promise((resolve, reject) => {
+        if (!navigator.geolocation) {
+          reject(new Error('Geolocation not supported'))
+          return
+        }
+        navigator.geolocation.getCurrentPosition(
+          (position) => {
+            resolve({
+              lat: position.coords.latitude,
+              lng: position.coords.longitude
+            })
+          },
+          (error) => {
+            if (error.code === error.PERMISSION_DENIED) {
+              reject(new Error('denied'))
+            } else if (error.code === error.POSITION_UNAVAILABLE) {
+              reject(new Error('unavailable'))
+            } else if (error.code === error.TIMEOUT) {
+              reject(new Error('timeout'))
+            } else {
+              reject(new Error('unknown'))
+            }
+          },
+          { enableHighAccuracy: true, timeout: 15000, maximumAge: 0 }
+        )
       })
+    }
+
+    try {
+      // Try Capacitor first
+      let coords = await tryCapacitorGeolocation()
+
+      // Fall back to browser API if Capacitor didn't work
+      if (!coords) {
+        coords = await tryBrowserGeolocation()
+      }
 
       // Apply fuzzy location for privacy
       setLocation({
-        lat: fuzzyLocation(position.coords.latitude),
-        lng: fuzzyLocation(position.coords.longitude)
+        lat: fuzzyLocation(coords.lat),
+        lng: fuzzyLocation(coords.lng)
       })
       setLocationMethod('gps')
       setStep('details')

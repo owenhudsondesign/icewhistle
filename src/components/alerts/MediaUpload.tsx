@@ -239,51 +239,26 @@ export function MediaUpload({
     const duration = await getVideoDuration(item.file)
     updateItem(item.id, { progress: 10, durationSeconds: duration })
 
-    // Create video in Bunny Stream
-    updateItem(item.id, { progress: 20 })
+    // Upload video through our API (server-side proxy to avoid CORS)
+    updateItem(item.id, { progress: 30 })
+
+    const formData = new FormData()
+    formData.append('file', item.file)
+
     const response = await fetch('/api/upload/video', {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      body: formData,
     })
 
     if (!response.ok) {
       if (response.status === 503) {
         throw new Error(t.uploadsNotConfigured)
       }
-      throw new Error('Failed to create video')
+      const errorData = await response.json().catch(() => ({ error: 'Upload failed' }))
+      throw new Error(errorData.error || 'Failed to upload video')
     }
 
-    const { videoId, uploadUrl, tusHeaders, thumbnailUrl, hlsUrl } = await response.json()
-
-    // Upload using TUS protocol
-    updateItem(item.id, { progress: 30 })
-
-    // For simplicity, we'll use a direct upload instead of TUS
-    // TUS would be better for large files with resumable uploads
-    try {
-      const uploadResponse = await fetch(
-        `https://video.bunnycdn.com/library/${tusHeaders.LibraryId}/videos/${videoId}`,
-        {
-          method: 'PUT',
-          headers: {
-            'AccessKey': tusHeaders.AuthorizationSignature,
-            'Content-Type': 'application/octet-stream',
-          },
-          body: item.file,
-        }
-      )
-
-      if (!uploadResponse.ok) {
-        const errorText = await uploadResponse.text().catch(() => 'Unknown video error')
-        throw new Error(`Video upload failed: ${uploadResponse.status} ${errorText}`)
-      }
-    } catch (fetchError) {
-      // CORS errors show up as TypeError: Failed to fetch
-      if (fetchError instanceof TypeError && fetchError.message.includes('fetch')) {
-        throw new Error('Video service access denied (CORS). Check Bunny Stream settings.')
-      }
-      throw fetchError
-    }
+    const { videoId, thumbnailUrl, hlsUrl, publicUrl } = await response.json()
 
     // Update item with video info
     updateItem(item.id, {
@@ -292,7 +267,7 @@ export function MediaUpload({
       videoId,
       hlsUrl,
       thumbnailUrl,
-      publicUrl: hlsUrl,
+      publicUrl: publicUrl || hlsUrl,
     })
   }
 
