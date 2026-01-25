@@ -5,17 +5,12 @@ import { createPortal } from 'react-dom'
 import Link from 'next/link'
 import Image from 'next/image'
 import { Button } from '@/components/ui/button'
-import { Moon, Sun, ChevronLeft, Download, Share, Plus, ChevronDown, Check, Globe } from 'lucide-react'
+import { Moon, Sun, Download, Share, Plus, ChevronDown, Check } from 'lucide-react'
 import { useTheme } from '@/hooks/use-theme'
 import { useLanguage, LANGUAGE_META, SUPPORTED_LANGUAGES } from '@/hooks/use-language'
 import { usePWAInstall } from '@/hooks/use-pwa-install'
 
-interface AppHeaderProps {
-  showBack?: boolean
-  backHref?: string
-}
-
-export function AppHeader({ showBack, backHref = '/' }: AppHeaderProps) {
+export function AppHeader() {
   const { toggleTheme, isDark, mounted } = useTheme()
   const { language, setLanguage, t } = useLanguage()
   const { canInstall, isIOS, isInstalled, promptInstall } = usePWAInstall()
@@ -51,15 +46,8 @@ export function AppHeader({ showBack, backHref = '/' }: AppHeaderProps) {
     <header className="sticky top-0 z-50 glass-subtle border-b">
       <div className="container mx-auto px-4 py-3">
         <div className="flex items-center justify-between gap-2">
-          {/* Left - Logo/Back */}
+          {/* Left - Logo */}
           <div className="flex items-center gap-2 sm:flex-1 flex-shrink-0">
-            {showBack && (
-              <Link href={backHref}>
-                <Button variant="ghost" size="icon" className="h-10 w-10 rounded-[8px] press-scale">
-                  <ChevronLeft className="h-5 w-5" strokeWidth={2} />
-                </Button>
-              </Link>
-            )}
             <Link href="/" className="flex items-center press-scale">
               {/* Show white logo in dark mode, dark logo in light mode */}
               <Image

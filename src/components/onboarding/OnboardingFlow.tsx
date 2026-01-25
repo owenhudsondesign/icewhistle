@@ -8,7 +8,6 @@ import { Switch } from '@/components/ui/switch'
 import { Label } from '@/components/ui/label'
 import { Shield, Lock, Globe, Bell, ChevronRight, ChevronLeft, Check } from 'lucide-react'
 import { MultiZipInput, type ZipEntry } from './MultiZipInput'
-import { usePushNotifications, isPushSupported } from '@/hooks/usePushNotifications'
 
 // Onboarding translations
 const translations = {
@@ -145,10 +144,6 @@ export function OnboardingFlow({ onComplete, onSkip }: OnboardingFlowProps) {
   const [alertScope, setAlertScope] = useState<'nearby' | 'statewide'>('nearby')
   const [quietHoursEnabled, setQuietHoursEnabled] = useState(true)
 
-  // Push notifications (native mobile only)
-  const pushNotifications = usePushNotifications()
-  const showPushOption = isPushSupported()
-
   const t = translations[language as keyof typeof translations] || translations.en
   const totalSteps = 4
 
@@ -184,14 +179,6 @@ export function OnboardingFlow({ onComplete, onSkip }: OnboardingFlowProps) {
   }
 
   const handleComplete = async () => {
-    // Register push notifications if enabled and on mobile
-    if (alertsEnabled && showPushOption && pushNotifications.token) {
-      const validZips = zipEntries.filter((e) => /^\d{5}$/.test(e.zipCode))
-      await pushNotifications.registerToken(
-        validZips.map((e) => ({ zipCode: e.zipCode, label: e.label }))
-      )
-    }
-
     onComplete({
       language,
       zip: zipEntries[0]?.zipCode || '',

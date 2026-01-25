@@ -25,7 +25,7 @@ export default function EmergencyContactsPage() {
 
   return (
     <div className="min-h-screen bg-background pb-28">
-      <AppHeader showBack backHref="/" />
+      <AppHeader />
 
       <main className="container mx-auto px-4 py-4 max-w-lg">
         <div className="mb-4">

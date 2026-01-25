@@ -3,7 +3,7 @@
 import { useState, useEffect, ReactNode } from 'react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
-import { Home, MapPin, AlertTriangle, Shield, MessageCircleQuestion } from 'lucide-react'
+import { Home, Phone, Shield, MessageCircleQuestion } from 'lucide-react'
 import { useLanguage } from '@/hooks/use-language'
 import { cn } from '@/lib/utils'
 import { Capacitor } from '@capacitor/core'
@@ -57,8 +57,7 @@ export function BottomNav() {
 
   const tabs = [
     { href: '/', icon: Home, label: nav.home },
-    { href: '/alerts', icon: MapPin, label: nav.alerts },
-    { href: '/alerts?report=true', icon: AlertTriangle, label: nav.report, isReport: true },
+    { href: '/hotlines', icon: Phone, label: nav.hotlines || 'Hotlines', isHotline: true },
     { href: '/rights', icon: Shield, label: nav.rights },
     { href: '/faq', icon: MessageCircleQuestion, label: nav.faq },
   ]
@@ -72,10 +71,10 @@ export function BottomNav() {
   return (
     <nav className="fixed bottom-0 left-0 right-0 z-50 bg-background/95 backdrop-blur-lg border-t border-border safe-area-bottom">
       <div className="flex items-center justify-around h-20 max-w-lg mx-auto px-2">
-        {tabs.map(({ href, icon: Icon, label, isReport }) => {
+        {tabs.map(({ href, icon: Icon, label, isHotline }) => {
           const active = isActive(href)
 
-          if (isReport) {
+          if (isHotline) {
             return (
               <Link
                 key={href}

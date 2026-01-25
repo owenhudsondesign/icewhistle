@@ -19,7 +19,6 @@ model Session {
 
   plans         Plan[]
   documents     Document[]
-  alerts        Alert[]   @relation("ReportedAlerts")
 }
 
 // Emergency preparedness plans
@@ -64,77 +63,6 @@ model Document {
 
   createdAt       DateTime  @default(now())
   updatedAt       DateTime  @updatedAt
-}
-
-// Community alerts (anonymized)
-model Alert {
-  id              String    @id @default(cuid())
-
-  // Location (intentionally imprecise for privacy - rounded to ~100m)
-  latitude        Float
-  longitude       Float
-  address         String?   // Optional address for context
-  neighborhood    String?   // General area name
-
-  // Content
-  alertType       String    // "ice_raid", "ice_checkpoint", "ice_vehicle", "ice_transit", "ice_workplace", "ice_residence", "unconfirmed", "all_clear"
-  description     String?
-
-  // Media (anonymous uploads via Bunny.net)
-  media           AlertMedia[]
-
-  // Verification
-  status          String    @default("unverified") // "unverified", "verified", "disputed", "resolved", "expired"
-  verificationCount Int     @default(0)            // Number of confirmations from other users
-
-  // Clear voting (requires 5 votes to mark as resolved)
-  clearVoteCount  Int       @default(0)            // Number of "they've left" votes
-  clearVoterHashes String[] @default([])           // Track who voted to clear (hashed)
-
-  // Timestamps
-  reportedAt      DateTime  @default(now())
-  occurredAt      DateTime
-  resolvedAt      DateTime?
-  expiresAt       DateTime  // Auto-expire after 8 hours
-
-  // Anonymous reporter reference (optional - no tracking required)
-  reporterSessionId String?
-  reporterSession   Session?  @relation("ReportedAlerts", fields: [reporterSessionId], references: [id], onDelete: SetNull)
-
-  // Track which anonymous sessions have verified (hashed for privacy)
-  verifierHashes  String[]  @default([])
-
-  @@index([latitude, longitude])
-  @@index([status, reportedAt])
-  @@index([alertType])
-  @@index([expiresAt])
-}
-
-// Anonymous media attachments for alerts (Bunny.net storage)
-model AlertMedia {
-  id              String    @id @default(cuid())
-  alertId         String
-  alert           Alert     @relation(fields: [alertId], references: [id], onDelete: Cascade)
-
-  // Media type
-  mediaType       String    // "image", "video"
-
-  // Bunny.net references (no user data stored)
-  bunnyId         String?   // Bunny Stream video GUID (for videos)
-  storageUrl      String    // Bunny Storage URL (for images) or Bunny Stream HLS URL (for videos)
-  thumbnailUrl    String?   // Video thumbnail or image thumbnail
-
-  // Metadata (no EXIF - stripped client-side)
-  caption         String?
-  durationSeconds Int?      // Video duration
-  fileSizeBytes   Int?
-
-  // Status
-  status          String    @default("processing") // "processing", "ready", "failed"
-  createdAt       DateTime  @default(now())
-
-  @@index([alertId])
-  @@index([status])
 }
 
 // Legal resource directory (public data)
@@ -212,81 +140,4 @@ model FeatureFlag {
   updatedAt       DateTime  @updatedAt
 
   @@index([key])
-}
-
-// Push notification subscriptions for mobile (App Store compliant)
-model PushSubscription {
-  id              String    @id @default(cuid())
-
-  // Device info (minimal PII)
-  platform        String    // "ios", "android"
-  pushToken       String    @unique // Expo push token
-
-  // Location preference (coarse - ZIP or geohash only, not precise)
-  zip             String?   // US ZIP code for location-based alerts (legacy, use zipPreferences)
-  geohashLowPrecision String? // Alternative: low-precision geohash
-
-  // Preferences
-  language        String    @default("en")
-  alertsEnabled   Boolean   @default(true)
-  quietHoursStart String?   // "22:00" format (local time)
-  quietHoursEnd   String?   // "07:00" format (local time)
-
-  // Status
-  createdAt       DateTime  @default(now())
-  updatedAt       DateTime  @updatedAt
-  disabledAt      DateTime? // Soft delete for opt-out
-
-  // Multi-ZIP support
-  zipPreferences  ZipPreference[]
-
-  @@index([zip])
-  @@index([geohashLowPrecision])
-  @@index([alertsEnabled])
-}
-
-// ZIP code preferences for multi-location notifications
-model ZipPreference {
-  id              String    @id @default(cuid())
-  subscriptionId  String
-  subscription    PushSubscription @relation(fields: [subscriptionId], references: [id], onDelete: Cascade)
-
-  zipCode         String
-  label           String?   // "home", "work", "family", or custom
-  latitude        Float?    // Pre-computed center of ZIP for radius matching
-  longitude       Float?
-
-  createdAt       DateTime  @default(now())
-
-  @@index([zipCode])
-  @@index([subscriptionId])
-}
-
-// ZIP code geocoding cache for radius matching
-model ZipCodeCache {
-  zipCode   String   @id
-  latitude  Float
-  longitude Float
-  city      String?
-  state     String?
-  cachedAt  DateTime @default(now())
-
-  @@index([latitude, longitude])
-}
-
-// Moderation actions for community reports (App Store compliance - moderated content)
-model ModerationAction {
-  id              String    @id @default(cuid())
-
-  alertId         String
-  action          String    // "approve", "reject", "flag", "escalate"
-  reason          String?
-
-  // Moderator info (anonymized for privacy)
-  moderatorHash   String    // Hashed moderator identifier
-
-  createdAt       DateTime  @default(now())
-
-  @@index([alertId])
-  @@index([action])
 }

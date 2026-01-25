@@ -20,14 +20,13 @@ import {
   ChevronRight,
   Heart,
   Car,
-  Map,
-  Bell,
-  MapPin,
   Users,
-  Eye,
   Video,
   CheckCircle,
   FileCheck,
+  ClipboardList,
+  BookOpen,
+  Sparkles,
 } from 'lucide-react'
 
 export default function Home() {
@@ -114,15 +113,15 @@ export default function Home() {
             </div>
           </button>
 
-          {/* Live Alerts - Grape */}
+          {/* My Emergency Plan - Grape */}
           <Link
-            href="/alerts"
+            href="/emergency-contacts"
             className="col-span-1 bg-[#8B5CF6] text-white rounded-[16px] p-4 flex flex-col items-center justify-center gap-2 press-scale hover-scale shadow-lg hover:glow-grape min-h-[120px]"
           >
-            <Map className="h-8 w-8 flex-shrink-0" strokeWidth={2} />
+            <ClipboardList className="h-8 w-8 flex-shrink-0" strokeWidth={2} />
             <div className="text-center w-full">
-              <div className="text-sm font-semibold leading-tight break-words">{home.liveAlerts}</div>
-              <div className="text-xs text-white/80 leading-tight mt-0.5 break-words">{home.liveAlertsSub}</div>
+              <div className="text-sm font-semibold leading-tight break-words">{home.emergencyPlan}</div>
+              <div className="text-xs text-white/80 leading-tight mt-0.5 break-words">{home.emergencyPlanSub}</div>
             </div>
           </Link>
 
@@ -172,7 +171,7 @@ export default function Home() {
           </Link>
 
           <Link
-            href="/resources"
+            href="/hotlines"
             className="card-glass p-3 flex flex-col items-center justify-center gap-1.5 press-scale hover:bg-accent/50 min-h-[100px]"
           >
             <Phone className="h-7 w-7 text-[#DC2626] flex-shrink-0" strokeWidth={2} />
@@ -199,24 +198,24 @@ export default function Home() {
           <h2 className="text-headline mb-4 text-center">{home.howItWorks}</h2>
           <div className="grid grid-cols-3 gap-2">
             <div className="text-center">
-              <div className="w-10 h-10 mx-auto rounded-full bg-[#DC2626]/10 flex items-center justify-center mb-2">
-                <Eye className="h-5 w-5 text-[#DC2626]" strokeWidth={2} />
+              <div className="w-10 h-10 mx-auto rounded-full bg-[#84CC16]/10 flex items-center justify-center mb-2">
+                <BookOpen className="h-5 w-5 text-[#84CC16]" strokeWidth={2} />
               </div>
-              <div className="text-xs font-bold text-[#DC2626] leading-tight">1. {home.step1Title}</div>
+              <div className="text-xs font-bold text-[#84CC16] leading-tight">{home.step1Title}</div>
               <p className="text-[10px] text-muted-foreground mt-1 leading-tight break-words">{home.step1Desc}</p>
             </div>
             <div className="text-center">
-              <div className="w-10 h-10 mx-auto rounded-full bg-[#FF8C42]/10 flex items-center justify-center mb-2">
-                <Bell className="h-5 w-5 text-[#FF8C42]" strokeWidth={2} />
+              <div className="w-10 h-10 mx-auto rounded-full bg-[#8B5CF6]/10 flex items-center justify-center mb-2">
+                <ClipboardList className="h-5 w-5 text-[#8B5CF6]" strokeWidth={2} />
               </div>
-              <div className="text-xs font-bold text-[#FF8C42] leading-tight">2. {home.step2Title}</div>
+              <div className="text-xs font-bold text-[#8B5CF6] leading-tight">{home.step2Title}</div>
               <p className="text-[10px] text-muted-foreground mt-1 leading-tight break-words">{home.step2Desc}</p>
             </div>
             <div className="text-center">
-              <div className="w-10 h-10 mx-auto rounded-full bg-[#84CC16]/10 flex items-center justify-center mb-2">
-                <Users className="h-5 w-5 text-[#84CC16]" strokeWidth={2} />
+              <div className="w-10 h-10 mx-auto rounded-full bg-[#00A6B4]/10 flex items-center justify-center mb-2">
+                <Users className="h-5 w-5 text-[#00A6B4]" strokeWidth={2} />
               </div>
-              <div className="text-xs font-bold text-[#84CC16] leading-tight">3. {home.step3Title}</div>
+              <div className="text-xs font-bold text-[#00A6B4] leading-tight">{home.step3Title}</div>
               <p className="text-[10px] text-muted-foreground mt-1 leading-tight break-words">{home.step3Desc}</p>
             </div>
           </div>
@@ -288,6 +287,12 @@ export default function Home() {
               </a>
             ))}
           </div>
+          <Link
+            href="/hotlines"
+            className="inline-flex items-center text-xs text-[#00A6B4] hover:underline mt-4 font-semibold"
+          >
+            {common.viewAll} <ChevronRight className="h-4 w-4 ml-1 flex-shrink-0" />
+          </Link>
         </div>
 
         {/* Quick Rights Reminder - Structured Q&A style */}

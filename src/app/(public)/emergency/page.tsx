@@ -1,7 +1,7 @@
 'use client'
 
 import { useSearchParams } from 'next/navigation'
-import { Suspense, useState } from 'react'
+import { Suspense } from 'react'
 import Link from 'next/link'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
@@ -16,7 +16,6 @@ import {
   Building,
   Search,
   ExternalLink,
-  ChevronRight,
   Home,
   ArrowLeft,
   CheckCircle2,
@@ -27,11 +26,8 @@ import {
   Car,
   User,
   Users,
-  MapPin,
-  Loader2,
-  Radio
+  Loader2
 } from 'lucide-react'
-import { fuzzyLocation, ALERT_EXPIRY_HOURS } from '@/types/alert'
 import { useLanguage } from '@/hooks/use-language'
 
 function EmergencyContent() {
@@ -53,54 +49,6 @@ function EmergencyContent() {
 function ICENearMeFlow({ location }: { location: string | null }) {
   const { language, t: translations } = useLanguage()
   const t = translations.emergency || {}
-  const [reportStatus, setReportStatus] = useState<'idle' | 'getting-location' | 'submitting' | 'success' | 'error'>('idle')
-  const [errorMessage, setErrorMessage] = useState<string | null>(null)
-
-  const handleQuickReport = async () => {
-    setReportStatus('getting-location')
-    setErrorMessage(null)
-
-    try {
-      // Get current location
-      const position = await new Promise<GeolocationPosition>((resolve, reject) => {
-        navigator.geolocation.getCurrentPosition(resolve, reject, {
-          enableHighAccuracy: true,
-          timeout: 10000,
-          maximumAge: 0
-        })
-      })
-
-      const latitude = fuzzyLocation(position.coords.latitude)
-      const longitude = fuzzyLocation(position.coords.longitude)
-
-      setReportStatus('submitting')
-
-      // Submit the alert
-      const response = await fetch('/api/alerts', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          latitude,
-          longitude,
-          alertType: 'ice_raid',
-          description: 'Quick report from ICE Is Near Me button'
-        })
-      })
-
-      if (!response.ok) {
-        throw new Error('Failed to submit report')
-      }
-
-      setReportStatus('success')
-    } catch (err) {
-      setReportStatus('error')
-      if (err instanceof GeolocationPositionError) {
-        setErrorMessage(t.locationError)
-      } else {
-        setErrorMessage(t.submitError)
-      }
-    }
-  }
 
   return (
     <div className="container mx-auto px-4 py-6 max-w-3xl">
@@ -130,78 +78,6 @@ function ICENearMeFlow({ location }: { location: string | null }) {
           </p>
         )}
       </div>
-
-      {/* QUICK REPORT - Share Location with Community */}
-      <Card className="mb-6 border-2 border-destructive bg-destructive/5">
-        <CardContent className="pt-6">
-          {reportStatus === 'success' ? (
-            <div className="text-center py-4">
-              <div className="w-16 h-16 rounded-full bg-green-500/20 flex items-center justify-center mx-auto mb-4">
-                <CheckCircle2 className="h-8 w-8 text-green-600" />
-              </div>
-              <h3 className="text-lg font-bold text-green-700 dark:text-green-400 mb-2">
-                {t.locationShared}
-              </h3>
-              <p className="text-sm text-muted-foreground mb-2">
-                {t.reportWillAppear} {ALERT_EXPIRY_HOURS} {t.hours}.
-              </p>
-              <p className="text-xs text-muted-foreground">
-                {t.thankYou}
-              </p>
-              <Link href="/alerts" className="inline-block mt-4">
-                <Button variant="outline" size="sm">
-                  <MapPin className="h-4 w-4 mr-2" />
-                  {t.viewMap}
-                </Button>
-              </Link>
-            </div>
-          ) : (
-            <div className="text-center">
-              <div className="flex items-center justify-center gap-2 mb-3">
-                <Radio className="h-5 w-5 text-destructive animate-pulse" />
-                <h3 className="text-lg font-bold">{t.alertCommunity}</h3>
-              </div>
-              <p className="text-sm text-muted-foreground mb-4">
-                {t.shareAnonymously} {ALERT_EXPIRY_HOURS} {t.hours}.
-              </p>
-
-              <Button
-                onClick={handleQuickReport}
-                disabled={reportStatus === 'getting-location' || reportStatus === 'submitting'}
-                className="w-full h-14 text-lg font-bold bg-destructive hover:bg-destructive/90 text-white"
-              >
-                {reportStatus === 'getting-location' ? (
-                  <>
-                    <Loader2 className="h-5 w-5 mr-2 animate-spin" />
-                    {t.gettingLocation}
-                  </>
-                ) : reportStatus === 'submitting' ? (
-                  <>
-                    <Loader2 className="h-5 w-5 mr-2 animate-spin" />
-                    {t.sharing}
-                  </>
-                ) : (
-                  <>
-                    <MapPin className="h-5 w-5 mr-2" />
-                    {t.shareMyLocation}
-                  </>
-                )}
-              </Button>
-
-              {reportStatus === 'error' && errorMessage && (
-                <p className="mt-3 text-sm text-destructive">{errorMessage}</p>
-              )}
-
-              <p className="text-xs text-muted-foreground mt-3">
-                <strong>{t.oneTimeSnapshot}</strong> — {t.neverTrack}
-              </p>
-              <p className="text-xs text-muted-foreground">
-                {t.anonymous100m}
-              </p>
-            </div>
-          )}
-        </CardContent>
-      </Card>
 
       {/* IMMEDIATE ACTIONS */}
       <Alert className="mb-6 border-destructive/30 bg-destructive/5">
@@ -1028,7 +904,7 @@ function VehicleStopFlow({ location }: { location: string | null }) {
 export default function EmergencyPage() {
   return (
     <div className="pb-28">
-      <AppHeader showBack />
+      <AppHeader />
       <Suspense fallback={
         <div className="container mx-auto px-4 py-8 text-center">
           <Loader2 className="h-6 w-6 animate-spin mx-auto" />

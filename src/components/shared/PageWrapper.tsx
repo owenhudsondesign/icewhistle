@@ -6,7 +6,6 @@ import { Capacitor } from '@capacitor/core'
 
 interface PageWrapperProps {
   children: ReactNode
-  showBack?: boolean
   title?: string
   subtitle?: string
 }
@@ -33,12 +32,12 @@ function useIsAppMode() {
   return isAppMode
 }
 
-export function PageWrapper({ children, showBack = true, title, subtitle }: PageWrapperProps) {
+export function PageWrapper({ children, title, subtitle }: PageWrapperProps) {
   const isAppMode = useIsAppMode()
 
   return (
     <div className={isAppMode ? 'pb-24' : ''}>
-      <AppHeader showBack={showBack} />
+      <AppHeader />
       {title && (
         <div className="container mx-auto px-4 pt-4 max-w-4xl">
           <h1 className="text-xl font-bold">{title}</h1>

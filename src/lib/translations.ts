@@ -57,6 +57,7 @@ export const translations = {
     // ============================================
     nav: {
       home: 'Home',
+      hotlines: 'Hotlines',
       alerts: 'Alerts',
       report: 'Report',
       rights: 'Rights',
@@ -116,14 +117,18 @@ export const translations = {
 
       // How it works
       howItWorks: 'How ICEwhistle Works',
-      step1Title: 'Report',
-      step1Desc: 'See ICE? Tap to alert your community instantly',
-      step2Title: 'Alert',
-      step2Desc: 'Nearby users receive anonymous notifications',
-      step3Title: 'Protect',
-      step3Desc: 'Communities can prepare and stay safe',
+      step1Title: 'Learn',
+      step1Desc: 'Know your rights before you need them',
+      step2Title: 'Prepare',
+      step2Desc: 'Create an emergency plan for your family',
+      step3Title: 'Connect',
+      step3Desc: 'One tap to reach hotlines and trusted contacts',
       privacyFirst: 'Privacy First',
       privacyDesc: 'No accounts, no tracking. All data stays on your device.',
+
+      // Emergency Plan
+      emergencyPlan: 'My Emergency Plan',
+      emergencyPlanSub: 'Contacts & panic button',
 
       // Recording feature
       recordingFeature: 'Built-in Recording',
@@ -430,6 +435,7 @@ export const translations = {
     // ============================================
     nav: {
       home: 'Inicio',
+      hotlines: 'Líneas de Ayuda',
       alerts: 'Alertas',
       report: 'Reportar',
       rights: 'Derechos',
@@ -483,14 +489,17 @@ export const translations = {
       autoExpire8hr: 'Expira en 8hrs',
 
       howItWorks: 'Cómo Funciona ICEwhistle',
-      step1Title: 'Reportar',
-      step1Desc: '¿Ves a ICE? Toca para alertar a tu comunidad',
-      step2Title: 'Alertar',
-      step2Desc: 'Usuarios cercanos reciben notificaciones anónimas',
-      step3Title: 'Proteger',
-      step3Desc: 'Las comunidades pueden prepararse y mantenerse seguras',
+      step1Title: 'Aprende',
+      step1Desc: 'Conoce tus derechos antes de necesitarlos',
+      step2Title: 'Prepara',
+      step2Desc: 'Crea un plan de emergencia para tu familia',
+      step3Title: 'Conecta',
+      step3Desc: 'Un toque para contactar líneas de ayuda y contactos de confianza',
       privacyFirst: 'Privacidad Primero',
-      privacyDesc: 'Sin cuentas. Sin rastreo. Ubicación redondeada para privacidad.',
+      privacyDesc: 'Sin cuentas. Sin rastreo. Todos los datos quedan en tu dispositivo.',
+
+      emergencyPlan: 'Mi Plan de Emergencia',
+      emergencyPlanSub: 'Contactos y botón de pánico',
 
       recordingFeature: 'Grabación Integrada',
       recordingFeatureDesc: 'Documenta encuentros con video o audio. Cada grabación incluye una firma criptográfica que prueba que fue capturada en tiempo real — no generada por IA ni editada.',
@@ -791,6 +800,7 @@ export const translations = {
     // ============================================
     nav: {
       home: 'Início',
+      hotlines: 'Linhas de Ajuda',
       alerts: 'Alertas',
       report: 'Reportar',
       rights: 'Direitos',
@@ -844,14 +854,17 @@ export const translations = {
       autoExpire8hr: 'Expira em 8hrs',
 
       howItWorks: 'Como o ICEwhistle Funciona',
-      step1Title: 'Reportar',
-      step1Desc: 'Viu ICE? Toque para alertar sua comunidade',
-      step2Title: 'Alertar',
-      step2Desc: 'Usuários próximos recebem notificações anônimas',
-      step3Title: 'Proteger',
-      step3Desc: 'Comunidades podem se preparar e ficar seguras',
+      step1Title: 'Aprenda',
+      step1Desc: 'Conheça seus direitos antes de precisar deles',
+      step2Title: 'Prepare',
+      step2Desc: 'Crie um plano de emergência para sua família',
+      step3Title: 'Conecte',
+      step3Desc: 'Um toque para ligar para linhas de ajuda e contatos de confiança',
       privacyFirst: 'Privacidade Primeiro',
-      privacyDesc: 'Sem contas. Sem rastreamento. Localização arredondada para privacidade.',
+      privacyDesc: 'Sem contas. Sem rastreamento. Todos os dados ficam no seu dispositivo.',
+
+      emergencyPlan: 'Meu Plano de Emergência',
+      emergencyPlanSub: 'Contatos e botão de pânico',
 
       recordingFeature: 'Gravação Integrada',
       recordingFeatureDesc: 'Documente encontros com vídeo ou áudio. Cada gravação inclui uma assinatura criptográfica provando que foi capturada em tempo real.',

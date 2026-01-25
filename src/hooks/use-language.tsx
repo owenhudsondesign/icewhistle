@@ -13,8 +13,8 @@ export const SUPPORTED_LANGUAGES = [
   'fr', 'ht',                 // French, Haitian Creole
   'hi', 'pa', 'ur', 'bn', 'gu', 'ne', // South Asian
   'ru', 'uk', 'pl',           // Eastern European
-  'ja', 'th', 'km', 'my', 'lo', // East/Southeast Asian
-  'am', 'so',                 // East African
+  'ja', 'th', 'my', 'lo',     // East/Southeast Asian
+  'am', 'so', 'sw',            // East African
   'de', 'it',                 // Western European
 ] as const
 export type Language = typeof SUPPORTED_LANGUAGES[number]
@@ -33,7 +33,6 @@ export const LANGUAGE_META: Record<Language, { label: string; name: string; nati
   tl: { label: 'TL', name: 'Tagalog', nativeName: 'Tagalog', dir: 'ltr' },
   ko: { label: '한국어', name: 'Korean', nativeName: '한국어', dir: 'ltr' },
   th: { label: 'TH', name: 'Thai', nativeName: 'ไทย', dir: 'ltr' },
-  km: { label: 'KM', name: 'Khmer', nativeName: 'ខ្មែរ', dir: 'ltr' },
   my: { label: 'MY', name: 'Burmese', nativeName: 'မြန်မာ', dir: 'ltr' },
   lo: { label: 'LO', name: 'Lao', nativeName: 'ລາວ', dir: 'ltr' },
   ja: { label: '日本語', name: 'Japanese', nativeName: '日本語', dir: 'ltr' },
@@ -57,6 +56,7 @@ export const LANGUAGE_META: Record<Language, { label: string; name: string; nati
   // East African
   am: { label: 'AM', name: 'Amharic', nativeName: 'አማርኛ', dir: 'ltr' },
   so: { label: 'SO', name: 'Somali', nativeName: 'Soomaali', dir: 'ltr' },
+  sw: { label: 'SW', name: 'Swahili', nativeName: 'Kiswahili', dir: 'ltr' },
   // Western European
   de: { label: 'DE', name: 'German', nativeName: 'Deutsch', dir: 'ltr' },
   it: { label: 'IT', name: 'Italian', nativeName: 'Italiano', dir: 'ltr' },
@@ -88,6 +88,7 @@ export interface Translations {
   }
   nav: {
     home: string
+    hotlines: string
     alerts: string
     report: string
     rights: string
@@ -144,6 +145,7 @@ const defaultTranslations: Translations = {
   },
   nav: {
     home: 'Home',
+    hotlines: 'Hotlines',
     alerts: 'Alerts',
     report: 'Report',
     rights: 'Rights',
