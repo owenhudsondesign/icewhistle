@@ -111,7 +111,7 @@ export function AlertContactsButton({
   if (!hasContacts) {
     if (variant === 'compact') {
       return (
-        <Link href="/emergency-contacts" className={className}>
+        <Link href="/emergency-contacts" className={`block ${className}`}>
           <Button
             variant="outline"
             className="w-full h-12 rounded-[8px] border-dashed border-[#FF8C42]/50 text-[#FF8C42] hover:bg-[#FF8C42]/10"
@@ -124,7 +124,7 @@ export function AlertContactsButton({
     }
 
     return (
-      <Link href="/emergency-contacts" className={className}>
+      <Link href="/emergency-contacts" className={`block ${className}`}>
         <div className="p-4 rounded-[12px] bg-[#FF8C42]/10 border border-[#FF8C42]/30 hover:bg-[#FF8C42]/20 transition-colors cursor-pointer">
           <div className="flex items-center gap-3">
             <div className="w-12 h-12 rounded-full bg-[#FF8C42]/20 flex items-center justify-center flex-shrink-0">
