@@ -129,12 +129,15 @@ export async function POST(request: NextRequest) {
 /**
  * DELETE /api/push/register
  *
- * Unregister a push notification subscription
+ * Unregister a push notification subscription.
+ * By default, does a soft delete (disables alerts).
+ * With ?delete=true, permanently deletes the subscription and all ZIP preferences.
  */
 export async function DELETE(request: NextRequest) {
   try {
     const { searchParams } = new URL(request.url)
     const pushToken = searchParams.get('pushToken')
+    const hardDelete = searchParams.get('delete') === 'true'
 
     if (!pushToken) {
       return NextResponse.json(
@@ -143,8 +146,38 @@ export async function DELETE(request: NextRequest) {
       )
     }
 
+    if (hardDelete) {
+      // Permanently delete subscription and all associated data
+      // First find the subscription to get its ID
+      const existing = await prisma.pushSubscription.findUnique({
+        where: { pushToken },
+      })
+
+      if (!existing) {
+        return NextResponse.json(
+          { error: 'Subscription not found' },
+          { status: 404 }
+        )
+      }
+
+      // Delete ZIP preferences first (due to foreign key)
+      await prisma.zipPreference.deleteMany({
+        where: { subscriptionId: existing.id },
+      })
+
+      // Delete the subscription
+      await prisma.pushSubscription.delete({
+        where: { pushToken },
+      })
+
+      return NextResponse.json({
+        success: true,
+        message: 'Subscription and all associated data permanently deleted',
+      })
+    }
+
     // Soft delete by setting disabledAt
-    const subscription = await prisma.pushSubscription.update({
+    await prisma.pushSubscription.update({
       where: { pushToken },
       data: {
         alertsEnabled: false,

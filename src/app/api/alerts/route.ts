@@ -83,9 +83,41 @@ export async function GET(request: NextRequest) {
   }
 }
 
+// Rate limit: 1 alert per session per 5 minutes
+const RATE_LIMIT_MINUTES = 5
+
 // POST /api/alerts - Submit a new alert
 export async function POST(request: NextRequest) {
   try {
+    // Get session ID from header first (needed for rate limiting)
+    const sessionId = request.headers.get('x-session-id')
+
+    // Rate limit check: if session provided, check for recent submissions
+    if (sessionId) {
+      const rateLimitCutoff = new Date(Date.now() - RATE_LIMIT_MINUTES * 60 * 1000)
+      const recentAlert = await prisma.alert.findFirst({
+        where: {
+          reporterSessionId: sessionId,
+          reportedAt: { gte: rateLimitCutoff },
+        },
+        select: { id: true, reportedAt: true },
+      })
+
+      if (recentAlert) {
+        const waitSeconds = Math.ceil(
+          (recentAlert.reportedAt.getTime() + RATE_LIMIT_MINUTES * 60 * 1000 - Date.now()) / 1000
+        )
+        return NextResponse.json(
+          {
+            error: 'Rate limit exceeded',
+            message: `Please wait ${Math.ceil(waitSeconds / 60)} minute(s) before submitting another alert`,
+            retryAfter: waitSeconds,
+          },
+          { status: 429 }
+        )
+      }
+    }
+
     const body = await request.json()
 
     // Validate input
@@ -105,9 +137,6 @@ export async function POST(request: NextRequest) {
 
     // Calculate expiration
     const expiresAt = new Date(Date.now() + ALERT_EXPIRY_HOURS * 60 * 60 * 1000)
-
-    // Get session ID from header if available (optional, for rate limiting)
-    const sessionId = request.headers.get('x-session-id')
 
     // Create alert with media if provided
     const alert = await prisma.alert.create({
