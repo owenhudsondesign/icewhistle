@@ -43,7 +43,7 @@ const aboutTranslations = {
     whenNotifications: 'If you enable notifications',
     untilOptOut: 'Until you opt out',
     zipCode: 'ZIP code preference',
-    whenSetArea: 'If you set alert area',
+    whenSetArea: 'If you set location area',
     untilChange: 'Until you change it',
     langPref: 'Language preference',
     whenSelectLang: 'When you select language',
@@ -61,7 +61,7 @@ const aboutTranslations = {
     recordingsTitle: 'Recordings never leave your device',
     recordingsDesc: "When you record video or audio, it saves directly to your device's storage. We never upload, access, or store your recordings. They are 100% yours.",
 
-    alertReports: 'Alert Reports',
+    alertReports: 'Community Reports',
     anonymous: 'Anonymous:',
     anonymousDesc: 'No account required. No identifying information attached.',
     autoExpire: 'Auto-expire:',
@@ -76,7 +76,7 @@ const aboutTranslations = {
     mapsDesc: 'We use OpenFreeMap with MapLibre to display maps. OpenFreeMap is privacy-focused: no tracking, no API keys, no data collection. Map tiles are served anonymously.',
     mapsPolicy: 'OpenFreeMap Info →',
     supabaseTitle: 'Supabase (Database)',
-    supabaseDesc: 'Alert data and notification preferences are stored on Supabase servers. All data is encrypted in transit and at rest.',
+    supabaseDesc: 'Community report data and notification preferences are stored on Supabase servers. All data is encrypted in transit and at rest.',
 
     security: 'Security',
     encrypted: 'All connections encrypted (HTTPS/TLS)',
@@ -114,7 +114,7 @@ const aboutTranslations = {
     whenNotifications: 'Si activas notificaciones',
     untilOptOut: 'Hasta que desactives',
     zipCode: 'Preferencia de código postal',
-    whenSetArea: 'Si configuras área de alertas',
+    whenSetArea: 'Si configuras área de ubicación',
     untilChange: 'Hasta que lo cambies',
     langPref: 'Preferencia de idioma',
     whenSelectLang: 'Cuando seleccionas idioma',
@@ -132,7 +132,7 @@ const aboutTranslations = {
     recordingsTitle: 'Las grabaciones nunca salen de tu dispositivo',
     recordingsDesc: 'Cuando grabas video o audio, se guarda directamente en el almacenamiento de tu dispositivo. Nunca subimos, accedemos ni almacenamos tus grabaciones. Son 100% tuyas.',
 
-    alertReports: 'Reportes de Alertas',
+    alertReports: 'Reportes Comunitarios',
     anonymous: 'Anónimo:',
     anonymousDesc: 'No se requiere cuenta. Sin información identificable adjunta.',
     autoExpire: 'Auto-expiración:',
@@ -185,7 +185,7 @@ const aboutTranslations = {
     whenNotifications: 'Se você ativar notificações',
     untilOptOut: 'Até você desativar',
     zipCode: 'Preferência de CEP',
-    whenSetArea: 'Se você definir área de alertas',
+    whenSetArea: 'Se você definir área de localização',
     untilChange: 'Até você alterar',
     langPref: 'Preferência de idioma',
     whenSelectLang: 'Quando você seleciona idioma',
@@ -203,7 +203,7 @@ const aboutTranslations = {
     recordingsTitle: 'Gravações nunca saem do seu dispositivo',
     recordingsDesc: 'Quando você grava vídeo ou áudio, salva diretamente no armazenamento do seu dispositivo. Nunca fazemos upload, acessamos ou armazenamos suas gravações. Elas são 100% suas.',
 
-    alertReports: 'Relatórios de Alertas',
+    alertReports: 'Relatórios Comunitários',
     anonymous: 'Anônimo:',
     anonymousDesc: 'Não é necessária conta. Sem informações identificáveis anexadas.',
     autoExpire: 'Auto-expiração:',
@@ -390,7 +390,7 @@ export default function AboutPage() {
             </div>
           </section>
 
-          {/* Alert Reports */}
+          {/* Community Reports */}
           <section className="space-y-4">
             <div className="flex items-center gap-2">
               <Bell className="h-5 w-5 text-primary" />

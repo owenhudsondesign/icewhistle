@@ -18,7 +18,7 @@ const translations = {
 
     // ZIP section
     zipTitle: 'Your ZIP code',
-    zipSubtitle: 'Get alerts for activity in your area',
+    zipSubtitle: 'Get location-specific resources for your area',
     zipPlaceholder: '12345',
     zipOptional: '(optional)',
 
@@ -48,7 +48,7 @@ const translations = {
     languageTitle: 'Elige tu idioma',
 
     zipTitle: 'Tu código postal',
-    zipSubtitle: 'Recibe alertas de actividad en tu área',
+    zipSubtitle: 'Obtén recursos específicos de ubicación para tu área',
     zipPlaceholder: '12345',
     zipOptional: '(opcional)',
 
@@ -74,7 +74,7 @@ const translations = {
     languageTitle: 'Escolha seu idioma',
 
     zipTitle: 'Seu código postal',
-    zipSubtitle: 'Receba alertas de atividade na sua área',
+    zipSubtitle: 'Obtenha recursos específicos de localização para sua área',
     zipPlaceholder: '12345',
     zipOptional: '(opcional)',
 

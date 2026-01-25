@@ -36,7 +36,7 @@ export default function PrivacyPolicyPage() {
                 <li>• <strong>No analytics or tracking</strong> — zero third-party tracking services</li>
                 <li>• <strong>Location rounded to ~500m</strong> — we never store precise GPS coordinates</li>
                 <li>• <strong>Recordings stay on device</strong> — never uploaded anywhere</li>
-                <li>• <strong>Alerts auto-delete after 8 hours</strong></li>
+                <li>• <strong>Reports auto-delete after 8 hours</strong></li>
               </ul>
             </div>
           </section>
@@ -60,7 +60,7 @@ export default function PrivacyPolicyPage() {
                     <td className="py-2 pr-4">Approximate Location</td>
                     <td className="py-2 pr-4">Yes (if you report)</td>
                     <td className="py-2 pr-4">Yes (with other users)</td>
-                    <td className="py-2">Community alerts</td>
+                    <td className="py-2">Community reports</td>
                   </tr>
                   <tr className="border-b border-border/50">
                     <td className="py-2 pr-4">Push Token</td>
@@ -85,11 +85,11 @@ export default function PrivacyPolicyPage() {
             </div>
           </section>
 
-          {/* Alert Reports */}
+          {/* Community Reports */}
           <section>
-            <h2 className="text-xl font-semibold mb-3">Alert Reports</h2>
+            <h2 className="text-xl font-semibold mb-3">Community Reports</h2>
             <p className="text-muted-foreground mb-4">
-              When you submit an alert report:
+              When you submit a community report:
             </p>
             <ul className="text-muted-foreground space-y-2">
               <li>
@@ -128,7 +128,7 @@ export default function PrivacyPolicyPage() {
               </li>
               <li>
                 <strong>ZIP code for targeting</strong> — if you set a location preference, we use
-                ZIP code (not precise location) to send relevant alerts.
+                ZIP code (not precise location) to show location-specific resources.
               </li>
               <li>
                 <strong>You can opt out anytime</strong> — disable notifications in app settings
@@ -194,7 +194,7 @@ export default function PrivacyPolicyPage() {
 
             <h3 className="text-lg font-medium mt-4 mb-2">Supabase</h3>
             <p className="text-muted-foreground mb-4">
-              We use Supabase to store alert data and push notification preferences. All data
+              We use Supabase to store community report data and push notification preferences. All data
               is encrypted in transit and at rest.
             </p>
           </section>
@@ -204,7 +204,7 @@ export default function PrivacyPolicyPage() {
             <h2 className="text-xl font-semibold mb-3">Data Security</h2>
             <ul className="text-muted-foreground space-y-2">
               <li>✓ <strong>Data encrypted in transit</strong> — all connections use HTTPS/TLS</li>
-              <li>✓ <strong>Data can be deleted</strong> — alerts auto-expire after 8 hours</li>
+              <li>✓ <strong>Data can be deleted</strong> — reports auto-expire after 8 hours</li>
               <li>✓ <strong>No data sold</strong> — we never sell your information</li>
               <li>✓ <strong>Minimal data collection</strong> — we only collect what's necessary</li>
             </ul>

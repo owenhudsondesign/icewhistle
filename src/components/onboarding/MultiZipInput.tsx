@@ -34,7 +34,7 @@ interface MultiZipInputProps {
 const defaultTranslations = {
   primaryLabel: 'Your primary area',
   primaryPlaceholder: 'Enter ZIP code',
-  primaryHelp: 'Get alerts for ICE activity near this location',
+  primaryHelp: 'Get location-specific resources for this area',
   addAnother: 'Add another location',
   labelHome: 'Home',
   labelWork: 'Work',
