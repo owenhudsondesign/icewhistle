@@ -1,4 +1,4 @@
-# CivicSalt Design Language
+# ICEwhistle Design Language
 
 **Codename:** Soft Transit  
 **Version:** 1.0  
@@ -8,7 +8,7 @@
 
 ## Overview
 
-CivicSalt's visual identity fuses three distinct design traditions into a cohesive system optimized for clarity under stress, cross-language legibility, and emotional warmth in a high-stakes context.
+ICEwhistle's visual identity fuses three distinct design traditions into a cohesive system optimized for clarity under stress, cross-language legibility, and emotional warmth in a high-stakes context.
 
 ### Source Influences
 
@@ -335,7 +335,7 @@ Tablet (768px):
 |-----------|-----|-------|
 | **Direct** | "You have the right to remain silent." | "It's important to know that you may have certain rights..." |
 | **Calm** | "Take a breath. Here's what to do." | "URGENT: Act now!!!" |
-| **Human** | "This is scary. You're not alone." | "CivicSalt provides resources for..." |
+| **Human** | "This is scary. You're not alone." | "ICEwhistle provides resources for..." |
 | **Actionable** | "Tap to call a lawyer now" | "Legal resources are available" |
 | **Honest** | "We can't guarantee outcomes" | "Everything will be okay" |
 
@@ -436,4 +436,4 @@ module.exports = {
 
 ---
 
-*CivicSalt Design Language — Soft Transit*
+*ICEwhistle Design Language — Soft Transit*

@@ -1,18 +1,18 @@
 # ICEwhistle
 
-A free, privacy-first app for immigrant communities in the United States. Know your rights, share community alerts, and access emergency resources - all without tracking or data collection.
+A free, privacy-first app for immigrant communities in the United States. Know your rights, find emergency hotlines, and access critical resources - all without tracking or data collection.
 
 **Live app: [icewhistle.app](https://icewhistle.app)**
 
 ## What It Does
 
 - **Know Your Rights** - What to do if ICE comes to your door, during traffic stops, at work, and more
-- **Community Alerts** - Real-time, anonymous reports of ICE activity in your area
-- **Emergency Resources** - Hotlines, legal aid organizations, rapid response networks
+- **Emergency Hotlines** - Find rapid response hotlines, legal aid, and community support in your area by ZIP code
+- **Emergency Contacts** - Save trusted contacts locally and alert them with one tap during an encounter (stored on your device only, never uploaded)
 - **Works Offline** - All critical features work without internet
-- **No Tracking** - No accounts, no personal data collection, location rounded for privacy
+- **No Tracking** - No accounts, no personal data collection, ZIP code stored only on your device
 
-Available in English, Spanish, and Portuguese.
+Available in 30 languages including English, Spanish, Portuguese, Chinese, Vietnamese, Arabic, and more.
 
 ## Why It's Not in App Stores
 
@@ -22,10 +22,9 @@ In October 2025, Attorney General Pam Bondi pressured Apple and Google to remove
 
 - **Framework**: Next.js 14 (App Router)
 - **Language**: TypeScript
-- **Styling**: Tailwind CSS
-- **Database**: Supabase (PostgreSQL)
-- **Maps**: Mapbox GL JS
-- **Mobile**: PWA + Capacitor for native builds
+- **Styling**: Tailwind CSS + shadcn/ui
+- **i18n**: Custom translation system with JSON locale files (30 languages)
+- **Mobile**: Progressive Web App (PWA)
 
 ## Getting Started
 
@@ -33,8 +32,6 @@ In October 2025, Attorney General Pam Bondi pressured Apple and Google to remove
 
 - Node.js 18+
 - npm or yarn
-- A Supabase account (free tier works)
-- A Mapbox account (free tier works)
 
 ### Installation
 
@@ -49,18 +46,7 @@ cd icewhistle
 npm install
 ```
 
-3. Set up environment variables
-```bash
-cp .env.example .env.local
-```
-Edit `.env.local` with your Supabase and Mapbox credentials.
-
-4. Set up the database
-```bash
-npx prisma db push
-```
-
-5. Run the development server
+3. Run the development server
 ```bash
 npm run dev
 ```
@@ -72,14 +58,18 @@ Open [http://localhost:3000](http://localhost:3000).
 ```
 src/
 ├── app/                  # Next.js App Router pages
-│   ├── (public)/         # Public routes (alerts, rights, resources)
-│   ├── (marketing)/      # Marketing pages (landing, shop)
-│   └── api/              # API routes
+│   ├── (public)/         # Public routes (rights, hotlines, resources, emergency)
+│   └── (marketing)/      # Marketing pages (landing, shop)
 ├── components/           # React components
-├── data/                 # Knowledge base and static data
+│   ├── hotlines/         # Hotline directory components
+│   ├── emergency-contacts/ # Emergency contacts management
+│   ├── onboarding/       # First-time user onboarding
+│   └── shared/           # Shared UI components
+├── data/                 # Hotline directory and static data
 ├── hooks/                # Custom React hooks
-├── lib/                  # Utilities and helpers
-└── stores/               # Zustand state stores
+└── lib/                  # Utilities and helpers
+public/
+└── locales/              # Translation files for 30 languages
 ```
 
 ## Contributing
@@ -87,8 +77,8 @@ src/
 Contributions are welcome. This project exists to help protect immigrant communities.
 
 Ways to help:
-- Add resources for your city/state
-- Improve translations
+- Add emergency hotlines for your city/state (see `src/data/hotlines-directory.ts`)
+- Improve translations (see `public/locales/`)
 - Fix bugs
 - Improve accessibility
 
@@ -97,10 +87,10 @@ Please open an issue first to discuss significant changes.
 ## Privacy Design
 
 - **No accounts required** - Use the app anonymously
-- **Location rounding** - Coordinates rounded to ~500m grid with random offset
-- **Auto-deletion** - Alerts expire after 8 hours
-- **No analytics** - No tracking scripts, no user behavior collection
-- **Offline-first** - Critical features cached locally
+- **No database** - There is no server-side database. All user data stays on your device.
+- **Local-only storage** - ZIP code, emergency contacts, and preferences stored in your browser's localStorage, never uploaded
+- **No analytics** - No tracking scripts, no cookies, no user behavior collection
+- **Offline-first** - Critical features cached locally including all 30 language translations
 
 ## License
 
