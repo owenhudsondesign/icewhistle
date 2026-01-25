@@ -26,8 +26,8 @@ const translations = {
     privacyTitle: 'Your privacy matters',
     privacyAnonymous: 'Everything is anonymous',
     privacyAnonymousDesc: 'No accounts, no tracking, no personal data stored.',
-    privacyLocation: 'Location data',
-    privacyLocationDesc: 'We only store location when you voluntarily report activity — rounded to ~500m, auto-deleted after 8 hours.',
+    privacyLocation: 'ZIP code data',
+    privacyLocationDesc: 'We only store your ZIP code locally to show location-specific resources. Nothing is sent to our servers.',
 
     // Caveat
     caveatTitle: 'A note on surveillance',
@@ -55,8 +55,8 @@ const translations = {
     privacyTitle: 'Tu privacidad importa',
     privacyAnonymous: 'Todo es anónimo',
     privacyAnonymousDesc: 'Sin cuentas, sin rastreo, sin datos personales almacenados.',
-    privacyLocation: 'Datos de ubicación',
-    privacyLocationDesc: 'Solo guardamos ubicación cuando reportas actividad voluntariamente — redondeada a ~500m, eliminada automáticamente después de 8 horas.',
+    privacyLocation: 'Datos de código postal',
+    privacyLocationDesc: 'Solo guardamos tu código postal localmente para mostrar recursos específicos de ubicación. Nada se envía a nuestros servidores.',
 
     caveatTitle: 'Una nota sobre vigilancia',
     caveatText: 'No podemos garantizar privacidad completa. Asume que siempre estás siendo observado. Gobiernos y corporaciones pueden tener acceso a tus datos a través de tu dispositivo, red o proveedores de servicio sin importar lo que cualquier app prometa.',
@@ -81,8 +81,8 @@ const translations = {
     privacyTitle: 'Sua privacidade importa',
     privacyAnonymous: 'Tudo é anônimo',
     privacyAnonymousDesc: 'Sem contas, sem rastreamento, sem dados pessoais armazenados.',
-    privacyLocation: 'Dados de localização',
-    privacyLocationDesc: 'Só guardamos localização quando você reporta atividade voluntariamente — arredondada para ~500m, deletada automaticamente após 8 horas.',
+    privacyLocation: 'Dados de código postal',
+    privacyLocationDesc: 'Só armazenamos seu código postal localmente para mostrar recursos específicos de localização. Nada é enviado para nossos servidores.',
 
     caveatTitle: 'Uma nota sobre vigilância',
     caveatText: 'Não podemos garantir privacidade completa. Assuma que você está sempre sendo observado. Governos e corporações podem ter acesso aos seus dados através do seu dispositivo, rede ou provedores de serviço independente do que qualquer app prometa.',

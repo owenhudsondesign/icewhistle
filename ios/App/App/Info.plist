@@ -54,7 +54,7 @@
 	<key>ITSAppUsesNonExemptEncryption</key>
 	<false/>
 	<key>NSLocationWhenInUseUsageDescription</key>
-	<string>ICEwhistle needs your location to report ICE activity in your area. Your exact location is never stored - it is rounded to approximately 500 meters for privacy.</string>
+	<string>ICEwhistle uses your location to show location-specific resources. Your ZIP code is stored locally on your device only - nothing is sent to our servers.</string>
 	<key>NSPhotoLibraryAddUsageDescription</key>
 	<string>ICEwhistle needs permission to save recorded videos to your photo library as evidence documentation.</string>
 	<key>NSCameraUsageDescription</key>
