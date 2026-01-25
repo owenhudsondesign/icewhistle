@@ -72,9 +72,9 @@ const aboutTranslations = {
     sharedPubliclyDesc: 'Reports appear on the community map for others to see.',
 
     thirdParty: 'Third-Party Services',
-    mapboxTitle: 'Mapbox (Maps)',
-    mapboxDesc: 'We use Mapbox to display maps. When you view the map, Mapbox receives the map area you\'re viewing to load map tiles. We do not send your stored location preferences to Mapbox.',
-    mapboxPolicy: 'Mapbox Privacy Policy →',
+    mapsTitle: 'OpenFreeMap (Maps)',
+    mapsDesc: 'We use OpenFreeMap with MapLibre to display maps. OpenFreeMap is privacy-focused: no tracking, no API keys, no data collection. Map tiles are served anonymously.',
+    mapsPolicy: 'OpenFreeMap Info →',
     supabaseTitle: 'Supabase (Database)',
     supabaseDesc: 'Alert data and notification preferences are stored on Supabase servers. All data is encrypted in transit and at rest.',
 
@@ -143,9 +143,9 @@ const aboutTranslations = {
     sharedPubliclyDesc: 'Los reportes aparecen en el mapa comunitario para que otros los vean.',
 
     thirdParty: 'Servicios de Terceros',
-    mapboxTitle: 'Mapbox (Mapas)',
-    mapboxDesc: 'Usamos Mapbox para mostrar mapas. Cuando ves el mapa, Mapbox recibe el área que estás viendo para cargar los tiles. No enviamos tus preferencias de ubicación a Mapbox.',
-    mapboxPolicy: 'Política de Privacidad de Mapbox →',
+    mapsTitle: 'OpenFreeMap (Mapas)',
+    mapsDesc: 'Usamos OpenFreeMap con MapLibre para mostrar mapas. OpenFreeMap está enfocado en la privacidad: sin rastreo, sin claves API, sin recolección de datos. Los tiles del mapa se sirven de forma anónima.',
+    mapsPolicy: 'Información de OpenFreeMap →',
     supabaseTitle: 'Supabase (Base de datos)',
     supabaseDesc: 'Los datos de alertas y preferencias de notificaciones se almacenan en servidores de Supabase. Todos los datos están encriptados en tránsito y en reposo.',
 
@@ -214,9 +214,9 @@ const aboutTranslations = {
     sharedPubliclyDesc: 'Os relatórios aparecem no mapa comunitário para outros verem.',
 
     thirdParty: 'Serviços de Terceiros',
-    mapboxTitle: 'Mapbox (Mapas)',
-    mapboxDesc: 'Usamos Mapbox para exibir mapas. Quando você visualiza o mapa, o Mapbox recebe a área que você está vendo para carregar os tiles. Não enviamos suas preferências de localização para o Mapbox.',
-    mapboxPolicy: 'Política de Privacidade do Mapbox →',
+    mapsTitle: 'OpenFreeMap (Mapas)',
+    mapsDesc: 'Usamos OpenFreeMap com MapLibre para exibir mapas. OpenFreeMap é focado em privacidade: sem rastreamento, sem chaves de API, sem coleta de dados. Os tiles do mapa são servidos anonimamente.',
+    mapsPolicy: 'Informações do OpenFreeMap →',
     supabaseTitle: 'Supabase (Banco de dados)',
     supabaseDesc: 'Dados de alertas e preferências de notificação são armazenados em servidores Supabase. Todos os dados são criptografados em trânsito e em repouso.',
 
@@ -426,15 +426,15 @@ export default function AboutPage() {
 
             <div className="space-y-4">
               <div className="p-4 rounded-lg bg-muted/30">
-                <p className="font-medium mb-1">{t.mapboxTitle}</p>
-                <p className="text-sm text-muted-foreground mb-2">{t.mapboxDesc}</p>
+                <p className="font-medium mb-1">{t.mapsTitle}</p>
+                <p className="text-sm text-muted-foreground mb-2">{t.mapsDesc}</p>
                 <a
-                  href="https://www.mapbox.com/legal/privacy"
+                  href="https://openfreemap.org"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="text-sm text-primary hover:underline"
                 >
-                  {t.mapboxPolicy}
+                  {t.mapsPolicy}
                 </a>
               </div>
 

@@ -181,14 +181,15 @@ export default function PrivacyPolicyPage() {
           <section>
             <h2 className="text-xl font-semibold mb-3">Third-Party Services</h2>
 
-            <h3 className="text-lg font-medium mt-4 mb-2">Mapbox</h3>
+            <h3 className="text-lg font-medium mt-4 mb-2">OpenFreeMap + MapLibre</h3>
             <p className="text-muted-foreground mb-4">
-              We use Mapbox to display maps in the app. When you view the map:
+              We use OpenFreeMap with MapLibre to display maps in the app:
             </p>
             <ul className="text-muted-foreground space-y-2">
-              <li>• Mapbox receives the map area you're viewing to render map tiles</li>
-              <li>• We do not send your stored location preferences to Mapbox</li>
-              <li>• Mapbox has their own privacy policy: <a href="https://www.mapbox.com/legal/privacy" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">mapbox.com/legal/privacy</a></li>
+              <li>• <strong>Privacy-first:</strong> OpenFreeMap does not track users or require API keys</li>
+              <li>• <strong>No data collection:</strong> Map tile requests are anonymous with no user identification</li>
+              <li>• <strong>Open source:</strong> MapLibre is fully open-source mapping software</li>
+              <li>• Learn more: <a href="https://openfreemap.org" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">openfreemap.org</a></li>
             </ul>
 
             <h3 className="text-lg font-medium mt-4 mb-2">Supabase</h3>

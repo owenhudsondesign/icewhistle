@@ -302,17 +302,23 @@ export function ReportAlertModal({
     setError(null)
 
     try {
+      // Use Nominatim (OpenStreetMap) for geocoding - free, no API key, privacy-focused
       const response = await fetch(
-        `https://api.mapbox.com/geocoding/v5/mapbox.places/${encodeURIComponent(address)}.json?access_token=${process.env.NEXT_PUBLIC_MAPBOX_TOKEN}&country=US&limit=1`
+        `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(address)}&countrycodes=us&limit=1`,
+        {
+          headers: {
+            'User-Agent': 'ICEwhistle/1.0 (https://icewhistle.org)'
+          }
+        }
       )
       const data = await response.json()
 
-      if (data.features && data.features.length > 0) {
-        const [lng, lat] = data.features[0].center
+      if (data && data.length > 0) {
+        const { lat, lon } = data[0]
         // Apply fuzzy location for privacy
         setLocation({
-          lat: fuzzyLocation(lat),
-          lng: fuzzyLocation(lng)
+          lat: fuzzyLocation(parseFloat(lat)),
+          lng: fuzzyLocation(parseFloat(lon))
         })
         setLocationMethod('address')
         setStep('details')

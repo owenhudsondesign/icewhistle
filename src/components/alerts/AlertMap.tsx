@@ -1,20 +1,20 @@
 'use client'
 
 import { useEffect, useRef, useCallback, useState } from 'react'
-import mapboxgl from 'mapbox-gl'
-import 'mapbox-gl/dist/mapbox-gl.css'
+import maplibregl from 'maplibre-gl'
+import 'maplibre-gl/dist/maplibre-gl.css'
 import { Alert, ALERT_TYPES, CLEAR_VOTES_REQUIRED } from '@/types/alert'
 import { Crosshair, Loader2, Maximize2, Minimize2 } from 'lucide-react'
 import { useLanguage } from '@/hooks/use-language'
 
 // CSS for marker animations
 const markerStyles = `
-  .mapboxgl-popup-close-button {
+  .maplibregl-popup-close-button {
     font-size: 20px;
     padding: 4px 8px;
     color: #666;
   }
-  .mapboxgl-popup-close-button:hover {
+  .maplibregl-popup-close-button:hover {
     color: #333;
     background: rgba(0,0,0,0.05);
   }
@@ -176,6 +176,9 @@ function alertsToGeoJSON(alerts: Alert[]): GeoJSON.FeatureCollection {
   }
 }
 
+// OpenFreeMap style URL (dark theme)
+const OPENFREEMAP_STYLE = 'https://tiles.openfreemap.org/styles/liberty'
+
 export function AlertMap({
   alerts,
   userLocation,
@@ -190,11 +193,11 @@ export function AlertMap({
   const { language } = useLanguage()
   const t = mapTranslations[language as keyof typeof mapTranslations] || mapTranslations.en
   const mapContainer = useRef<HTMLDivElement>(null)
-  const map = useRef<mapboxgl.Map | null>(null)
-  const popup = useRef<mapboxgl.Popup | null>(null)
-  const clusterMarkers = useRef<Map<string, mapboxgl.Marker>>(new Map())
-  const alertMarkers = useRef<Map<string, mapboxgl.Marker>>(new Map())
-  const userMarker = useRef<mapboxgl.Marker | null>(null)
+  const map = useRef<maplibregl.Map | null>(null)
+  const popup = useRef<maplibregl.Popup | null>(null)
+  const clusterMarkers = useRef<Map<string, maplibregl.Marker>>(new Map())
+  const alertMarkers = useRef<Map<string, maplibregl.Marker>>(new Map())
+  const userMarker = useRef<maplibregl.Marker | null>(null)
   const accuracyCircle = useRef<HTMLDivElement | null>(null)
   const initialized = useRef(false)
   const stylesInjected = useRef(false)
@@ -335,7 +338,7 @@ export function AlertMap({
     if (!map.current) return
 
     popup.current?.remove()
-    popup.current = new mapboxgl.Popup({ offset: 25, closeButton: true, closeOnClick: false })
+    popup.current = new maplibregl.Popup({ offset: 25, closeButton: true, closeOnClick: false })
       .setLngLat(lngLat)
       .setHTML(createPopupHTML(alertData))
       .addTo(map.current)
@@ -345,13 +348,6 @@ export function AlertMap({
   useEffect(() => {
     if (!mapContainer.current || initialized.current) return
 
-    const token = process.env.NEXT_PUBLIC_MAPBOX_TOKEN
-    if (!token) {
-      console.error('Mapbox token not found')
-      return
-    }
-
-    mapboxgl.accessToken = token
     initialized.current = true
 
     const initialCenter: [number, number] = userLocation
@@ -359,17 +355,18 @@ export function AlertMap({
       : [-98.5795, 39.8283]
     const initialZoom = userLocation ? 10 : 3.5
 
-    map.current = new mapboxgl.Map({
+    map.current = new maplibregl.Map({
       container: mapContainer.current,
-      style: 'mapbox://styles/mapbox/dark-v11',
+      style: OPENFREEMAP_STYLE,
       center: initialCenter,
       zoom: initialZoom,
-      attributionControl: false,
-      preserveDrawingBuffer: true,
     })
 
+    // Add attribution control
+    map.current.addControl(new maplibregl.AttributionControl({ compact: true }), 'bottom-right')
+
     const mapInstance = map.current
-    mapInstance.addControl(new mapboxgl.NavigationControl({ showCompass: false }), 'top-right')
+    mapInstance.addControl(new maplibregl.NavigationControl({ showCompass: false }), 'top-right')
 
     mapInstance.on('load', () => {
       setIsMapLoaded(true)
@@ -421,7 +418,6 @@ export function AlertMap({
         filter: ['has', 'point_count'],
         layout: {
           'text-field': '{point_count_abbreviated}',
-          'text-font': ['DIN Offc Pro Medium', 'Arial Unicode MS Bold'],
           'text-size': 14
         },
         paint: {
@@ -463,24 +459,23 @@ export function AlertMap({
       }, 'unclustered-point')
 
       // Click on cluster to zoom
-      mapInstance.on('click', 'clusters', (e) => {
+      mapInstance.on('click', 'clusters', async (e) => {
         const features = mapInstance.queryRenderedFeatures(e.point, { layers: ['clusters'] })
         if (!features.length) return
 
         const clusterId = features[0].properties?.cluster_id
-        const source = mapInstance.getSource('alerts') as mapboxgl.GeoJSONSource
+        const source = mapInstance.getSource('alerts') as maplibregl.GeoJSONSource
 
-        source.getClusterExpansionZoom(clusterId, (err, zoom) => {
-          if (err) {
-            console.error('Error expanding cluster:', err)
-            return
-          }
+        try {
+          const zoom = await source.getClusterExpansionZoom(clusterId)
           const geometry = features[0].geometry as GeoJSON.Point
           mapInstance.easeTo({
             center: geometry.coordinates as [number, number],
             zoom: zoom ?? 14
           })
-        })
+        } catch (err) {
+          console.error('Error expanding cluster:', err)
+        }
       })
 
       // Click on individual marker
@@ -556,7 +551,7 @@ export function AlertMap({
   useEffect(() => {
     if (!map.current || !isMapLoaded) return
 
-    const source = map.current.getSource('alerts') as mapboxgl.GeoJSONSource
+    const source = map.current.getSource('alerts') as maplibregl.GeoJSONSource
     if (source) {
       source.setData(alertsToGeoJSON(alerts))
     }
@@ -580,7 +575,7 @@ export function AlertMap({
           box-shadow: 0 0 10px rgba(59, 130, 246, 0.5);
         "></div>
       `
-      userMarker.current = new mapboxgl.Marker({ element: el })
+      userMarker.current = new maplibregl.Marker({ element: el })
         .setLngLat([userLocation.lng, userLocation.lat])
         .addTo(map.current)
     }
@@ -643,7 +638,7 @@ export function AlertMap({
             box-shadow: 0 0 10px rgba(59, 130, 246, 0.5);
           "></div>
         `
-        userMarker.current = new mapboxgl.Marker({ element: el })
+        userMarker.current = new maplibregl.Marker({ element: el })
           .setLngLat([longitude, latitude])
           .addTo(map.current)
       }
@@ -663,7 +658,7 @@ export function AlertMap({
         circleEl.style.position = 'absolute'
         circleEl.style.transform = 'translate(-50%, -50%)'
 
-        new mapboxgl.Marker({ element: circleEl })
+        new maplibregl.Marker({ element: circleEl })
           .setLngLat([longitude, latitude])
           .addTo(map.current)
 

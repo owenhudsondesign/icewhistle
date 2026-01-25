@@ -62,7 +62,7 @@ export function isWithinRadius(
 
 /**
  * Geocode a ZIP code to lat/lng using various methods
- * Priority: 1) Cache, 2) External API (Mapbox), 3) Fallback database
+ * Priority: 1) Cache, 2) Nominatim (OpenStreetMap)
  */
 export async function geocodeZipCode(
   zipCode: string
@@ -81,52 +81,56 @@ export async function geocodeZipCode(
     }
   }
 
-  // Try Mapbox geocoding if API key is available
-  const mapboxToken = process.env.NEXT_PUBLIC_MAPBOX_TOKEN
-  if (mapboxToken) {
-    try {
-      const response = await fetch(
-        `https://api.mapbox.com/geocoding/v5/mapbox.places/${zipCode}.json?types=postcode&country=us&access_token=${mapboxToken}`
-      )
-
-      if (response.ok) {
-        const data = await response.json()
-        if (data.features && data.features.length > 0) {
-          const feature = data.features[0]
-          const [longitude, latitude] = feature.center
-
-          // Extract city and state from context
-          let city: string | undefined
-          let state: string | undefined
-
-          if (feature.context) {
-            for (const ctx of feature.context) {
-              if (ctx.id.startsWith('place.')) city = ctx.text
-              if (ctx.id.startsWith('region.')) state = ctx.short_code?.replace('US-', '')
-            }
-          }
-
-          // Cache the result
-          await prisma.zipCodeCache.create({
-            data: {
-              zipCode,
-              latitude,
-              longitude,
-              city,
-              state,
-            },
-          })
-
-          return { latitude, longitude, city, state }
+  // Use Nominatim (OpenStreetMap) for geocoding - free, no API key, privacy-focused
+  try {
+    const response = await fetch(
+      `https://nominatim.openstreetmap.org/search?format=json&q=${zipCode}+USA&postalcode=${zipCode}&countrycodes=us&limit=1`,
+      {
+        headers: {
+          'User-Agent': 'ICEwhistle/1.0 (https://icewhistle.org)'
         }
       }
-    } catch (error) {
-      console.error('Mapbox geocoding failed:', error)
+    )
+
+    if (response.ok) {
+      const data = await response.json()
+      if (data && data.length > 0) {
+        const result = data[0]
+        const latitude = parseFloat(result.lat)
+        const longitude = parseFloat(result.lon)
+
+        // Extract city and state from display_name
+        // Format is usually: "12345, City, County, State, USA"
+        let city: string | undefined
+        let state: string | undefined
+
+        if (result.display_name) {
+          const parts = result.display_name.split(', ')
+          if (parts.length >= 4) {
+            city = parts[1]
+            state = parts[parts.length - 2] // State is second to last
+          }
+        }
+
+        // Cache the result
+        await prisma.zipCodeCache.create({
+          data: {
+            zipCode,
+            latitude,
+            longitude,
+            city,
+            state,
+          },
+        })
+
+        return { latitude, longitude, city, state }
+      }
     }
+  } catch (error) {
+    console.error('Nominatim geocoding failed:', error)
   }
 
   // Fallback: return null if we can't geocode
-  // In production, you might want to use a local ZIP database
   return null
 }
 
