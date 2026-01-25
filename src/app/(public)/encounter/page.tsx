@@ -25,12 +25,7 @@ import {
   Search,
   ExternalLink,
   Download,
-  MapPin,
-  Map,
-  Loader2,
-  Check,
 } from 'lucide-react'
-import { useState } from 'react'
 
 // Translations for the encounter page
 const translations = {
@@ -303,118 +298,11 @@ const translations = {
 export default function EncounterPage() {
   const { language } = useLanguage()
   const t = translations[language as keyof typeof translations] || translations.en
-  const { isRecording, showSaveDialog, recordingBlob } = useRecordingStore()
+  const { showSaveDialog, recordingBlob } = useRecordingStore()
   const { stopRecording, saveRecording, discardRecording } = useEnhancedRecording()
-  const [reportStatus, setReportStatus] = useState<'idle' | 'loading' | 'success' | 'error' | 'rate_limited'>('idle')
-  const [cooldownMinutes, setCooldownMinutes] = useState(0)
-
-  const REPORT_COOLDOWN_MS = 5 * 60 * 1000 // 5 minutes
 
   const handleStopAndSave = async () => {
     await stopRecording()
-  }
-
-  const handleReportICE = async () => {
-    // Show disclaimer/confirmation
-    const disclaimerText = language === 'es'
-      ? 'Esto compartirá tu ubicación aproximada para alertar a otros en tu área. Tu ubicación exacta nunca se almacena.\n\nNota: Si tu navegador está configurado para "Nunca" permitir ubicación, esto no funcionará.\n\n¿Continuar?'
-      : language === 'pt'
-      ? 'Isso compartilhará sua localização aproximada para alertar outros na sua área. Sua localização exata nunca é armazenada.\n\nNota: Se seu navegador estiver configurado para "Nunca" permitir localização, isso não funcionará.\n\nContinuar?'
-      : 'This will share your approximate location to alert others in your area. Your exact location is never stored.\n\nNote: If your browser is set to "Never" allow location, this won\'t work.\n\nContinue?'
-
-    if (!confirm(disclaimerText)) {
-      return
-    }
-
-    // Check rate limit
-    const lastReportTime = localStorage.getItem('icewhistle_last_report')
-    if (lastReportTime) {
-      const timeSinceLastReport = Date.now() - parseInt(lastReportTime, 10)
-      if (timeSinceLastReport < REPORT_COOLDOWN_MS) {
-        const minutesRemaining = Math.ceil((REPORT_COOLDOWN_MS - timeSinceLastReport) / 60000)
-        setCooldownMinutes(minutesRemaining)
-        setReportStatus('rate_limited')
-        setTimeout(() => setReportStatus('idle'), 4000)
-        return
-      }
-    }
-
-    setReportStatus('loading')
-
-    try {
-      if (!navigator.geolocation) {
-        throw new Error('Geolocation not supported')
-      }
-
-      // Try to get position - first with high accuracy, then fallback to low accuracy
-      const getPosition = (highAccuracy: boolean): Promise<GeolocationPosition> => {
-        return new Promise((resolve, reject) => {
-          navigator.geolocation.getCurrentPosition(resolve, reject, {
-            enableHighAccuracy: highAccuracy,
-            timeout: highAccuracy ? 10000 : 20000,
-            maximumAge: 600000, // Accept 10 min old cached position
-          })
-        })
-      }
-
-      let position: GeolocationPosition
-      try {
-        position = await getPosition(true)
-      } catch {
-        // Retry with low accuracy if high accuracy fails
-        position = await getPosition(false)
-      }
-
-      const currentLat = position.coords.latitude
-      const currentLng = position.coords.longitude
-
-      const response = await fetch('/api/alerts', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          latitude: currentLat,
-          longitude: currentLng,
-          alertType: 'ice_raid',
-          description: 'Quick report from emergency page',
-        }),
-      })
-
-      if (response.ok) {
-        localStorage.setItem('icewhistle_last_report', Date.now().toString())
-        setReportStatus('success')
-        setTimeout(() => setReportStatus('idle'), 5000)
-      } else {
-        const errorData = await response.json().catch(() => ({}))
-        console.error('API error:', response.status, errorData)
-        const errorMsg = language === 'es'
-          ? `Error al enviar (${response.status}). Intenta de nuevo.`
-          : language === 'pt'
-          ? `Erro ao enviar (${response.status}). Tente novamente.`
-          : `Failed to submit (${response.status}). Please try again.`
-        alert(errorMsg)
-        setReportStatus('error')
-        setTimeout(() => setReportStatus('idle'), 3000)
-      }
-    } catch (err: unknown) {
-      const error = err as Error & { code?: number }
-      console.error('Failed to report ICE activity:', error, 'Code:', error?.code, 'Message:', error?.message)
-
-      // Offer to go to alerts page where they can enter address manually
-      const goToAlerts = confirm(
-        language === 'es'
-          ? 'No se pudo obtener ubicación automáticamente.\n\n¿Ir a la página de alertas para ingresar una dirección manualmente?'
-          : language === 'pt'
-          ? 'Não foi possível obter localização automaticamente.\n\nIr para a página de alertas para inserir um endereço manualmente?'
-          : 'Could not get location automatically.\n\nGo to alerts page to enter an address manually?'
-      )
-
-      if (goToAlerts) {
-        window.location.href = '/alerts?report=true'
-      }
-
-      setReportStatus('error')
-      setTimeout(() => setReportStatus('idle'), 4000)
-    }
   }
 
   return (
@@ -469,62 +357,7 @@ export default function EncounterPage() {
         </div>
 
         {/* Alert Contacts Button */}
-        <AlertContactsButton className="mb-6" />
-
-        {/* Quick Action Buttons */}
-        <div className="grid grid-cols-2 gap-3 mb-6">
-          <Button
-            onClick={handleReportICE}
-            disabled={reportStatus === 'loading' || reportStatus === 'success' || reportStatus === 'rate_limited'}
-            className={`h-auto min-h-[56px] py-2 text-xs font-semibold ${
-              reportStatus === 'success'
-                ? 'bg-[#84CC16] hover:bg-[#84CC16]'
-                : reportStatus === 'rate_limited'
-                ? 'bg-gray-500 hover:bg-gray-500'
-                : 'bg-[#DC2626] hover:bg-[#DC2626]/90'
-            } text-white`}
-          >
-            {reportStatus === 'loading' ? (
-              <>
-                <Loader2 className="h-4 w-4 mr-2 animate-spin flex-shrink-0" />
-                <span className="line-clamp-1">{t.reporting}</span>
-              </>
-            ) : reportStatus === 'success' ? (
-              <>
-                <Check className="h-4 w-4 mr-2 flex-shrink-0" />
-                <span className="line-clamp-1">{t.reported}</span>
-              </>
-            ) : reportStatus === 'rate_limited' ? (
-              <>
-                <MapPin className="h-4 w-4 mr-2 flex-shrink-0" />
-                <span className="line-clamp-1">{t.rateLimited.replace('{minutes}', cooldownMinutes.toString())}</span>
-              </>
-            ) : reportStatus === 'error' ? (
-              <>
-                <MapPin className="h-4 w-4 mr-2 flex-shrink-0" />
-                <span className="line-clamp-1">{t.locationError}</span>
-              </>
-            ) : (
-              <>
-                <MapPin className="h-4 w-4 mr-2 flex-shrink-0" />
-                <span className="flex flex-col items-start leading-tight min-w-0">
-                  <span className="line-clamp-1 w-full">{t.reportHere}</span>
-                  <span className="text-[9px] font-normal opacity-80 line-clamp-1 w-full">{t.reportHereDesc}</span>
-                </span>
-              </>
-            )}
-          </Button>
-          <Button
-            asChild
-            variant="outline"
-            className="h-auto min-h-[56px] py-2 text-xs font-semibold border-2"
-          >
-            <Link href="/alerts">
-              <Map className="h-4 w-4 mr-2 flex-shrink-0" />
-              <span className="line-clamp-1">{t.viewMap}</span>
-            </Link>
-          </Button>
-        </div>
+        <AlertContactsButton className="mb-8" />
 
         {/* URGENT STEPS - Priority 1 */}
         <Alert className="mb-4 border-[#DC2626]/30 bg-[#DC2626]/5">
