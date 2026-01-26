@@ -458,5 +458,28 @@
     "consultAttorney": "W sprawie porady dotyczącej twojej konkretnej sytuacji skonsultuj się z wykwalifikowanym adwokatem imigracyjnym.",
     "noInterference": "Nie ingeruj w funkcjonariuszy organów ścigania.",
     "machineTranslated": "Ta treść została przetłumaczona maszynowo. W przypadku krytycznych kwestii prawnych prosimy o weryfikację informacji u wykwalifikowanego prawnika."
+  },
+  "local": {
+    "yourLocalHotline": "Twoja Lokalna Linia",
+    "local": "LOKALNY",
+    "personalized": "SPERSONALIZOWANE",
+    "enterZipForLocal": "Wpisz kod pocztowy dla lokalnych linii",
+    "storedOnDevice": "Przechowywane tylko na tym urządzeniu",
+    "yourArea": "TWÓJ REGION",
+    "viewAllHotlines": "Zobacz wszystkie linie",
+    "yourLocalResources": "Twoje Lokalne Zasoby",
+    "enterZipCode": "Wpisz swój kod pocztowy",
+    "enterZipPrompt": "Pokażemy Ci lokalne linie pomocy i organizacje w Twoim regionie.",
+    "noLocalResources": "Nie znaleziono konkretnych lokalnych zasobów dla Twojego regionu. Zasoby krajowe są dostępne poniżej.",
+    "find": "Szukaj",
+    "zipCode": "Kod pocztowy",
+    "callForHelp": "Zadzwoń po Pomoc",
+    "emergencyContacts": "Kontakty Alarmowe",
+    "change": "zmień",
+    "update": "Aktualizuj",
+    "national": "Krajowy",
+    "state": "Stanowy",
+    "zipStoredLocally": "Twój kod pocztowy jest przechowywany tylko na Twoim urządzeniu. Nigdy nie jest wysyłany na żaden serwer.",
+    "enterZipToSeeLocal": "Wpisz swój kod pocztowy, aby zobaczyć lokalne zasoby"
   }
 }

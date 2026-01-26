@@ -458,5 +458,28 @@
     "consultAttorney": "关于您具体情况的建议，请咨询有资格的移民律师。",
     "noInterference": "不要干扰执法人员。",
     "machineTranslated": "此内容已通过机器翻译。对于重要的法律事项，请与有资格的律师核实信息。"
+  },
+  "local": {
+    "yourLocalHotline": "您的本地热线",
+    "local": "本地",
+    "personalized": "个性化",
+    "enterZipForLocal": "输入邮编以获取本地热线",
+    "storedOnDevice": "仅存储在此设备上",
+    "yourArea": "您的地区",
+    "viewAllHotlines": "查看所有热线",
+    "yourLocalResources": "您的本地资源",
+    "enterZipCode": "输入您的邮编",
+    "enterZipPrompt": "我们将为您展示您所在地区的本地热线和组织。",
+    "noLocalResources": "未找到您所在地区的特定本地资源。全国资源如下。",
+    "find": "查找",
+    "zipCode": "邮编",
+    "callForHelp": "寻求帮助",
+    "emergencyContacts": "紧急联系人",
+    "change": "更改",
+    "update": "更新",
+    "national": "全国",
+    "state": "州级",
+    "zipStoredLocally": "您的邮编仅存储在您的设备上。永远不会发送到任何服务器。",
+    "enterZipToSeeLocal": "输入您的邮编以查看本地资源"
   }
 }

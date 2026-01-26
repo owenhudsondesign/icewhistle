@@ -458,5 +458,28 @@
     "consultAttorney": "Pou konsèy sou sitiyasyon espesifik ou an, konsèlte ak yon avoka imigrasyonn ki kalifye.",
     "noInterference": "Pa melanje w nan travay ofisye lòd la yo.",
     "machineTranslated": "Kontni sa a te tradwi pa machin. Pou bagay legal enpòtan yo, tanpri verifye enfòmasyon an ak yon avoka ki kalifye."
+  },
+  "local": {
+    "yourLocalHotline": "Liy Lokal Ou",
+    "local": "LOKAL",
+    "personalized": "PÈSONALIZE",
+    "enterZipForLocal": "Antre kòd postal pou liy lokal yo",
+    "storedOnDevice": "Estoke sèlman sou aparèy sa a",
+    "yourArea": "ZÒN OU",
+    "viewAllHotlines": "Wè tout liy yo",
+    "yourLocalResources": "Resous Lokal Ou yo",
+    "enterZipCode": "Antre kòd postal ou",
+    "enterZipPrompt": "N ap montre ou liy èd ak òganizasyon lokal nan zòn ou.",
+    "noLocalResources": "Pa gen resous lokal espesifik pou zòn ou. Resous nasyonal yo disponib anba a.",
+    "find": "Chèche",
+    "zipCode": "Kòd postal",
+    "callForHelp": "Rele pou Èd",
+    "emergencyContacts": "Kontak Ijans",
+    "change": "chanje",
+    "update": "Mete ajou",
+    "national": "Nasyonal",
+    "state": "Eta",
+    "zipStoredLocally": "Kòd postal ou estoke sèlman sou aparèy ou. Li pa janm voye nan okenn sèvè.",
+    "enterZipToSeeLocal": "Antre kòd postal ou pou wè resous lokal yo"
   }
 }

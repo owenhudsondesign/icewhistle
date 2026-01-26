@@ -14,9 +14,9 @@ A free, privacy-first app for immigrant communities in the United States. Know y
 
 Available in 30 languages including English, Spanish, Portuguese, Chinese, Vietnamese, Arabic, and more.
 
-## Why It's Not in App Stores
+## Why a PWA?
 
-In October 2025, Attorney General Pam Bondi pressured Apple and Google to remove ICEblock, a similar app with over 1 million users. ICEwhistle is distributed as a Progressive Web App (PWA) - install it directly from the website to your home screen. No app store means no one can pull it down.
+ICEwhistle is distributed as a Progressive Web App (PWA) - install it directly from the website to your home screen. This ensures the app remains available regardless of app store policies or external pressures. Your community resources should always be accessible.
 
 ## Tech Stack
 

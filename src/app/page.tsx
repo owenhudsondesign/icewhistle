@@ -8,7 +8,9 @@ import { Input } from '@/components/ui/input'
 import { AppHeader } from '@/components/shared/AppHeader'
 import { RecordingModal } from '@/components/shared/RecordingModal'
 import { useLanguage } from '@/hooks/use-language'
+import { useUserZip } from '@/hooks/use-user-zip'
 import { LegalDisclaimer } from '@/components/shared/LegalDisclaimer'
+import { getHotlinesForZip, getLocationDisplay, hasLocalResources } from '@/data/hotlines'
 import {
   AlertTriangle,
   Search,
@@ -27,17 +29,42 @@ import {
   ClipboardList,
   BookOpen,
   Sparkles,
+  MapPin,
 } from 'lucide-react'
 
 export default function Home() {
   const router = useRouter()
   const [searchQuery, setSearchQuery] = useState('')
   const [showRecordingModal, setShowRecordingModal] = useState(false)
+  const [tempZip, setTempZip] = useState('')
   const { language, t } = useLanguage()
+  const { zip, updateZip, mounted } = useUserZip()
 
   const common = t.common
   const home = t.home
   const hotlines = t.hotlines
+
+  // Get personalized hotlines based on ZIP
+  const allHotlines = mounted ? getHotlinesForZip(zip) : []
+  const localHotlines = allHotlines.filter(h => h.type === 'local' || h.type === 'state')
+  const nationalHotlines = allHotlines.filter(h => h.type === 'national')
+  const locationDisplay = mounted ? getLocationDisplay(zip, language) : ''
+  const hasLocal = mounted && hasLocalResources(zip)
+
+  // Build display list: prioritize local, then national
+  const displayHotlines = [
+    ...localHotlines.slice(0, 2),
+    ...nationalHotlines.slice(0, 4 - Math.min(localHotlines.length, 2))
+  ].slice(0, 4)
+
+  const handleZipSubmit = (e: React.FormEvent) => {
+    e.preventDefault()
+    const cleaned = tempZip.replace(/\D/g, '').slice(0, 5)
+    if (cleaned.length === 5) {
+      updateZip(cleaned)
+      setTempZip('')
+    }
+  }
 
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault()
@@ -252,40 +279,98 @@ export default function Home() {
           </div>
         </div>
 
-        {/* Emergency Hotlines - Structured with explanations */}
+        {/* Emergency Hotlines - Personalized based on ZIP */}
         <div className="card-glass p-4 mb-4">
-          <div className="flex items-center gap-2 mb-1">
-            <span className="px-2 py-0.5 bg-[#DC2626] text-white text-[10px] font-bold rounded-full tracking-wide">
-              {home.badgeHotlines}
-            </span>
+          <div className="flex items-center justify-between mb-1">
+            <div className="flex items-center gap-2">
+              <span className="px-2 py-0.5 bg-[#DC2626] text-white text-[10px] font-bold rounded-full tracking-wide">
+                {home.badgeHotlines}
+              </span>
+              {mounted && hasLocal && (
+                <span className="px-2 py-0.5 bg-[#00A6B4]/10 text-[#00A6B4] text-[10px] font-bold rounded-full tracking-wide">
+                  {language === 'es' ? 'PERSONALIZADO' : 'PERSONALIZED'}
+                </span>
+              )}
+            </div>
+            {mounted && zip && (
+              <span className="flex items-center gap-1 text-[10px] text-muted-foreground">
+                <MapPin className="h-3 w-3" />
+                {locationDisplay}
+              </span>
+            )}
           </div>
           <h2 className="text-sm font-semibold mb-1 flex items-center gap-2">
             <Phone className="h-5 w-5 text-[#DC2626] flex-shrink-0" strokeWidth={2} />
             <span className="break-words">{home.emergencyHotlines}</span>
           </h2>
           <p className="text-xs text-muted-foreground mb-3">{hotlines.callFree247}</p>
+
+          {/* ZIP code input if not set */}
+          {mounted && !zip && (
+            <div className="p-3 mb-3 rounded-[12px] bg-[#00A6B4]/10 border border-[#00A6B4]/20">
+              <p className="text-xs font-medium mb-2 flex items-center gap-1">
+                <MapPin className="h-3 w-3 text-[#00A6B4]" />
+                {language === 'es' ? 'Ingresa tu código postal para ver líneas locales' : 'Enter ZIP for local hotlines'}
+              </p>
+              <form onSubmit={handleZipSubmit} className="flex gap-2">
+                <Input
+                  type="text"
+                  inputMode="numeric"
+                  pattern="[0-9]*"
+                  maxLength={5}
+                  placeholder={language === 'es' ? 'Código postal' : 'ZIP code'}
+                  value={tempZip}
+                  onChange={(e) => setTempZip(e.target.value.replace(/\D/g, ''))}
+                  className="flex-1 h-8 text-sm"
+                />
+                <Button
+                  type="submit"
+                  disabled={tempZip.length !== 5}
+                  size="sm"
+                  className="h-8 px-3 bg-[#00A6B4] hover:bg-[#00A6B4]/90"
+                >
+                  {language === 'es' ? 'Buscar' : 'Find'}
+                </Button>
+              </form>
+              <p className="text-[9px] text-muted-foreground mt-1">
+                {language === 'es' ? 'Solo se guarda en este dispositivo' : 'Stored only on this device'}
+              </p>
+            </div>
+          )}
+
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
-            {[
-              { name: hotlines.iceDetaineeLocator, desc: hotlines.iceDetaineeDesc, phone: '1-888-351-4024', color: 'bg-[#DC2626]' },
-              { name: hotlines.unitedWeDream, desc: hotlines.unitedWeDreamDesc, phone: '1-844-363-1423', color: 'bg-[#DC2626]' },
-              { name: hotlines.traffickingHotline, desc: hotlines.traffickingDesc, phone: '1-888-373-7888', color: 'bg-[#FF8C42]' },
-              { name: hotlines.crisisLine, desc: hotlines.crisisDesc, phone: '988', color: 'bg-[#00A6B4]' },
-            ].map((hotline) => (
-              <a
-                key={hotline.phone}
-                href={`tel:${hotline.phone.replace(/\D/g, '')}`}
-                className="flex items-start gap-2 p-3 rounded-[12px] bg-background/50 hover:bg-background press-scale border border-border/30"
-              >
-                <div className={`w-9 h-9 rounded-full ${hotline.color} flex items-center justify-center flex-shrink-0`}>
-                  <Phone className="h-4 w-4 text-white" strokeWidth={2} />
-                </div>
-                <div className="flex-1 min-w-0">
-                  <div className="font-semibold text-xs leading-tight break-words">{hotline.name}</div>
-                  <div className="text-[10px] text-muted-foreground leading-tight break-words">{hotline.desc}</div>
-                  <div className="font-bold text-xs text-primary mt-1">{hotline.phone}</div>
-                </div>
-              </a>
-            ))}
+            {displayHotlines.map((hotline) => {
+              const name = language === 'es' && hotline.nameEs ? hotline.nameEs : hotline.name
+              const desc = language === 'es' && hotline.descriptionEs ? hotline.descriptionEs : hotline.description
+              const isLocal = hotline.type === 'local' || hotline.type === 'state'
+              const color = isLocal ? 'bg-[#00A6B4]' : hotline.type === 'national' ? 'bg-[#DC2626]' : 'bg-[#FF8C42]'
+
+              return (
+                <a
+                  key={hotline.id}
+                  href={`tel:${hotline.phone.replace(/\D/g, '')}`}
+                  className={`flex items-start gap-2 p-3 rounded-[12px] bg-background/50 hover:bg-background press-scale border ${
+                    isLocal ? 'border-[#00A6B4]/30' : 'border-border/30'
+                  }`}
+                >
+                  <div className={`w-9 h-9 rounded-full ${color} flex items-center justify-center flex-shrink-0`}>
+                    <Phone className="h-4 w-4 text-white" strokeWidth={2} />
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <div className="flex items-center gap-1">
+                      <div className="font-semibold text-xs leading-tight break-words">{name}</div>
+                      {isLocal && (
+                        <span className="px-1 py-0.5 bg-[#00A6B4]/10 text-[#00A6B4] text-[8px] font-semibold rounded">
+                          LOCAL
+                        </span>
+                      )}
+                    </div>
+                    <div className="text-[10px] text-muted-foreground leading-tight break-words">{desc}</div>
+                    <div className="font-bold text-xs text-primary mt-1">{hotline.phone}</div>
+                  </div>
+                </a>
+              )
+            })}
           </div>
           <Link
             href="/hotlines"

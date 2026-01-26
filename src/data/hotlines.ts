@@ -219,6 +219,20 @@ export const HOTLINES: Hotline[] = [
 
   // === MASSACHUSETTS ===
   {
+    id: 'ma-luce',
+    name: 'LUCE Immigrant Justice Hotline',
+    nameEs: 'Línea de Justicia para Inmigrantes LUCE',
+    phone: '1-617-370-5023',
+    description: 'Statewide rapid response network - report ICE activity, get real-time support',
+    descriptionEs: 'Red de respuesta rápida estatal - reportar actividad de ICE, obtener apoyo en tiempo real',
+    languages: ['en', 'es', 'pt', 'fr', 'zh', 'ht'],
+    hours: '6am-8pm daily',
+    website: 'https://lucemass.org',
+    coverage: ['MA', '010', '011', '012', '013', '014', '015', '016', '017', '018', '019', '020', '021', '022', '023', '024', '025', '026', '027'],
+    priority: 1,
+    type: 'state',
+  },
+  {
     id: 'ma-mira',
     name: 'MIRA Coalition',
     phone: '1-617-350-5480',
@@ -228,7 +242,7 @@ export const HOTLINES: Hotline[] = [
     hours: 'Mon-Fri 9am-5pm ET',
     website: 'https://miracoalition.org',
     coverage: ['MA', '010', '011', '012', '013', '014', '015', '016', '017', '018', '019', '020', '021', '022', '023', '024', '025', '026', '027'],
-    priority: 1,
+    priority: 2,
     type: 'state',
   },
 
@@ -731,7 +745,7 @@ export function getHotlinesForZip(zip: string | null): Hotline[] {
     if (hotline.coverage.includes(zipPrefix)) return true
 
     // Check state code (we'll infer from ZIP)
-    const state = getStateFromZip(zipPrefix)
+    const state = getStateFromZipPrefix(zipPrefix)
     if (state && hotline.coverage.includes(state)) return true
 
     return false
@@ -746,9 +760,67 @@ export function getHotlinesForZip(zip: string | null): Hotline[] {
 }
 
 /**
+ * State names for display
+ */
+const STATE_NAMES: Record<string, string> = {
+  AL: 'Alabama', AK: 'Alaska', AZ: 'Arizona', AR: 'Arkansas', CA: 'California',
+  CO: 'Colorado', CT: 'Connecticut', DE: 'Delaware', DC: 'Washington D.C.', FL: 'Florida',
+  GA: 'Georgia', HI: 'Hawaii', ID: 'Idaho', IL: 'Illinois', IN: 'Indiana',
+  IA: 'Iowa', KS: 'Kansas', KY: 'Kentucky', LA: 'Louisiana', ME: 'Maine',
+  MD: 'Maryland', MA: 'Massachusetts', MI: 'Michigan', MN: 'Minnesota', MS: 'Mississippi',
+  MO: 'Missouri', MT: 'Montana', NE: 'Nebraska', NV: 'Nevada', NH: 'New Hampshire',
+  NJ: 'New Jersey', NM: 'New Mexico', NY: 'New York', NC: 'North Carolina', ND: 'North Dakota',
+  OH: 'Ohio', OK: 'Oklahoma', OR: 'Oregon', PA: 'Pennsylvania', RI: 'Rhode Island',
+  SC: 'South Carolina', SD: 'South Dakota', TN: 'Tennessee', TX: 'Texas', UT: 'Utah',
+  VT: 'Vermont', VA: 'Virginia', WA: 'Washington', WV: 'West Virginia', WI: 'Wisconsin',
+  WY: 'Wyoming',
+}
+
+/**
+ * Get state info from a ZIP code
+ */
+export function getStateFromZipCode(zip: string | null): { code: string; name: string } | null {
+  if (!zip || zip.length < 3) return null
+  const prefix = zip.substring(0, 3)
+  const code = getStateFromZipPrefix(prefix)
+  if (!code) return null
+  return { code, name: STATE_NAMES[code] || code }
+}
+
+/**
+ * Get location display string for a ZIP code
+ */
+export function getLocationDisplay(zip: string | null, language: string = 'en'): string {
+  const state = getStateFromZipCode(zip)
+  if (!state) return language === 'es' ? 'Nacional' : 'National'
+  return state.name
+}
+
+/**
+ * Check if user has local resources available
+ */
+export function hasLocalResources(zip: string | null): boolean {
+  if (!zip || zip.length < 3) return false
+  const hotlines = getHotlinesForZip(zip)
+  return hotlines.some(h => h.type === 'local' || h.type === 'state')
+}
+
+/**
+ * Get the primary local hotline for a ZIP code (the most relevant one)
+ */
+export function getPrimaryLocalHotline(zip: string | null): Hotline | null {
+  const hotlines = getHotlinesForZip(zip)
+  // Prefer local, then state, then first national
+  return hotlines.find(h => h.type === 'local')
+    || hotlines.find(h => h.type === 'state')
+    || hotlines[0]
+    || null
+}
+
+/**
  * Infer state from ZIP prefix
  */
-function getStateFromZip(zipPrefix: string): string | null {
+function getStateFromZipPrefix(zipPrefix: string): string | null {
   const prefix = parseInt(zipPrefix, 10)
 
   // This is a simplified mapping - covers major ranges

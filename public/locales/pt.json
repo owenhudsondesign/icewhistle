@@ -458,5 +458,28 @@
     "consultAttorney": "Para aconselhamento sobre sua situação específica, consulte um advogado de imigração qualificado.",
     "noInterference": "Não interfira com agentes da lei.",
     "machineTranslated": "Este conteúdo foi traduzido por máquina. Para questões jurídicas críticas, verifique as informações com um advogado qualificado."
+  },
+  "local": {
+    "yourLocalHotline": "Sua Linha Local",
+    "local": "LOCAL",
+    "personalized": "PERSONALIZADO",
+    "enterZipForLocal": "Digite o CEP para linhas locais",
+    "storedOnDevice": "Armazenado apenas neste dispositivo",
+    "yourArea": "SUA ÁREA",
+    "viewAllHotlines": "Ver todas as linhas",
+    "yourLocalResources": "Seus Recursos Locais",
+    "enterZipCode": "Digite seu CEP",
+    "enterZipPrompt": "Mostraremos linhas de ajuda e organizações locais da sua área.",
+    "noLocalResources": "Nenhum recurso local específico encontrado para sua área. Recursos nacionais disponíveis abaixo.",
+    "find": "Buscar",
+    "zipCode": "CEP",
+    "callForHelp": "Ligue para Ajuda",
+    "emergencyContacts": "Contatos de Emergência",
+    "change": "alterar",
+    "update": "Atualizar",
+    "national": "Nacional",
+    "state": "Estadual",
+    "zipStoredLocally": "Seu CEP é armazenado apenas no seu dispositivo. Nunca é enviado a nenhum servidor.",
+    "enterZipToSeeLocal": "Digite seu CEP para ver recursos locais"
   }
 }

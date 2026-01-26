@@ -458,5 +458,28 @@
     "consultAttorney": "特定の状況に関するアドバイスについては、資格のある移民弁護士に相談してください。",
     "noInterference": "法執行官を妨害しないでください。",
     "machineTranslated": "このコンテンツは機械翻訳されています。重要な法的問題については、資格のある弁護士に情報を確認してください。"
+  },
+  "local": {
+    "yourLocalHotline": "お住まいの地域のホットライン",
+    "local": "地域",
+    "personalized": "カスタマイズ",
+    "enterZipForLocal": "地域のホットラインを見るには郵便番号を入力",
+    "storedOnDevice": "このデバイスにのみ保存",
+    "yourArea": "お住まいの地域",
+    "viewAllHotlines": "すべてのホットラインを見る",
+    "yourLocalResources": "地域のリソース",
+    "enterZipCode": "郵便番号を入力",
+    "enterZipPrompt": "お住まいの地域のホットラインと組織を表示します。",
+    "noLocalResources": "お住まいの地域に特定のローカルリソースが見つかりませんでした。全国リソースは以下にあります。",
+    "find": "検索",
+    "zipCode": "郵便番号",
+    "callForHelp": "助けを求める",
+    "emergencyContacts": "緊急連絡先",
+    "change": "変更",
+    "update": "更新",
+    "national": "全国",
+    "state": "州",
+    "zipStoredLocally": "郵便番号はお使いのデバイスにのみ保存されます。サーバーに送信されることはありません。",
+    "enterZipToSeeLocal": "地域のリソースを見るには郵便番号を入力してください"
   }
 }

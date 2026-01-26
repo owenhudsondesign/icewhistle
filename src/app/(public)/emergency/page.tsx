@@ -7,6 +7,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Button } from '@/components/ui/button'
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 import { AppHeader } from '@/components/shared/AppHeader'
+import { LocalHotlineBanner } from '@/components/hotlines/LocalHotlineBanner'
 import {
   AlertTriangle,
   Phone,
@@ -26,9 +27,12 @@ import {
   Car,
   User,
   Users,
-  Loader2
+  Loader2,
+  MapPin
 } from 'lucide-react'
 import { useLanguage } from '@/hooks/use-language'
+import { useUserZip } from '@/hooks/use-user-zip'
+import { getHotlinesForZip, getLocationDisplay, getPrimaryLocalHotline } from '@/data/hotlines'
 
 function EmergencyContent() {
   const searchParams = useSearchParams()
@@ -49,6 +53,11 @@ function EmergencyContent() {
 function ICENearMeFlow({ location }: { location: string | null }) {
   const { language, t: translations } = useLanguage()
   const t = translations.emergency || {}
+  const { zip, mounted } = useUserZip()
+  const hotlines = mounted ? getHotlinesForZip(zip) : []
+  const localHotlines = hotlines.filter(h => h.type === 'local' || h.type === 'state')
+  const primaryLocal = localHotlines[0]
+  const locationDisplay = mounted ? getLocationDisplay(zip, language) : ''
 
   return (
     <div className="container mx-auto px-4 py-6 max-w-3xl">
@@ -251,26 +260,65 @@ function ICENearMeFlow({ location }: { location: string | null }) {
         </CardContent>
       </Card>
 
-      {/* EMERGENCY CONTACTS */}
+      {/* EMERGENCY CONTACTS - Personalized */}
       <Card className="mb-6">
         <CardHeader>
-          <CardTitle className="flex items-center gap-2">
-            <Phone className="h-5 w-5 text-destructive" />
-            Call for Help
+          <CardTitle className="flex items-center justify-between">
+            <div className="flex items-center gap-2">
+              <Phone className="h-5 w-5 text-destructive" />
+              {language === 'es' ? 'Llama para Ayuda' : 'Call for Help'}
+            </div>
+            {mounted && zip && (
+              <span className="flex items-center gap-1 text-xs text-muted-foreground font-normal">
+                <MapPin className="h-3 w-3" />
+                {locationDisplay}
+              </span>
+            )}
           </CardTitle>
         </CardHeader>
         <CardContent>
           <div className="space-y-3">
+            {/* Show local hotline first if available */}
+            {primaryLocal && (
+              <a
+                href={`tel:${primaryLocal.phone.replace(/\D/g, '')}`}
+                className="flex items-center justify-between p-4 rounded-lg border-2 border-[#00A6B4]/30 bg-[#00A6B4]/5 hover:bg-[#00A6B4]/10 transition-colors"
+              >
+                <div>
+                  <div className="flex items-center gap-2">
+                    <p className="font-medium">
+                      {language === 'es' && primaryLocal.nameEs ? primaryLocal.nameEs : primaryLocal.name}
+                    </p>
+                    <span className="px-2 py-0.5 bg-[#00A6B4]/10 text-[#00A6B4] text-[10px] font-semibold rounded-full">
+                      {language === 'es' ? 'TU ÁREA' : 'YOUR AREA'}
+                    </span>
+                  </div>
+                  <p className="text-sm text-muted-foreground">
+                    {language === 'es' && primaryLocal.descriptionEs ? primaryLocal.descriptionEs : primaryLocal.description}
+                  </p>
+                </div>
+                <span className="text-xl font-bold text-[#00A6B4]">{primaryLocal.phone}</span>
+              </a>
+            )}
+
+            {/* Always show United We Dream as backup */}
             <a
               href="tel:18443631423"
               className="flex items-center justify-between p-4 rounded-lg border-2 border-destructive/30 bg-destructive/5 hover:bg-destructive/10 transition-colors"
             >
               <div>
                 <p className="font-medium">United We Dream Hotline</p>
-                <p className="text-sm text-muted-foreground">Report ICE activity</p>
+                <p className="text-sm text-muted-foreground">
+                  {language === 'es' ? 'Reportar actividad de ICE' : 'Report ICE activity'}
+                </p>
               </div>
               <span className="text-xl font-bold text-destructive">1-844-363-1423</span>
             </a>
+
+            {/* ZIP input if no ZIP set */}
+            {mounted && !zip && (
+              <LocalHotlineBanner variant="emergency" showZipInput={true} maxHotlines={0} />
+            )}
           </div>
         </CardContent>
       </Card>
@@ -295,8 +343,13 @@ function ICENearMeFlow({ location }: { location: string | null }) {
 }
 
 function SomeoneTakenFlow({ location }: { location: string | null }) {
-  const { t: translations } = useLanguage()
+  const { language, t: translations } = useLanguage()
   const t = translations.emergency || {}
+  const { zip, mounted } = useUserZip()
+  const hotlines = mounted ? getHotlinesForZip(zip) : []
+  const localHotlines = hotlines.filter(h => h.type === 'local' || h.type === 'state')
+  const primaryLocal = localHotlines[0]
+  const locationDisplay = mounted ? getLocationDisplay(zip, language) : ''
 
   return (
     <div className="container mx-auto px-4 py-6 max-w-3xl">
@@ -412,13 +465,51 @@ function SomeoneTakenFlow({ location }: { location: string | null }) {
           <div className="flex items-center gap-3">
             <span className="flex-shrink-0 w-8 h-8 rounded-full bg-primary text-primary-foreground flex items-center justify-center font-bold">3</span>
             <div>
-              <CardTitle>Contact an Immigration Attorney</CardTitle>
-              <CardDescription>Many offer free consultations</CardDescription>
+              <CardTitle className="flex items-center gap-2">
+                {language === 'es' ? 'Contacta un Abogado de Inmigración' : 'Contact an Immigration Attorney'}
+                {mounted && zip && (
+                  <span className="flex items-center gap-1 text-xs text-muted-foreground font-normal">
+                    <MapPin className="h-3 w-3" />
+                    {locationDisplay}
+                  </span>
+                )}
+              </CardTitle>
+              <CardDescription>
+                {language === 'es' ? 'Muchos ofrecen consultas gratuitas' : 'Many offer free consultations'}
+              </CardDescription>
             </div>
           </div>
         </CardHeader>
         <CardContent>
           <div className="space-y-3">
+            {/* Show local hotline first if available */}
+            {primaryLocal && (
+              <a
+                href={`tel:${primaryLocal.phone.replace(/\D/g, '')}`}
+                className="flex items-center justify-between p-3 rounded-lg border-2 border-[#00A6B4]/30 bg-[#00A6B4]/5 hover:bg-[#00A6B4]/10 transition-colors"
+              >
+                <div>
+                  <div className="flex items-center gap-2">
+                    <p className="font-medium text-sm">
+                      {language === 'es' && primaryLocal.nameEs ? primaryLocal.nameEs : primaryLocal.name}
+                    </p>
+                    <span className="px-1.5 py-0.5 bg-[#00A6B4]/10 text-[#00A6B4] text-[9px] font-semibold rounded">
+                      {language === 'es' ? 'TU ÁREA' : 'YOUR AREA'}
+                    </span>
+                  </div>
+                  <p className="text-xs text-muted-foreground">
+                    {language === 'es' && primaryLocal.descriptionEs ? primaryLocal.descriptionEs : primaryLocal.description}
+                  </p>
+                </div>
+                <span className="font-medium text-[#00A6B4]">{primaryLocal.phone}</span>
+              </a>
+            )}
+
+            {/* ZIP input if no ZIP set */}
+            {mounted && !zip && (
+              <LocalHotlineBanner variant="emergency" showZipInput={true} maxHotlines={0} />
+            )}
+
             <a
               href="tel:3126601370"
               className="flex items-center justify-between p-3 rounded-lg border hover:bg-accent transition-colors"
@@ -435,7 +526,9 @@ function SomeoneTakenFlow({ location }: { location: string | null }) {
               className="flex items-center justify-between p-3 rounded-lg border hover:bg-accent transition-colors"
             >
               <div>
-                <p className="font-medium text-sm">NIJC Website</p>
+                <p className="font-medium text-sm">
+                  {language === 'es' ? 'Sitio Web de NIJC' : 'NIJC Website'}
+                </p>
               </div>
               <ExternalLink className="h-4 w-4 text-primary" />
             </a>
@@ -446,7 +539,9 @@ function SomeoneTakenFlow({ location }: { location: string | null }) {
               className="flex items-center justify-between p-3 rounded-lg border hover:bg-accent transition-colors"
             >
               <div>
-                <p className="font-medium text-sm">Find an Immigration Lawyer (AILA)</p>
+                <p className="font-medium text-sm">
+                  {language === 'es' ? 'Buscar un Abogado de Inmigración (AILA)' : 'Find an Immigration Lawyer (AILA)'}
+                </p>
               </div>
               <ExternalLink className="h-4 w-4 text-primary" />
             </a>
@@ -574,8 +669,13 @@ function SomeoneTakenFlow({ location }: { location: string | null }) {
 }
 
 function VehicleStopFlow({ location }: { location: string | null }) {
-  const { t: translations } = useLanguage()
+  const { language, t: translations } = useLanguage()
   const t = translations.emergency || {}
+  const { zip, mounted } = useUserZip()
+  const hotlines = mounted ? getHotlinesForZip(zip) : []
+  const localHotlines = hotlines.filter(h => h.type === 'local' || h.type === 'state')
+  const primaryLocal = localHotlines[0]
+  const locationDisplay = mounted ? getLocationDisplay(zip, language) : ''
 
   return (
     <div className="container mx-auto px-4 py-6 max-w-3xl">
@@ -843,16 +943,44 @@ function VehicleStopFlow({ location }: { location: string | null }) {
         </AlertDescription>
       </Alert>
 
-      {/* EMERGENCY CONTACTS */}
+      {/* EMERGENCY CONTACTS - Personalized */}
       <Card className="mb-6">
         <CardHeader>
-          <CardTitle className="flex items-center gap-2">
-            <Phone className="h-5 w-5 text-destructive" />
-            Emergency Contacts
+          <CardTitle className="flex items-center justify-between">
+            <div className="flex items-center gap-2">
+              <Phone className="h-5 w-5 text-destructive" />
+              {language === 'es' ? 'Contactos de Emergencia' : 'Emergency Contacts'}
+            </div>
+            {mounted && zip && (
+              <span className="flex items-center gap-1 text-xs text-muted-foreground font-normal">
+                <MapPin className="h-3 w-3" />
+                {locationDisplay}
+              </span>
+            )}
           </CardTitle>
         </CardHeader>
         <CardContent>
           <div className="space-y-3">
+            {/* Show local hotline first if available */}
+            {primaryLocal && (
+              <a
+                href={`tel:${primaryLocal.phone.replace(/\D/g, '')}`}
+                className="flex items-center justify-between p-3 rounded-lg border-2 border-[#00A6B4]/30 bg-[#00A6B4]/5 hover:bg-[#00A6B4]/10 transition-colors"
+              >
+                <div>
+                  <div className="flex items-center gap-2">
+                    <span className="font-medium text-sm">
+                      {language === 'es' && primaryLocal.nameEs ? primaryLocal.nameEs : primaryLocal.name}
+                    </span>
+                    <span className="px-1.5 py-0.5 bg-[#00A6B4]/10 text-[#00A6B4] text-[9px] font-semibold rounded">
+                      LOCAL
+                    </span>
+                  </div>
+                </div>
+                <span className="font-bold text-[#00A6B4]">{primaryLocal.phone}</span>
+              </a>
+            )}
+
             <a
               href="tel:18443631423"
               className="flex items-center justify-between p-3 rounded-lg border hover:bg-accent transition-colors"
@@ -867,17 +995,17 @@ function VehicleStopFlow({ location }: { location: string | null }) {
               <span className="font-medium text-sm">EOIR Case Status</span>
               <span className="font-bold text-primary">1-800-898-7180</span>
             </a>
-            <a
-              href="tel:18554357693"
-              className="flex items-center justify-between p-3 rounded-lg border hover:bg-accent transition-colors"
-            >
-              <span className="font-medium text-sm">ICIRR (Illinois)</span>
-              <span className="font-bold text-primary">1-855-435-7693</span>
-            </a>
             <div className="flex items-center justify-between p-3 rounded-lg border bg-muted/50">
-              <span className="font-medium text-sm">Freedom for Immigrants (from detention)</span>
+              <span className="font-medium text-sm">
+                {language === 'es' ? 'Freedom for Immigrants (desde detención)' : 'Freedom for Immigrants (from detention)'}
+              </span>
               <span className="font-bold text-primary">9233#</span>
             </div>
+
+            {/* ZIP input if no ZIP set */}
+            {mounted && !zip && (
+              <LocalHotlineBanner variant="emergency" showZipInput={true} maxHotlines={0} />
+            )}
           </div>
         </CardContent>
       </Card>

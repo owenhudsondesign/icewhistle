@@ -1,10 +1,14 @@
 'use client'
 
+import { useState } from 'react'
 import Link from 'next/link'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
+import { Input } from '@/components/ui/input'
 import { PageWrapper } from '@/components/shared/PageWrapper'
 import { useLanguage } from '@/hooks/use-language'
+import { useUserZip } from '@/hooks/use-user-zip'
+import { getHotlinesForZip, getLocationDisplay, hasLocalResources } from '@/data/hotlines'
 import {
   FileText,
   Phone,
@@ -20,7 +24,9 @@ import {
   Shield,
   Building,
   MapPin,
-  Smartphone
+  Smartphone,
+  Clock,
+  ChevronRight
 } from 'lucide-react'
 
 const printableResources = [
@@ -181,9 +187,26 @@ const vulnerablePopulationResources = [
 
 export default function ResourcesPage() {
   const { language, t } = useLanguage()
+  const { zip, updateZip, mounted } = useUserZip()
+  const [tempZip, setTempZip] = useState('')
   const resources_t = t.resources || {}
 
   const getTranslated = (obj: Record<string, string>) => obj[language] || obj.en
+
+  // Get personalized hotlines
+  const allHotlines = mounted ? getHotlinesForZip(zip) : []
+  const localHotlines = allHotlines.filter(h => h.type === 'local' || h.type === 'state')
+  const locationDisplay = mounted ? getLocationDisplay(zip, language) : ''
+  const hasLocal = mounted && hasLocalResources(zip)
+
+  const handleZipSubmit = (e: React.FormEvent) => {
+    e.preventDefault()
+    const cleaned = tempZip.replace(/\D/g, '').slice(0, 5)
+    if (cleaned.length === 5) {
+      updateZip(cleaned)
+      setTempZip('')
+    }
+  }
 
   const organizationCategories = [
     {
@@ -334,6 +357,146 @@ export default function ResourcesPage() {
             </div>
           </CardContent>
         </Card>
+
+        {/* YOUR LOCAL RESOURCES - Personalized section */}
+        <section className="mb-12">
+          <div className="flex items-center justify-between mb-4">
+            <h2 className="text-2xl font-semibold flex items-center gap-2">
+              <MapPin className="h-6 w-6 text-[#00A6B4]" />
+              {language === 'es' ? 'Tus Recursos Locales' : 'Your Local Resources'}
+              {hasLocal && (
+                <span className="px-2 py-0.5 bg-[#00A6B4]/10 text-[#00A6B4] text-xs font-semibold rounded-full">
+                  {language === 'es' ? 'PERSONALIZADO' : 'PERSONALIZED'}
+                </span>
+              )}
+            </h2>
+            {mounted && zip && (
+              <span className="text-sm text-muted-foreground">
+                {locationDisplay}
+              </span>
+            )}
+          </div>
+
+          {/* ZIP Input if not set */}
+          {mounted && !zip && (
+            <Card className="mb-6 border-[#00A6B4]/20 bg-[#00A6B4]/5">
+              <CardContent className="p-6">
+                <div className="flex flex-col sm:flex-row sm:items-center gap-4">
+                  <div className="flex-1">
+                    <h3 className="font-semibold mb-1">
+                      {language === 'es' ? 'Ingresa tu código postal' : 'Enter your ZIP code'}
+                    </h3>
+                    <p className="text-sm text-muted-foreground">
+                      {language === 'es'
+                        ? 'Te mostraremos líneas de ayuda y organizaciones locales de tu área.'
+                        : "We'll show you local hotlines and organizations in your area."}
+                    </p>
+                  </div>
+                  <form onSubmit={handleZipSubmit} className="flex gap-2">
+                    <Input
+                      type="text"
+                      inputMode="numeric"
+                      pattern="[0-9]*"
+                      maxLength={5}
+                      placeholder={language === 'es' ? 'Código postal' : 'ZIP code'}
+                      value={tempZip}
+                      onChange={(e) => setTempZip(e.target.value.replace(/\D/g, ''))}
+                      className="w-32 h-10"
+                    />
+                    <Button
+                      type="submit"
+                      disabled={tempZip.length !== 5}
+                      className="h-10 bg-[#00A6B4] hover:bg-[#00A6B4]/90"
+                    >
+                      {language === 'es' ? 'Buscar' : 'Find'}
+                    </Button>
+                  </form>
+                </div>
+                <p className="text-xs text-muted-foreground mt-3">
+                  {language === 'es'
+                    ? 'Tu código postal se guarda solo en tu dispositivo. Nunca se envía a ningún servidor.'
+                    : 'Your ZIP code is stored only on your device. It is never sent to any server.'}
+                </p>
+              </CardContent>
+            </Card>
+          )}
+
+          {/* Local Hotlines */}
+          {localHotlines.length > 0 ? (
+            <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+              {localHotlines.map((hotline) => {
+                const name = language === 'es' && hotline.nameEs ? hotline.nameEs : hotline.name
+                const desc = language === 'es' && hotline.descriptionEs ? hotline.descriptionEs : hotline.description
+
+                return (
+                  <Card key={hotline.id} className="border-[#00A6B4]/30">
+                    <CardHeader className="pb-2">
+                      <CardTitle className="text-lg flex items-center gap-2">
+                        {name}
+                        <span className="px-2 py-0.5 bg-[#00A6B4]/10 text-[#00A6B4] text-xs rounded-full">
+                          {hotline.type === 'local' ? 'Local' : 'State'}
+                        </span>
+                      </CardTitle>
+                      <CardDescription>{desc}</CardDescription>
+                    </CardHeader>
+                    <CardContent>
+                      <a
+                        href={`tel:${hotline.phone.replace(/\D/g, '')}`}
+                        className="flex items-center gap-2 text-xl font-semibold text-[#00A6B4] hover:underline mb-2"
+                      >
+                        <Phone className="h-5 w-5" />
+                        {hotline.phone}
+                      </a>
+                      <div className="flex items-center gap-3 text-sm text-muted-foreground">
+                        <span className="flex items-center gap-1">
+                          <Clock className="h-3 w-3" />
+                          {hotline.hours}
+                        </span>
+                        <span className="flex items-center gap-1">
+                          <Globe className="h-3 w-3" />
+                          {hotline.languages.slice(0, 3).join(', ').toUpperCase()}
+                          {hotline.languages.length > 3 && ` +${hotline.languages.length - 3}`}
+                        </span>
+                      </div>
+                      {hotline.website && (
+                        <a
+                          href={hotline.website}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="flex items-center gap-1 text-sm text-[#00A6B4] hover:underline mt-2"
+                        >
+                          <ExternalLink className="h-3 w-3" />
+                          Website
+                        </a>
+                      )}
+                    </CardContent>
+                  </Card>
+                )
+              })}
+            </div>
+          ) : mounted && zip ? (
+            <Card className="border-dashed">
+              <CardContent className="p-6 text-center">
+                <p className="text-muted-foreground">
+                  {language === 'es'
+                    ? 'No hay recursos locales específicos para tu área. Los recursos nacionales están disponibles abajo.'
+                    : 'No specific local resources found for your area. National resources are available below.'}
+                </p>
+              </CardContent>
+            </Card>
+          ) : null}
+
+          {/* Link to all hotlines */}
+          {mounted && (
+            <Link
+              href="/hotlines"
+              className="inline-flex items-center text-sm text-[#00A6B4] hover:underline mt-4 font-semibold"
+            >
+              {language === 'es' ? 'Ver todas las líneas de ayuda' : 'View all hotlines'}
+              <ChevronRight className="h-4 w-4 ml-1" />
+            </Link>
+          )}
+        </section>
 
         {/* Emergency Hotlines */}
         <section className="mb-12">

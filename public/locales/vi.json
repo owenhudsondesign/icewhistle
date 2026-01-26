@@ -458,5 +458,28 @@
     "consultAttorney": "Để được tư vấn về tình huống cụ thể của bạn, hãy tham khảo ý kiến của luật sư di trú có chuyên môn.",
     "noInterference": "Không được can thiệp vào các sĩ quan thực thi pháp luật.",
     "machineTranslated": "Nội dung này đã được dịch bằng máy. Đối với các vấn đề pháp lý quan trọng, vui lòng kiểm tra thông tin với một luật sư có chuyên môn."
+  },
+  "local": {
+    "yourLocalHotline": "Đường Dây Địa Phương",
+    "local": "ĐỊA PHƯƠNG",
+    "personalized": "CÁ NHÂN HÓA",
+    "enterZipForLocal": "Nhập mã ZIP để xem đường dây địa phương",
+    "storedOnDevice": "Chỉ lưu trữ trên thiết bị này",
+    "yourArea": "KHU VỰC CỦA BẠN",
+    "viewAllHotlines": "Xem tất cả đường dây",
+    "yourLocalResources": "Tài Nguyên Địa Phương",
+    "enterZipCode": "Nhập mã ZIP",
+    "enterZipPrompt": "Chúng tôi sẽ hiển thị đường dây nóng và tổ chức địa phương trong khu vực của bạn.",
+    "noLocalResources": "Không tìm thấy tài nguyên địa phương cụ thể cho khu vực của bạn. Tài nguyên quốc gia có sẵn bên dưới.",
+    "find": "Tìm",
+    "zipCode": "Mã ZIP",
+    "callForHelp": "Gọi Trợ Giúp",
+    "emergencyContacts": "Liên Hệ Khẩn Cấp",
+    "change": "thay đổi",
+    "update": "Cập nhật",
+    "national": "Quốc gia",
+    "state": "Tiểu bang",
+    "zipStoredLocally": "Mã ZIP của bạn chỉ được lưu trữ trên thiết bị. Không bao giờ được gửi đến bất kỳ máy chủ nào.",
+    "enterZipToSeeLocal": "Nhập mã ZIP để xem tài nguyên địa phương"
   }
 }

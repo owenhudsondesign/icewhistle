@@ -458,5 +458,28 @@
     "consultAttorney": "Per consigli sulla tua situazione specifica, consulta un avvocato di immigrazione qualificato.",
     "noInterference": "Non interferire con gli ufficiali di polizia.",
     "machineTranslated": "Questo contenuto è stato tradotto automaticamente. Per questioni legali critiche, verificare le informazioni con un avvocato qualificato."
+  },
+  "local": {
+    "yourLocalHotline": "La Tua Linea Locale",
+    "local": "LOCALE",
+    "personalized": "PERSONALIZZATO",
+    "enterZipForLocal": "Inserisci il CAP per le linee locali",
+    "storedOnDevice": "Memorizzato solo su questo dispositivo",
+    "yourArea": "LA TUA ZONA",
+    "viewAllHotlines": "Vedi tutte le linee",
+    "yourLocalResources": "Le Tue Risorse Locali",
+    "enterZipCode": "Inserisci il tuo CAP",
+    "enterZipPrompt": "Ti mostreremo le linee di aiuto e le organizzazioni locali nella tua zona.",
+    "noLocalResources": "Nessuna risorsa locale specifica trovata per la tua zona. Le risorse nazionali sono disponibili sotto.",
+    "find": "Cerca",
+    "zipCode": "CAP",
+    "callForHelp": "Chiama per Aiuto",
+    "emergencyContacts": "Contatti di Emergenza",
+    "change": "cambia",
+    "update": "Aggiorna",
+    "national": "Nazionale",
+    "state": "Regionale",
+    "zipStoredLocally": "Il tuo CAP è memorizzato solo sul tuo dispositivo. Non viene mai inviato a nessun server.",
+    "enterZipToSeeLocal": "Inserisci il tuo CAP per vedere le risorse locali"
   }
 }

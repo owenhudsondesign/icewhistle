@@ -6,10 +6,13 @@ import { Button } from '@/components/ui/button'
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 import { RecordingIndicator } from '@/components/recording/RecordingIndicator'
 import { AlertContactsButton } from '@/components/emergency-contacts'
+import { LocalHotlineBanner } from '@/components/hotlines/LocalHotlineBanner'
 import { useRecordingStore } from '@/stores/recordingStore'
 import { useEnhancedRecording } from '@/hooks/useEnhancedRecording'
 import { useLanguage } from '@/hooks/use-language'
+import { useUserZip } from '@/hooks/use-user-zip'
 import { AppHeader } from '@/components/shared/AppHeader'
+import { getHotlinesForZip, getLocationDisplay } from '@/data/hotlines'
 import {
   AlertTriangle,
   Phone,
@@ -25,6 +28,7 @@ import {
   Search,
   ExternalLink,
   Download,
+  MapPin,
 } from 'lucide-react'
 
 // Translations for the encounter page
@@ -300,6 +304,17 @@ export default function EncounterPage() {
   const t = translations[language as keyof typeof translations] || translations.en
   const { showSaveDialog, recordingBlob } = useRecordingStore()
   const { stopRecording, saveRecording, discardRecording } = useEnhancedRecording()
+  const { zip, mounted } = useUserZip()
+  const locationDisplay = mounted ? getLocationDisplay(zip, language) : ''
+  const hotlines = mounted ? getHotlinesForZip(zip) : []
+
+  // Get top hotlines to display - prioritize local/state
+  const localHotlines = hotlines.filter(h => h.type === 'local' || h.type === 'state')
+  const nationalHotlines = hotlines.filter(h => h.type === 'national')
+  const displayHotlines = [
+    ...localHotlines.slice(0, 2),
+    ...nationalHotlines.slice(0, 3 - Math.min(localHotlines.length, 2))
+  ].slice(0, 3)
 
   const handleStopAndSave = async () => {
     await stopRecording()
@@ -557,32 +572,65 @@ export default function EncounterPage() {
           </CardContent>
         </Card>
 
-        {/* EMERGENCY HOTLINES - Sticky at bottom on mobile */}
+        {/* EMERGENCY HOTLINES - Dynamic based on ZIP */}
         <Card className="mb-4 border-2 border-[#DC2626]/30">
           <CardHeader className="pb-2 bg-[#DC2626]/5">
-            <CardTitle className="flex items-center gap-2 text-base">
-              <Phone className="h-5 w-5 text-[#DC2626]" />
-              {t.hotlinesTitle}
+            <CardTitle className="flex items-center justify-between text-base">
+              <div className="flex items-center gap-2">
+                <Phone className="h-5 w-5 text-[#DC2626]" />
+                {t.hotlinesTitle}
+              </div>
+              {mounted && zip && (
+                <span className="flex items-center gap-1 text-xs text-muted-foreground font-normal">
+                  <MapPin className="h-3 w-3" />
+                  {locationDisplay}
+                </span>
+              )}
             </CardTitle>
           </CardHeader>
           <CardContent className="space-y-2 pt-3">
-            {[
-              { name: t.hotline1Name, desc: t.hotline1Desc, phone: t.hotline1Phone, tel: '18443631423' },
-              { name: t.hotline2Name, desc: t.hotline2Desc, phone: t.hotline2Phone, tel: '18883514024' },
-              { name: t.hotline3Name, desc: t.hotline3Desc, phone: t.hotline3Phone, tel: '3126601370' },
-            ].map((hotline, i) => (
-              <a
-                key={i}
-                href={`tel:${hotline.tel}`}
-                className="flex items-center justify-between p-3 rounded-lg border hover:bg-accent transition-colors"
-              >
-                <div>
-                  <p className="font-medium text-sm">{hotline.name}</p>
-                  <p className="text-xs text-muted-foreground">{hotline.desc}</p>
-                </div>
-                <span className="font-bold text-[#00A6B4]">{hotline.phone}</span>
-              </a>
-            ))}
+            {/* Local hotline prompt if no ZIP */}
+            {mounted && !zip && (
+              <LocalHotlineBanner variant="emergency" showZipInput={true} maxHotlines={0} className="mb-2" />
+            )}
+
+            {/* Dynamic hotlines based on ZIP */}
+            {displayHotlines.map((hotline) => {
+              const name = language === 'es' && hotline.nameEs ? hotline.nameEs : hotline.name
+              const desc = language === 'es' && hotline.descriptionEs ? hotline.descriptionEs : hotline.description
+              const isLocal = hotline.type === 'local' || hotline.type === 'state'
+
+              return (
+                <a
+                  key={hotline.id}
+                  href={`tel:${hotline.phone.replace(/\D/g, '')}`}
+                  className={`flex items-center justify-between p-3 rounded-lg border hover:bg-accent transition-colors ${
+                    isLocal ? 'border-[#00A6B4]/30 bg-[#00A6B4]/5' : ''
+                  }`}
+                >
+                  <div>
+                    <div className="flex items-center gap-2">
+                      <p className="font-medium text-sm">{name}</p>
+                      {isLocal && (
+                        <span className="px-1.5 py-0.5 bg-[#00A6B4]/10 text-[#00A6B4] text-[9px] font-semibold rounded">
+                          {language === 'es' ? 'LOCAL' : 'LOCAL'}
+                        </span>
+                      )}
+                    </div>
+                    <p className="text-xs text-muted-foreground">{desc}</p>
+                  </div>
+                  <span className="font-bold text-[#00A6B4]">{hotline.phone}</span>
+                </a>
+              )
+            })}
+
+            {/* Link to all hotlines */}
+            <Link
+              href="/hotlines"
+              className="inline-flex items-center text-xs text-[#00A6B4] hover:underline mt-2 font-semibold"
+            >
+              {language === 'es' ? 'Ver todas las líneas' : 'View all hotlines'} →
+            </Link>
           </CardContent>
         </Card>
 

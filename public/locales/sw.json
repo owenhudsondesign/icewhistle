@@ -458,5 +458,28 @@
     "consultAttorney": "Kwa ushauri kuhusu hali yako mahususi, tafadhali wasiliana na wakili aliyeidhinishwa wa uhamiaji.",
     "noInterference": "Usiingilie maafisa wa utekelezaji wa sheria.",
     "machineTranslated": "Maudhui haya yametafsiriwa na mashine. Kwa masuala muhimu ya kisheria, tafadhali thibitisha habari na wakili aliyeidhinishwa."
+  },
+  "local": {
+    "yourLocalHotline": "Simu Yako ya Dharura ya Eneo",
+    "local": "ENEO",
+    "personalized": "IMEBINAFSISHWA",
+    "enterZipForLocal": "Weka nambari ya posta kwa simu za eneo",
+    "storedOnDevice": "Imehifadhiwa tu kwenye kifaa hiki",
+    "yourArea": "ENEO LAKO",
+    "viewAllHotlines": "Tazama simu zote",
+    "yourLocalResources": "Rasilimali Zako za Eneo",
+    "enterZipCode": "Weka nambari yako ya posta",
+    "enterZipPrompt": "Tutakuonyesha simu za dharura na mashirika ya eneo lako.",
+    "noLocalResources": "Hakuna rasilimali maalum za eneo zilizopatikana kwa eneo lako. Rasilimali za kitaifa zinapatikana hapa chini.",
+    "find": "Tafuta",
+    "zipCode": "Nambari ya posta",
+    "callForHelp": "Piga Simu kwa Msaada",
+    "emergencyContacts": "Mawasiliano ya Dharura",
+    "change": "badilisha",
+    "update": "Sasisha",
+    "national": "Kitaifa",
+    "state": "Jimbo",
+    "zipStoredLocally": "Nambari yako ya posta imehifadhiwa tu kwenye kifaa chako. Haitumwi kamwe kwa seva yoyote.",
+    "enterZipToSeeLocal": "Weka nambari yako ya posta kuona rasilimali za eneo"
   }
 }

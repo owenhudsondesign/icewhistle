@@ -458,5 +458,28 @@
     "consultAttorney": "對於您的具體情況，請諮詢有資格的移民律師。",
     "noInterference": "不要干擾執法人員。",
     "machineTranslated": "此內容已由機器翻譯。對於重要的法律事項，請與有資格的律師核實資訊。"
+  },
+  "local": {
+    "yourLocalHotline": "您的本地熱線",
+    "local": "本地",
+    "personalized": "個人化",
+    "enterZipForLocal": "輸入郵遞區號以獲取本地熱線",
+    "storedOnDevice": "僅儲存在此裝置上",
+    "yourArea": "您的地區",
+    "viewAllHotlines": "查看所有熱線",
+    "yourLocalResources": "您的本地資源",
+    "enterZipCode": "輸入您的郵遞區號",
+    "enterZipPrompt": "我們將為您展示您所在地區的本地熱線和組織。",
+    "noLocalResources": "未找到您所在地區的特定本地資源。全國資源如下。",
+    "find": "查找",
+    "zipCode": "郵遞區號",
+    "callForHelp": "尋求幫助",
+    "emergencyContacts": "緊急聯絡人",
+    "change": "更改",
+    "update": "更新",
+    "national": "全國",
+    "state": "州級",
+    "zipStoredLocally": "您的郵遞區號僅儲存在您的裝置上。永遠不會傳送到任何伺服器。",
+    "enterZipToSeeLocal": "輸入您的郵遞區號以查看本地資源"
   }
 }

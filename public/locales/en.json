@@ -458,5 +458,28 @@
     "consultAttorney": "For advice about your specific situation, consult a qualified immigration attorney.",
     "noInterference": "Do not interfere with law enforcement officers.",
     "machineTranslated": "This content has been machine-translated. For critical legal matters, please verify information with a qualified attorney."
+  },
+  "local": {
+    "yourLocalHotline": "Your Local Hotline",
+    "local": "LOCAL",
+    "personalized": "PERSONALIZED",
+    "enterZipForLocal": "Enter ZIP for local hotlines",
+    "storedOnDevice": "Stored only on this device",
+    "yourArea": "YOUR AREA",
+    "viewAllHotlines": "View all hotlines",
+    "yourLocalResources": "Your Local Resources",
+    "enterZipCode": "Enter your ZIP code",
+    "enterZipPrompt": "We'll show you local hotlines and organizations in your area.",
+    "noLocalResources": "No specific local resources found for your area. National resources are available below.",
+    "find": "Find",
+    "zipCode": "ZIP code",
+    "callForHelp": "Call for Help",
+    "emergencyContacts": "Emergency Contacts",
+    "change": "change",
+    "update": "Update",
+    "national": "National",
+    "state": "State",
+    "zipStoredLocally": "Your ZIP code is stored only on your device. It is never sent to any server.",
+    "enterZipToSeeLocal": "Enter your ZIP code for local resources"
   }
 }

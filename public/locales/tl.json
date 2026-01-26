@@ -458,5 +458,28 @@
     "consultAttorney": "Para sa payo tungkol sa iyong partikular na sitwasyon, makipag-konsulta sa isang kwalipikadong abogado sa immigration.",
     "noInterference": "Huwag makialam sa mga opisyal ng pagpapatupad ng batas.",
     "machineTranslated": "Ang nilalaman na ito ay naisalin ng makina. Para sa kritikal na legal na mga usapin, mangyaring kumpirmahin ang impormasyon sa isang kwalipikadong abogado."
+  },
+  "local": {
+    "yourLocalHotline": "Iyong Lokal na Hotline",
+    "local": "LOKAL",
+    "personalized": "PERSONALISADO",
+    "enterZipForLocal": "Ilagay ang ZIP para sa lokal na hotline",
+    "storedOnDevice": "Naka-imbak lang sa device na ito",
+    "yourArea": "IYONG LUGAR",
+    "viewAllHotlines": "Tingnan lahat ng hotline",
+    "yourLocalResources": "Iyong Mga Lokal na Mapagkukunan",
+    "enterZipCode": "Ilagay ang iyong ZIP code",
+    "enterZipPrompt": "Ipapakita namin ang mga lokal na hotline at organisasyon sa iyong lugar.",
+    "noLocalResources": "Walang nakitang partikular na lokal na mapagkukunan para sa iyong lugar. Ang mga pambansang mapagkukunan ay makikita sa ibaba.",
+    "find": "Hanapin",
+    "zipCode": "ZIP code",
+    "callForHelp": "Tumawag para sa Tulong",
+    "emergencyContacts": "Mga Emergency Contact",
+    "change": "baguhin",
+    "update": "I-update",
+    "national": "Pambansa",
+    "state": "Estado",
+    "zipStoredLocally": "Ang iyong ZIP code ay naka-imbak lang sa iyong device. Hindi ito ipinapadala sa anumang server.",
+    "enterZipToSeeLocal": "Ilagay ang iyong ZIP code para makita ang mga lokal na mapagkukunan"
   }
 }

@@ -458,5 +458,28 @@
     "consultAttorney": "Für Ratschläge zu Ihrer spezifischen Situation konsultieren Sie einen qualifizierten Einwanderungsanwalt.",
     "noInterference": "Behindern Sie keine Strafverfolgungsbeamten.",
     "machineTranslated": "Dieser Inhalt wurde maschinell übersetzt. Bitte überprüfen Sie bei kritischen Rechtsfragen die Informationen mit einem qualifizierten Anwalt."
+  },
+  "local": {
+    "yourLocalHotline": "Ihre Lokale Hotline",
+    "local": "LOKAL",
+    "personalized": "PERSONALISIERT",
+    "enterZipForLocal": "PLZ für lokale Hotlines eingeben",
+    "storedOnDevice": "Nur auf diesem Gerät gespeichert",
+    "yourArea": "IHRE REGION",
+    "viewAllHotlines": "Alle Hotlines anzeigen",
+    "yourLocalResources": "Ihre Lokalen Ressourcen",
+    "enterZipCode": "Geben Sie Ihre PLZ ein",
+    "enterZipPrompt": "Wir zeigen Ihnen lokale Hotlines und Organisationen in Ihrer Region.",
+    "noLocalResources": "Keine spezifischen lokalen Ressourcen für Ihre Region gefunden. Nationale Ressourcen sind unten verfügbar.",
+    "find": "Suchen",
+    "zipCode": "PLZ",
+    "callForHelp": "Hilfe Anrufen",
+    "emergencyContacts": "Notfallkontakte",
+    "change": "ändern",
+    "update": "Aktualisieren",
+    "national": "National",
+    "state": "Bundesland",
+    "zipStoredLocally": "Ihre PLZ wird nur auf Ihrem Gerät gespeichert. Sie wird niemals an einen Server gesendet.",
+    "enterZipToSeeLocal": "Geben Sie Ihre PLZ ein, um lokale Ressourcen zu sehen"
   }
 }

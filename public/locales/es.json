@@ -458,5 +458,28 @@
     "consultAttorney": "Para obtener consejos sobre su situación específica, consulte a un abogado de inmigración calificado.",
     "noInterference": "No interfiera con los oficiales del orden público.",
     "machineTranslated": "Este contenido ha sido traducido por máquina. Para asuntos legales críticos, por favor verifique la información con un abogado calificado."
+  },
+  "local": {
+    "yourLocalHotline": "Tu Línea Local",
+    "local": "LOCAL",
+    "personalized": "PERSONALIZADO",
+    "enterZipForLocal": "Ingresa código postal para líneas locales",
+    "storedOnDevice": "Solo se guarda en este dispositivo",
+    "yourArea": "TU ÁREA",
+    "viewAllHotlines": "Ver todas las líneas",
+    "yourLocalResources": "Tus Recursos Locales",
+    "enterZipCode": "Ingresa tu código postal",
+    "enterZipPrompt": "Te mostraremos líneas de ayuda y organizaciones locales de tu área.",
+    "noLocalResources": "No hay recursos locales específicos para tu área. Los recursos nacionales están disponibles abajo.",
+    "find": "Buscar",
+    "zipCode": "Código postal",
+    "callForHelp": "Llama para Ayuda",
+    "emergencyContacts": "Contactos de Emergencia",
+    "change": "cambiar",
+    "update": "Actualizar",
+    "national": "Nacional",
+    "state": "Estatal",
+    "zipStoredLocally": "Tu código postal se guarda solo en tu dispositivo. Nunca se envía a ningún servidor.",
+    "enterZipToSeeLocal": "Ingresa tu código postal para ver recursos locales"
   }
 }

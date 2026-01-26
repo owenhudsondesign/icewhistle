@@ -458,5 +458,28 @@
     "consultAttorney": "Talo ku saabsan xaaladaada gaarka ah, la tashi qareen u qalma arrimaha socdaalka.",
     "noInterference": "Ha faragelin saraakiisha sharciga.",
     "machineTranslated": "Waxa kan waxaa lagu turjumay makiinad. Arrimo sharciyeed muhiim ah, fadlan xaqiiji macluumaadka qareen u qalma."
+  },
+  "local": {
+    "yourLocalHotline": "Khadkaaga Degdegga ee Deegaanka",
+    "local": "DEEGAANKA",
+    "personalized": "LA HABEEYEY",
+    "enterZipForLocal": "Geli lambarka boostada khadadka deegaanka",
+    "storedOnDevice": "Waxaa lagu kaydiyay qalab-kan oo keliya",
+    "yourArea": "DEGMADAADA",
+    "viewAllHotlines": "Arag dhammaan khadadka",
+    "yourLocalResources": "Ilahaaaga Deegaanka",
+    "enterZipCode": "Geli lambarkaaga boostada",
+    "enterZipPrompt": "Waxaan ku tusi doonaa khadad iyo ururado deegaanka.",
+    "noLocalResources": "Ma jiraan ilo deegaan oo gaar ah oo lagaa helay deegaankaaga. Ilaha qaranka ayaa hoos ka heli kara.",
+    "find": "Raadi",
+    "zipCode": "Lambarka boostada",
+    "callForHelp": "Wac si aad Caawimaad u hesho",
+    "emergencyContacts": "Xiriirka Degdegga",
+    "change": "badal",
+    "update": "Cusboonaysii",
+    "national": "Qaranka",
+    "state": "Gobolka",
+    "zipStoredLocally": "Lambarkaaga boostada waxaa lagu kaydiyay qalabkaaga oo keliya. Waligeed ma loo diro server kasta.",
+    "enterZipToSeeLocal": "Geli lambarkaaga boostada si aad u aragto ilaha deegaanka"
   }
 }

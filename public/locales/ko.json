@@ -458,5 +458,28 @@
     "consultAttorney": "귀하의 특정 상황에 대한 조언은 자격을 갖춘 이민 변호사와 상담하시기 바랍니다.",
     "noInterference": "법 집행 공무원을 방해하지 마십시오.",
     "machineTranslated": "이 콘텐츠는 기계 번역되었습니다. 중요한 법적 문제의 경우, 자격을 갖춘 변호사와 정보를 확인하시기 바랍니다."
+  },
+  "local": {
+    "yourLocalHotline": "지역 핫라인",
+    "local": "지역",
+    "personalized": "맞춤",
+    "enterZipForLocal": "지역 핫라인을 위해 우편번호 입력",
+    "storedOnDevice": "이 기기에만 저장됨",
+    "yourArea": "귀하의 지역",
+    "viewAllHotlines": "모든 핫라인 보기",
+    "yourLocalResources": "지역 자원",
+    "enterZipCode": "우편번호 입력",
+    "enterZipPrompt": "귀하 지역의 핫라인과 조직을 보여드립니다.",
+    "noLocalResources": "귀하 지역에 대한 특정 지역 자원을 찾을 수 없습니다. 전국 자원은 아래에 있습니다.",
+    "find": "찾기",
+    "zipCode": "우편번호",
+    "callForHelp": "도움 요청",
+    "emergencyContacts": "긴급 연락처",
+    "change": "변경",
+    "update": "업데이트",
+    "national": "전국",
+    "state": "주",
+    "zipStoredLocally": "우편번호는 귀하의 기기에만 저장됩니다. 어떤 서버로도 전송되지 않습니다.",
+    "enterZipToSeeLocal": "지역 자원을 보려면 우편번호를 입력하세요"
   }
 }

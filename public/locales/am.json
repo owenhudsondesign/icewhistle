@@ -458,5 +458,28 @@
     "consultAttorney": "ስለ ልዩ ሁኔታዎችዎ ምክር ለማግኘት፣ ብቁ የስደት ጠበቃ ያማክሩ።",
     "noInterference": "የህግ አስከባሪ ባለስልጣናትን አያደናቅፉ።",
     "machineTranslated": "ይህ ይዘት በማሽን የተተረጎመ ነው። ለወሳኝ የህግ ጉዳዮች፣ እባክዎን መረጃውን ከብቁ ጠበቃ ጋር ያረጋግጡ።"
+  },
+  "local": {
+    "yourLocalHotline": "የእርስዎ የአካባቢ መስመር",
+    "local": "አካባቢያዊ",
+    "personalized": "ግላዊ",
+    "enterZipForLocal": "ለአካባቢ መስመሮች ዚፕ ኮድ ያስገቡ",
+    "storedOnDevice": "በዚህ መሳሪያ ላይ ብቻ ተቀምጧል",
+    "yourArea": "የእርስዎ አካባቢ",
+    "viewAllHotlines": "ሁሉንም መስመሮች ይመልከቱ",
+    "yourLocalResources": "የእርስዎ የአካባቢ ሀብቶች",
+    "enterZipCode": "ዚፕ ኮድዎን ያስገቡ",
+    "enterZipPrompt": "በአካባቢዎ ያሉ የእርዳታ መስመሮችን እና ድርጅቶችን እናሳይዎታለን።",
+    "noLocalResources": "ለአካባቢዎ ልዩ የአካባቢ ሀብቶች አልተገኙም። ብሔራዊ ሀብቶች ከታች ይገኛሉ።",
+    "find": "ፈልግ",
+    "zipCode": "ዚፕ ኮድ",
+    "callForHelp": "ለእርዳታ ይደውሉ",
+    "emergencyContacts": "የአደጋ ጊዜ ግንኙነቶች",
+    "change": "ቀይር",
+    "update": "አዘምን",
+    "national": "ብሔራዊ",
+    "state": "ክልል",
+    "zipStoredLocally": "ዚፕ ኮድዎ በመሳሪያዎ ላይ ብቻ ተቀምጧል። ወደ ማንኛውም አገልጋይ በፍፁም አይላክም።",
+    "enterZipToSeeLocal": "የአካባቢ ሀብቶችን ለማየት ዚፕ ኮድዎን ያስገቡ"
   }
 }
