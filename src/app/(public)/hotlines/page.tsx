@@ -1,12 +1,18 @@
 'use client'
 
+import { useEffect } from 'react'
 import { AppHeader } from '@/components/shared/AppHeader'
 import { HotlineDirectory } from '@/components/hotlines/HotlineDirectory'
 import { useLanguage } from '@/hooks/use-language'
 import { Phone, Shield } from 'lucide-react'
+import { trackHotlinesPageView } from '@/lib/analytics'
 
 export default function HotlinesPage() {
   const { language } = useLanguage()
+
+  useEffect(() => {
+    trackHotlinesPageView()
+  }, [])
 
   return (
     <div className="min-h-screen bg-background pb-28">

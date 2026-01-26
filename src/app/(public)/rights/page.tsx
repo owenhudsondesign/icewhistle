@@ -1,11 +1,13 @@
 'use client'
 
+import { useEffect } from 'react'
 import Link from 'next/link'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 import { Button } from '@/components/ui/button'
 import { PageWrapper } from '@/components/shared/PageWrapper'
 import { useLanguage } from '@/hooks/use-language'
+import { trackRightsPageView } from '@/lib/analytics'
 import {
   AlertTriangle,
   Home,
@@ -436,6 +438,10 @@ export default function RightsPage() {
   const t = translations[language as keyof typeof translations] || translations.en
 
   const coreRightIcons = [Volume2, Phone, FileX, ShieldAlert]
+
+  useEffect(() => {
+    trackRightsPageView()
+  }, [])
 
   return (
     <PageWrapper title={t.pageTitle}>

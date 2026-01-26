@@ -13,6 +13,7 @@ import { useLanguage } from '@/hooks/use-language'
 import { useUserZip } from '@/hooks/use-user-zip'
 import { AppHeader } from '@/components/shared/AppHeader'
 import { getHotlinesForZip, getLocationDisplay } from '@/data/hotlines'
+import { trackEncounterGuideView, trackHotlineCallClick } from '@/lib/analytics'
 import {
   AlertTriangle,
   Phone,
@@ -30,6 +31,7 @@ import {
   Download,
   MapPin,
 } from 'lucide-react'
+import { useEffect } from 'react'
 
 // Translations for the encounter page
 const translations = {
@@ -315,6 +317,11 @@ export default function EncounterPage() {
     ...localHotlines.slice(0, 2),
     ...nationalHotlines.slice(0, 3 - Math.min(localHotlines.length, 2))
   ].slice(0, 3)
+
+  // Track encounter guide view for social proof
+  useEffect(() => {
+    trackEncounterGuideView()
+  }, [])
 
   const handleStopAndSave = async () => {
     await stopRecording()

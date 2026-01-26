@@ -11,6 +11,7 @@ import { useLanguage } from '@/hooks/use-language'
 import { useUserZip } from '@/hooks/use-user-zip'
 import { LegalDisclaimer } from '@/components/shared/LegalDisclaimer'
 import { getHotlinesForZip, getLocationDisplay, hasLocalResources } from '@/data/hotlines'
+import { trackEmergencyButtonClick, trackHotlineCallClick, trackZipCodeEntered } from '@/lib/analytics'
 import {
   AlertTriangle,
   Search,
@@ -63,6 +64,7 @@ export default function Home() {
     if (cleaned.length === 5) {
       updateZip(cleaned)
       setTempZip('')
+      trackZipCodeEntered() // Track for social proof (not the actual ZIP)
     }
   }
 
@@ -74,6 +76,9 @@ export default function Home() {
   }
 
   const handleEmergencyClick = (type: 'near' | 'taken' | 'vehicle') => {
+    // Track emergency button clicks for social proof
+    trackEmergencyButtonClick()
+
     // For "ICE Is Near Me", show recording modal first
     if (type === 'near') {
       setShowRecordingModal(true)

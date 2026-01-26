@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
@@ -9,6 +9,7 @@ import { PageWrapper } from '@/components/shared/PageWrapper'
 import { useLanguage } from '@/hooks/use-language'
 import { useUserZip } from '@/hooks/use-user-zip'
 import { getHotlinesForZip, getLocationDisplay, hasLocalResources } from '@/data/hotlines'
+import { trackResourcesPageView, trackZipCodeEntered, trackExternalResourceClick, trackRedCardView } from '@/lib/analytics'
 import {
   FileText,
   Phone,
@@ -205,8 +206,13 @@ export default function ResourcesPage() {
     if (cleaned.length === 5) {
       updateZip(cleaned)
       setTempZip('')
+      trackZipCodeEntered()
     }
   }
+
+  useEffect(() => {
+    trackResourcesPageView()
+  }, [])
 
   const organizationCategories = [
     {

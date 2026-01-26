@@ -33,6 +33,8 @@ import {
 import { useLanguage } from '@/hooks/use-language'
 import { useUserZip } from '@/hooks/use-user-zip'
 import { getHotlinesForZip, getLocationDisplay, getPrimaryLocalHotline } from '@/data/hotlines'
+import { trackTrafficStopView, trackSomeoneTakenView, trackHotlineCallClick, trackDetaineeLocatorClick } from '@/lib/analytics'
+import { useEffect } from 'react'
 
 function EmergencyContent() {
   const searchParams = useSearchParams()
@@ -350,6 +352,10 @@ function SomeoneTakenFlow({ location }: { location: string | null }) {
   const localHotlines = hotlines.filter(h => h.type === 'local' || h.type === 'state')
   const primaryLocal = localHotlines[0]
   const locationDisplay = mounted ? getLocationDisplay(zip, language) : ''
+
+  useEffect(() => {
+    trackSomeoneTakenView()
+  }, [])
 
   return (
     <div className="container mx-auto px-4 py-6 max-w-3xl">
@@ -676,6 +682,10 @@ function VehicleStopFlow({ location }: { location: string | null }) {
   const localHotlines = hotlines.filter(h => h.type === 'local' || h.type === 'state')
   const primaryLocal = localHotlines[0]
   const locationDisplay = mounted ? getLocationDisplay(zip, language) : ''
+
+  useEffect(() => {
+    trackTrafficStopView()
+  }, [])
 
   return (
     <div className="container mx-auto px-4 py-6 max-w-3xl">
