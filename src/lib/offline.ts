@@ -90,14 +90,17 @@ export function clearCache(): void {
   keys.forEach((key) => localStorage.removeItem(key))
 }
 
-/**
- * Queue an action to be executed when back online
- */
-export function queueOfflineAction(action: {
+/** A single action waiting to be sent once connectivity returns. */
+export interface OfflineAction {
   type: string
   payload: unknown
   timestamp: number
-}): void {
+}
+
+/**
+ * Queue an action to be executed when back online
+ */
+export function queueOfflineAction(action: OfflineAction): void {
   if (!isBrowser) return
 
   try {
@@ -114,11 +117,7 @@ export function queueOfflineAction(action: {
 /**
  * Get all queued offline actions
  */
-export function getOfflineQueue(): Array<{
-  type: string
-  payload: unknown
-  timestamp: number
-}> {
+export function getOfflineQueue(): OfflineAction[] {
   if (!isBrowser) return []
 
   try {
@@ -145,16 +144,22 @@ export async function processOfflineQueue(
   processor: (action: { type: string; payload: unknown }) => Promise<void>
 ): Promise<void> {
   const queue = getOfflineQueue()
+  if (queue.length === 0) return
+
+  const failed: OfflineAction[] = []
 
   for (const action of queue) {
     try {
       await processor(action)
     } catch (error) {
       console.error('Failed to process offline action:', error)
-      // Re-queue failed action
-      queueOfflineAction(action)
+      failed.push(action)
     }
   }
 
+  // Replace the queue with only what still needs sending. Clearing first and
+  // re-queueing inside the loop would drop every failure, which in this app
+  // can mean an undelivered emergency alert.
   clearOfflineQueue()
+  failed.forEach(queueOfflineAction)
 }

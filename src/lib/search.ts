@@ -266,6 +266,13 @@ export function getEmergencyContacts(): KnowledgeEntry[] {
 }
 
 /**
+ * Escapes regex metacharacters so a term is matched literally.
+ */
+function escapeRegExp(value: string): string {
+  return value.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
+}
+
+/**
  * Highlight matched terms in text
  */
 export function highlightMatches(text: string, matchedTerms: string[]): string {
@@ -273,7 +280,10 @@ export function highlightMatches(text: string, matchedTerms: string[]): string {
 
   let result = text
   for (const term of matchedTerms) {
-    const regex = new RegExp(`\\b(${term})\\b`, 'gi')
+    // Matched terms come from entry keywords, which are content rather than
+    // patterns. An unescaped metacharacter would throw and take the whole
+    // search results page down with it.
+    const regex = new RegExp(`\\b(${escapeRegExp(term)})\\b`, 'gi')
     result = result.replace(regex, '**$1**')
   }
   return result
