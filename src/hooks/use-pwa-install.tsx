@@ -1,7 +1,13 @@
 'use client'
 
 import { useState, useEffect, useCallback } from 'react'
-import { track } from '@vercel/analytics'
+import {
+  trackPwaInstallAvailable,
+  trackPwaInstalled,
+  trackPwaInstallPromptResponse,
+  trackPwaInstallPromptShown,
+  trackPwaSessionStandalone,
+} from '@/lib/analytics'
 
 interface BeforeInstallPromptEvent extends Event {
   prompt: () => Promise<void>
@@ -19,7 +25,7 @@ export function usePWAInstall() {
     if (window.matchMedia('(display-mode: standalone)').matches) {
       setInstallState('installed')
       // Track that user is using the installed PWA (helps measure active installed users)
-      track('pwa_session_standalone', { platform: 'android_or_desktop' })
+      trackPwaSessionStandalone('android_or_desktop')
       return
     }
 
@@ -30,7 +36,7 @@ export function usePWAInstall() {
       if ((navigator as any).standalone) {
         setInstallState('installed')
         // Track iOS standalone usage
-        track('pwa_session_standalone', { platform: 'ios' })
+        trackPwaSessionStandalone('ios')
       } else {
         setInstallState('ios')
       }
@@ -42,8 +48,8 @@ export function usePWAInstall() {
       e.preventDefault()
       setDeferredPrompt(e as BeforeInstallPromptEvent)
       setInstallState('available')
-      // Track that install prompt became available
-      track('pwa_install_available')
+      // Track that install prompt became available (once per session)
+      trackPwaInstallAvailable()
     }
 
     window.addEventListener('beforeinstallprompt', handleBeforeInstall)
@@ -53,7 +59,7 @@ export function usePWAInstall() {
       setInstallState('installed')
       setDeferredPrompt(null)
       // Track successful PWA installation
-      track('pwa_installed')
+      trackPwaInstalled()
     }
 
     window.addEventListener('appinstalled', handleAppInstalled)
@@ -69,13 +75,13 @@ export function usePWAInstall() {
 
     try {
       // Track that user was shown the install prompt
-      track('pwa_install_prompt_shown')
+      trackPwaInstallPromptShown()
 
       await deferredPrompt.prompt()
       const { outcome } = await deferredPrompt.userChoice
 
       // Track the user's choice
-      track('pwa_install_prompt_response', { outcome })
+      trackPwaInstallPromptResponse(outcome)
 
       if (outcome === 'accepted') {
         setInstallState('installed')

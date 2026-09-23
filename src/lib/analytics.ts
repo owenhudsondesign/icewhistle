@@ -8,14 +8,29 @@
  */
 
 import { track } from '@vercel/analytics'
+import { oncePerSession, oncePerDevice } from './analytics-once'
+
+/** Which of the three emergency entry points on the home screen was tapped. */
+export type EmergencyEntryPoint = 'near' | 'vehicle' | 'taken'
 
 // ============================================
 // EMERGENCY & CRISIS EVENTS
 // ============================================
 
-/** User clicked the main "ICE Is Near Me" emergency button */
-export const trackEmergencyButtonClick = () => {
-  track('emergency_ice_near_me_click')
+/**
+ * User tapped one of the home screen emergency buttons.
+ *
+ * All three entry points previously reported as `emergency_ice_near_me_click`,
+ * so that event conflated "ICE is near me", traffic stops and detentions.
+ * The legacy event is still sent for the "near" button only, which keeps the
+ * existing dashboard series continuous.
+ */
+export const trackEmergencyButtonClick = (entryPoint: EmergencyEntryPoint) => {
+  track('emergency_button_click', { entry_point: entryPoint })
+
+  if (entryPoint === 'near') {
+    track('emergency_ice_near_me_click')
+  }
 }
 
 /** User viewed the encounter guide (emergency page) */
@@ -41,6 +56,58 @@ export const trackRecordingStarted = (type: 'video' | 'audio') => {
 /** User saved a recording */
 export const trackRecordingSaved = () => {
   track('recording_saved')
+}
+
+// ============================================
+// PWA INSTALL EVENTS
+// ============================================
+
+/**
+ * The browser reported this visitor can install the app.
+ *
+ * `beforeinstallprompt` re-fires on every page load, so this is capped at once
+ * per session to keep the event count readable as "eligible visitors".
+ */
+export const trackPwaInstallAvailable = () => {
+  oncePerSession('pwa_install_available', () => track('pwa_install_available'))
+}
+
+/** Visitor is running the app from their home screen. Once per session. */
+export const trackPwaSessionStandalone = (platform: 'ios' | 'android_or_desktop') => {
+  oncePerSession('pwa_session_standalone', () =>
+    track('pwa_session_standalone', { platform })
+  )
+}
+
+/**
+ * The browser confirmed an install. Capped per device because `appinstalled`
+ * can fire more than once for a single install.
+ */
+export const trackPwaInstalled = () => {
+  oncePerDevice('pwa_installed', () => track('pwa_installed'))
+}
+
+/** The native (Chrome/Android) install prompt was opened. */
+export const trackPwaInstallPromptShown = () => {
+  track('pwa_install_prompt_shown', { platform: 'native' })
+}
+
+/** The visitor accepted or dismissed the native install prompt. */
+export const trackPwaInstallPromptResponse = (outcome: 'accepted' | 'dismissed') => {
+  track('pwa_install_prompt_response', { platform: 'native', outcome })
+}
+
+/**
+ * The iOS "Share -> Add to Home Screen" instructions were opened. iOS has no
+ * install API, so these two events are the only visibility into that path.
+ */
+export const trackIosInstallHintShown = () => {
+  track('pwa_install_prompt_shown', { platform: 'ios' })
+}
+
+/** The iOS instructions were closed. */
+export const trackIosInstallHintDismissed = () => {
+  track('pwa_install_prompt_response', { platform: 'ios', outcome: 'dismissed' })
 }
 
 // ============================================
