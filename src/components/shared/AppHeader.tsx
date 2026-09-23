@@ -1,14 +1,15 @@
 'use client'
 
 import { useEffect, useState } from 'react'
-import { createPortal } from 'react-dom'
 import Link from 'next/link'
 import Image from 'next/image'
 import { Button } from '@/components/ui/button'
+import { Modal } from '@/components/ui/modal'
 import { Moon, Sun, Download, Share, Plus, ChevronDown, Check } from 'lucide-react'
 import { useTheme } from '@/hooks/use-theme'
 import { useLanguage, LANGUAGE_META, SUPPORTED_LANGUAGES } from '@/hooks/use-language'
 import { usePWAInstall } from '@/hooks/use-pwa-install'
+import { trackIosInstallHintDismissed, trackIosInstallHintShown } from '@/lib/analytics'
 
 export function AppHeader() {
   const { toggleTheme, isDark, mounted } = useTheme()
@@ -16,8 +17,8 @@ export function AppHeader() {
   const { canInstall, isIOS, isInstalled, promptInstall } = usePWAInstall()
   const [showIOSModal, setShowIOSModal] = useState(false)
   const [showLangDropdown, setShowLangDropdown] = useState(false)
-  const [portalRoot, setPortalRoot] = useState<HTMLElement | null>(null)
   const nav = t.nav
+  const common = t.common
 
   // All languages except EN/ES for the dropdown
   const otherLanguages = SUPPORTED_LANGUAGES.filter(code => code !== 'en' && code !== 'es').map(code => ({
@@ -27,16 +28,18 @@ export function AppHeader() {
   const currentLang = LANGUAGE_META[language]
   const isOtherLanguage = language !== 'en' && language !== 'es'
 
-  useEffect(() => {
-    setPortalRoot(document.body)
-  }, [])
-
   const handleInstallClick = async () => {
     if (canInstall) {
       await promptInstall()
     } else if (isIOS) {
+      trackIosInstallHintShown()
       setShowIOSModal(true)
     }
+  }
+
+  const closeIOSModal = () => {
+    trackIosInstallHintDismissed()
+    setShowIOSModal(false)
   }
 
   const showInstallButton = (canInstall || isIOS) && !isInstalled
@@ -48,11 +51,18 @@ export function AppHeader() {
         <div className="flex items-center justify-between gap-2">
           {/* Left - Logo */}
           <div className="flex items-center gap-2 sm:flex-1 flex-shrink-0">
-            <Link href="/" className="flex items-center press-scale">
-              {/* Show white logo in dark mode, dark logo in light mode */}
+            {/* The two logos are one per theme, so both would otherwise be
+                read out. They are marked decorative and the link carries the
+                name, which also states where it goes. */}
+            <Link
+              href="/"
+              aria-label={`ICEwhistle — ${nav.home}`}
+              className="flex items-center press-scale"
+            >
               <Image
                 src="/images/icewhistle-logo-white.svg"
-                alt="ICEwhistle"
+                alt=""
+                aria-hidden="true"
                 width={140}
                 height={32}
                 className="h-6 sm:h-8 w-auto dark:block hidden"
@@ -60,7 +70,8 @@ export function AppHeader() {
               />
               <Image
                 src="/images/icewhistle-logo-dark.svg"
-                alt="ICEwhistle"
+                alt=""
+                aria-hidden="true"
                 width={140}
                 height={32}
                 className="h-6 sm:h-8 w-auto dark:hidden block"
@@ -149,15 +160,18 @@ export function AppHeader() {
 
           {/* Right - Install button (desktop only) & Dark Mode Toggle */}
           <div className="flex items-center gap-2 sm:flex-1 justify-end flex-shrink-0">
-            {/* Install button - desktop only */}
+            {/* Install button - shown on every breakpoint. On phones the label is
+                dropped to fit, but the button itself must stay: iOS is the bulk of
+                traffic and has no other route to the Add to Home Screen steps. */}
             {showInstallButton && (
               <Button
                 variant="outline"
                 onClick={handleInstallClick}
-                className="hidden sm:flex h-10 rounded-[8px] border-border/50 press-scale gap-2 px-3"
+                aria-label={nav.install}
+                className="flex h-11 min-w-11 rounded-[8px] border-border/50 press-scale gap-2 px-2 sm:px-3"
               >
                 <Download className="h-4 w-4 text-[#00A6B4]" strokeWidth={2} />
-                <span className="text-sm">{nav.install}</span>
+                <span className="text-sm hidden sm:inline">{nav.install}</span>
               </Button>
             )}
             {/* Dark mode toggle - always visible */}
@@ -165,13 +179,13 @@ export function AppHeader() {
               variant="ghost"
               size="icon"
               onClick={toggleTheme}
-              className="h-10 w-10 rounded-[8px] press-scale"
+              className="h-11 w-11 rounded-[8px] press-scale"
               aria-label={isDark ? 'Switch to light mode' : 'Switch to dark mode'}
             >
               {mounted && isDark ? (
                 <Sun className="h-5 w-5 text-[#FF8C42]" strokeWidth={2} />
               ) : (
-                <Moon className="h-5 w-5 text-[#8B5CF6]" strokeWidth={2} />
+                <Moon className="h-5 w-5 text-[#7C3AED]" strokeWidth={2} />
               )}
             </Button>
           </div>
@@ -180,48 +194,37 @@ export function AppHeader() {
 
     </header>
 
-      {/* iOS Install Instructions Modal - rendered via portal to escape header stacking context */}
-      {showIOSModal && portalRoot && createPortal(
-        <div
-          className="fixed inset-0 z-[9999] bg-black/50 backdrop-blur-sm flex items-start justify-center pt-20 pb-4 px-4 overflow-y-auto"
-          style={{ paddingTop: 'max(5rem, env(safe-area-inset-top, 5rem))' }}
-          onClick={() => setShowIOSModal(false)}
-        >
-          <div
-            className="w-full max-w-sm bg-background rounded-2xl p-6 shadow-xl border border-border"
-            onClick={(e) => e.stopPropagation()}
-          >
-            <h3 className="text-lg font-semibold mb-4">{nav.iosTitle}</h3>
-            <div className="space-y-4 mb-6">
-              <div className="flex items-start gap-3">
-                <div className="w-8 h-8 rounded-lg bg-blue-500/10 flex items-center justify-center flex-shrink-0">
-                  <Share className="w-4 h-4 text-blue-500" />
-                </div>
-                <p className="text-sm text-muted-foreground pt-1">{nav.iosStep1}</p>
-              </div>
-              <div className="flex items-start gap-3">
-                <div className="w-8 h-8 rounded-lg bg-blue-500/10 flex items-center justify-center flex-shrink-0">
-                  <Plus className="w-4 h-4 text-blue-500" />
-                </div>
-                <p className="text-sm text-muted-foreground pt-1">{nav.iosStep2}</p>
-              </div>
-              <div className="flex items-start gap-3">
-                <div className="w-8 h-8 rounded-lg bg-green-500/10 flex items-center justify-center flex-shrink-0">
-                  <Download className="w-4 h-4 text-green-500" />
-                </div>
-                <p className="text-sm text-muted-foreground pt-1">{nav.iosStep3}</p>
-              </div>
+      {/* iOS Install Instructions */}
+      <Modal
+        isOpen={showIOSModal}
+        onClose={closeIOSModal}
+        title={nav.iosTitle}
+        closeLabel={common.close}
+      >
+        <ol className="space-y-4 mb-6 list-none">
+          <li className="flex items-start gap-3">
+            <div className="w-8 h-8 rounded-lg bg-blue-500/10 flex items-center justify-center flex-shrink-0">
+              <Share className="w-4 h-4 text-blue-500" aria-hidden="true" />
             </div>
-            <Button
-              onClick={() => setShowIOSModal(false)}
-              className="w-full"
-            >
-              {nav.gotIt}
-            </Button>
-          </div>
-        </div>,
-        portalRoot
-      )}
+            <p className="text-sm text-muted-foreground pt-1">{nav.iosStep1}</p>
+          </li>
+          <li className="flex items-start gap-3">
+            <div className="w-8 h-8 rounded-lg bg-blue-500/10 flex items-center justify-center flex-shrink-0">
+              <Plus className="w-4 h-4 text-blue-500" aria-hidden="true" />
+            </div>
+            <p className="text-sm text-muted-foreground pt-1">{nav.iosStep2}</p>
+          </li>
+          <li className="flex items-start gap-3">
+            <div className="w-8 h-8 rounded-lg bg-green-500/10 flex items-center justify-center flex-shrink-0">
+              <Download className="w-4 h-4 text-green-500" aria-hidden="true" />
+            </div>
+            <p className="text-sm text-muted-foreground pt-1">{nav.iosStep3}</p>
+          </li>
+        </ol>
+        <Button onClick={closeIOSModal} className="w-full">
+          {nav.gotIt}
+        </Button>
+      </Modal>
     </>
   )
 }

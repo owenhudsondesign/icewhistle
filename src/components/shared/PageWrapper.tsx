@@ -2,6 +2,7 @@
 
 import { ReactNode, useState, useEffect } from 'react'
 import { AppHeader } from './AppHeader'
+import { SkipToContent } from './SkipToContent'
 import { Capacitor } from '@capacitor/core'
 
 interface PageWrapperProps {
@@ -37,16 +38,22 @@ export function PageWrapper({ children, title, subtitle }: PageWrapperProps) {
 
   return (
     <div className={isAppMode ? 'pb-24' : ''}>
+      <SkipToContent />
       <AppHeader />
-      {title && (
-        <div className="container mx-auto px-4 pt-4 max-w-4xl">
-          <h1 className="text-xl font-bold">{title}</h1>
-          {subtitle && (
-            <p className="text-sm text-muted-foreground mt-1">{subtitle}</p>
-          )}
-        </div>
-      )}
-      {children}
+      {/* Every page needs a main landmark for the skip link to target and for
+          screen reader users navigating by region. Pages that render their own
+          h1 pass no `title`, so the page is never announced with two. */}
+      <main id="main-content" tabIndex={-1}>
+        {title && (
+          <div className="container mx-auto px-4 pt-4 max-w-4xl">
+            <h1 className="text-xl font-bold">{title}</h1>
+            {subtitle && (
+              <p className="text-sm text-muted-foreground mt-1">{subtitle}</p>
+            )}
+          </div>
+        )}
+        {children}
+      </main>
     </div>
   )
 }

@@ -6,12 +6,19 @@ import { useRouter } from 'next/navigation'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { AppHeader } from '@/components/shared/AppHeader'
+import { SkipToContent } from '@/components/shared/SkipToContent'
 import { RecordingModal } from '@/components/shared/RecordingModal'
 import { useLanguage } from '@/hooks/use-language'
 import { useUserZip } from '@/hooks/use-user-zip'
 import { LegalDisclaimer } from '@/components/shared/LegalDisclaimer'
 import { getHotlinesForZip, getLocationDisplay, hasLocalResources } from '@/data/hotlines'
-import { trackEmergencyButtonClick, trackHotlineCallClick, trackZipCodeEntered } from '@/lib/analytics'
+import { ZipPromptCard } from '@/components/shared/ZipPromptCard'
+import {
+  trackEmergencyButtonClick,
+  trackHotlineCallClick,
+  trackZipCodeEntered,
+  type EmergencyEntryPoint,
+} from '@/lib/analytics'
 import {
   AlertTriangle,
   Search,
@@ -37,7 +44,6 @@ export default function Home() {
   const router = useRouter()
   const [searchQuery, setSearchQuery] = useState('')
   const [showRecordingModal, setShowRecordingModal] = useState(false)
-  const [tempZip, setTempZip] = useState('')
   const { language, t } = useLanguage()
   const { zip, updateZip, mounted } = useUserZip()
 
@@ -58,14 +64,9 @@ export default function Home() {
     ...nationalHotlines.slice(0, 4 - Math.min(localHotlines.length, 2))
   ].slice(0, 4)
 
-  const handleZipSubmit = (e: React.FormEvent) => {
-    e.preventDefault()
-    const cleaned = tempZip.replace(/\D/g, '').slice(0, 5)
-    if (cleaned.length === 5) {
-      updateZip(cleaned)
-      setTempZip('')
-      trackZipCodeEntered() // Track for social proof (not the actual ZIP)
-    }
+  const handleZipSubmit = (zipCode: string) => {
+    updateZip(zipCode)
+    trackZipCodeEntered() // Track for social proof (not the actual ZIP)
   }
 
   const handleSearch = (e: React.FormEvent) => {
@@ -75,9 +76,9 @@ export default function Home() {
     }
   }
 
-  const handleEmergencyClick = (type: 'near' | 'taken' | 'vehicle') => {
-    // Track emergency button clicks for social proof
-    trackEmergencyButtonClick()
+  const handleEmergencyClick = (type: EmergencyEntryPoint) => {
+    // Track which entry point was used, not just that one of them was
+    trackEmergencyButtonClick(type)
 
     // For "ICE Is Near Me", show recording modal first
     if (type === 'near') {
@@ -94,14 +95,23 @@ export default function Home() {
 
   return (
     <div className="min-h-screen bg-background pb-28">
+      <SkipToContent />
       <AppHeader />
 
-      <main className="container mx-auto px-4 py-4 max-w-4xl">
+      <main id="main-content" tabIndex={-1} className="container mx-auto px-4 py-4 max-w-4xl">
+        {/* The page needs exactly one h1 naming it. It is visually hidden
+            because the emergency grid below is the real visual heading. */}
+        <h1 className="sr-only">ICEwhistle</h1>
         {/* Anonymous Badge */}
         <div className="flex items-center justify-center gap-2 text-caption text-muted-foreground mb-4">
           <Lock className="h-4 w-4" />
           <span>{common.anonymous}</span>
         </div>
+
+        {/* ZIP capture - above the fold so localized hotlines actually reach people */}
+        {mounted && !zip && (
+          <ZipPromptCard onSubmit={handleZipSubmit} />
+        )}
 
         {/* BENTO GRID - Soft Transit Design */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-5 mb-6">
@@ -148,7 +158,7 @@ export default function Home() {
           {/* My Emergency Plan - Grape */}
           <Link
             href="/emergency-contacts"
-            className="col-span-1 bg-[#8B5CF6] text-white rounded-[16px] p-4 flex flex-col items-center justify-center gap-2 press-scale hover-scale shadow-lg hover:glow-grape min-h-[120px]"
+            className="col-span-1 bg-[#7C3AED] text-white rounded-[16px] p-4 flex flex-col items-center justify-center gap-2 press-scale hover-scale shadow-lg hover:glow-grape min-h-[120px]"
           >
             <ClipboardList className="h-8 w-8 flex-shrink-0" strokeWidth={2} />
             <div className="text-center w-full">
@@ -195,7 +205,7 @@ export default function Home() {
             href="/resources#legal"
             className="card-glass p-3 flex flex-col items-center justify-center gap-1.5 press-scale hover:bg-accent/50 min-h-[100px]"
           >
-            <Scale className="h-7 w-7 text-[#8B5CF6] flex-shrink-0" strokeWidth={2} />
+            <Scale className="h-7 w-7 text-[#7C3AED] flex-shrink-0" strokeWidth={2} />
             <div className="text-center w-full">
               <div className="text-xs font-semibold leading-tight break-words">{home.findLawyer}</div>
               <div className="text-[10px] text-muted-foreground leading-tight mt-0.5 break-words">{home.findLawyerSub}</div>
@@ -237,10 +247,10 @@ export default function Home() {
               <p className="text-[10px] text-muted-foreground mt-1 leading-tight break-words">{home.step1Desc}</p>
             </div>
             <div className="text-center">
-              <div className="w-10 h-10 mx-auto rounded-full bg-[#8B5CF6]/10 flex items-center justify-center mb-2">
-                <ClipboardList className="h-5 w-5 text-[#8B5CF6]" strokeWidth={2} />
+              <div className="w-10 h-10 mx-auto rounded-full bg-[#7C3AED]/10 flex items-center justify-center mb-2">
+                <ClipboardList className="h-5 w-5 text-[#7C3AED]" strokeWidth={2} />
               </div>
-              <div className="text-xs font-bold text-[#8B5CF6] leading-tight">{home.step2Title}</div>
+              <div className="text-xs font-bold text-[#7C3AED] leading-tight">{home.step2Title}</div>
               <p className="text-[10px] text-muted-foreground mt-1 leading-tight break-words">{home.step2Desc}</p>
             </div>
             <div className="text-center">
@@ -275,7 +285,7 @@ export default function Home() {
                   <CheckCircle className="h-3 w-3 flex-shrink-0" />
                   <span className="break-words">{home.recordingFeature2}</span>
                 </span>
-                <span className="inline-flex items-center gap-1 text-[10px] bg-[#8B5CF6]/10 text-[#8B5CF6] px-2 py-1 rounded-full">
+                <span className="inline-flex items-center gap-1 text-[10px] bg-[#7C3AED]/10 text-[#7C3AED] px-2 py-1 rounded-full">
                   <FileCheck className="h-3 w-3 flex-shrink-0" />
                   <span className="break-words">{home.recordingFeature3}</span>
                 </span>
@@ -309,39 +319,6 @@ export default function Home() {
             <span className="break-words">{home.emergencyHotlines}</span>
           </h2>
           <p className="text-xs text-muted-foreground mb-3">{hotlines.callFree247}</p>
-
-          {/* ZIP code input if not set */}
-          {mounted && !zip && (
-            <div className="p-3 mb-3 rounded-[12px] bg-[#00A6B4]/10 border border-[#00A6B4]/20">
-              <p className="text-xs font-medium mb-2 flex items-center gap-1">
-                <MapPin className="h-3 w-3 text-[#00A6B4]" />
-                {language === 'es' ? 'Ingresa tu código postal para ver líneas locales' : 'Enter ZIP for local hotlines'}
-              </p>
-              <form onSubmit={handleZipSubmit} className="flex gap-2">
-                <Input
-                  type="text"
-                  inputMode="numeric"
-                  pattern="[0-9]*"
-                  maxLength={5}
-                  placeholder={language === 'es' ? 'Código postal' : 'ZIP code'}
-                  value={tempZip}
-                  onChange={(e) => setTempZip(e.target.value.replace(/\D/g, ''))}
-                  className="flex-1 h-8 text-sm"
-                />
-                <Button
-                  type="submit"
-                  disabled={tempZip.length !== 5}
-                  size="sm"
-                  className="h-8 px-3 bg-[#00A6B4] hover:bg-[#00A6B4]/90"
-                >
-                  {language === 'es' ? 'Buscar' : 'Find'}
-                </Button>
-              </form>
-              <p className="text-[9px] text-muted-foreground mt-1">
-                {language === 'es' ? 'Solo se guarda en este dispositivo' : 'Stored only on this device'}
-              </p>
-            </div>
-          )}
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
             {displayHotlines.map((hotline) => {
@@ -379,7 +356,7 @@ export default function Home() {
           </div>
           <Link
             href="/hotlines"
-            className="inline-flex items-center text-xs text-[#00A6B4] hover:underline mt-4 font-semibold"
+            className="inline-flex items-center text-xs text-[#00A6B4] hover:underline mt-4 font-semibold min-h-11 py-2"
           >
             {common.viewAll} <ChevronRight className="h-4 w-4 ml-1 flex-shrink-0" />
           </Link>
@@ -440,7 +417,7 @@ export default function Home() {
           </div>
           <Link
             href="/rights"
-            className="inline-flex items-center text-xs text-[#00A6B4] hover:underline mt-4 font-semibold"
+            className="inline-flex items-center text-xs text-[#00A6B4] hover:underline mt-4 font-semibold min-h-11 py-2"
           >
             {common.learnMore} <ChevronRight className="h-4 w-4 ml-1 flex-shrink-0" />
           </Link>
@@ -456,21 +433,21 @@ export default function Home() {
           <div className="mt-3 pt-3 border-t border-border/30 flex flex-wrap items-center justify-center gap-3">
             <Link
               href="/about"
-              className="text-xs text-muted-foreground hover:text-foreground transition-colors"
+              className="text-xs text-muted-foreground hover:text-foreground transition-colors inline-flex items-center min-h-11 px-2"
             >
               About
             </Link>
             <span className="text-xs text-muted-foreground">•</span>
             <Link
               href="/privacy"
-              className="text-xs text-muted-foreground hover:text-foreground transition-colors"
+              className="text-xs text-muted-foreground hover:text-foreground transition-colors inline-flex items-center min-h-11 px-2"
             >
               Privacy
             </Link>
             <span className="text-xs text-muted-foreground">•</span>
             <Link
               href="/terms"
-              className="text-xs text-muted-foreground hover:text-foreground transition-colors"
+              className="text-xs text-muted-foreground hover:text-foreground transition-colors inline-flex items-center min-h-11 px-2"
             >
               Terms
             </Link>

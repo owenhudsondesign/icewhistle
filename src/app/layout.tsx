@@ -135,7 +135,12 @@ export const viewport: Viewport = {
   themeColor: '#0F172A', // Slate 900 for dark mode
   width: 'device-width',
   initialScale: 1,
-  maximumScale: 1,
+  // `maximumScale: 1` used to be set here, which blocks pinch-to-zoom
+  // entirely. Anyone who needs to magnify the page - to read a hotline
+  // number, or because of low vision - simply could not, with no way to
+  // override it. Zoom is left unrestricted deliberately.
+  maximumScale: 5,
+  userScalable: true,
 }
 
 // JSON-LD Structured Data
