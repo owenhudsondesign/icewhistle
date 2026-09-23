@@ -1,43 +1,18 @@
-const withPWA = require('next-pwa')({
-  dest: 'public',
-  register: true,
-  skipWaiting: true,
+const withSerwistInit = require('@serwist/next').default
+
+// Serwist replaces next-pwa, which is unmaintained and breaks on Next 15.
+// The caching rules themselves live in src/app/sw.ts.
+const withSerwist = withSerwistInit({
+  swSrc: 'src/app/sw.ts',
+  swDest: 'public/sw.js',
   disable: process.env.NODE_ENV === 'development',
-  runtimeCaching: [
-    {
-      // Cache all language files for offline use
-      // Pre-loaded in background so users can switch languages offline
-      urlPattern: /\/locales\/.*\.json$/,
-      handler: 'CacheFirst',
-      options: {
-        cacheName: 'translations',
-        expiration: {
-          maxEntries: 50, // Support all languages
-          maxAgeSeconds: 60 * 60 * 24 * 30, // 30 days
-        },
-      },
-    },
-    {
-      urlPattern: /^https:\/\/.*\/(rights|resources)/,
-      handler: 'CacheFirst',
-      options: {
-        cacheName: 'kyr-content',
-        expiration: { maxAgeSeconds: 60 * 60 * 24 * 7 }, // 1 week
-      },
-    },
-    {
-      urlPattern: /^https:\/\/.*\/api\/alerts/,
-      handler: 'NetworkFirst',
-      options: {
-        cacheName: 'alerts',
-        networkTimeoutSeconds: 10,
-      },
-    },
-  ],
-  fallbacks: {
-    document: '/offline',
-  },
-});
+  reloadOnOnline: true,
+  // The App Router does not emit /offline into the precache manifest, so the
+  // navigation fallback had nothing to fall back to and an unvisited page
+  // showed the browser's own error page instead. Precaching it explicitly is
+  // what makes the offline page work.
+  additionalPrecacheEntries: [{ url: '/offline', revision: null }],
+})
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
@@ -53,6 +28,6 @@ const nextConfig = {
       ],
     },
   ],
-};
+}
 
-module.exports = withPWA(nextConfig);
+module.exports = withSerwist(nextConfig)
