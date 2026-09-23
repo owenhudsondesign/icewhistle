@@ -12,7 +12,7 @@ export default function OfflinePage() {
   const nav_t = t.nav || {}
 
   return (
-    <div className="container mx-auto px-4 py-8 max-w-2xl">
+    <main id="main-content" tabIndex={-1} className="container mx-auto px-4 py-8 max-w-2xl">
       <div className="text-center mb-8">
         <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-muted mb-4">
           <WifiOff className="h-8 w-8 text-muted-foreground" />
@@ -68,6 +68,6 @@ export default function OfflinePage() {
           {offline_t.tryAgain || 'Try Again'}
         </Button>
       </div>
-    </div>
+    </main>
   )
 }

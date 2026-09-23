@@ -8,12 +8,17 @@ import { getHotlinesForZip, Hotline } from '@/data/hotlines'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 
+/** Heading level for a hotline name, so the list nests correctly wherever it appears. */
+type HeadingLevel = 2 | 3 | 4
+
 interface HotlineCardProps {
   hotline: Hotline
   language: string
+  headingLevel: HeadingLevel
 }
 
-function HotlineCard({ hotline, language }: HotlineCardProps) {
+function HotlineCard({ hotline, language, headingLevel }: HotlineCardProps) {
+  const Heading = `h${headingLevel}` as const
   const name = language === 'es' && hotline.nameEs ? hotline.nameEs : hotline.name
   const description = language === 'es' && hotline.descriptionEs ? hotline.descriptionEs : hotline.description
 
@@ -21,7 +26,7 @@ function HotlineCard({ hotline, language }: HotlineCardProps) {
     <div className="card-glass p-4 space-y-3">
       <div className="flex items-start justify-between gap-3">
         <div className="flex-1 min-w-0">
-          <h3 className="font-semibold text-sm leading-tight">{name}</h3>
+          <Heading className="font-semibold text-sm leading-tight">{name}</Heading>
           <p className="text-xs text-muted-foreground mt-1">{description}</p>
         </div>
         {hotline.type === 'national' && (
@@ -73,9 +78,21 @@ interface HotlineDirectoryProps {
   showZipInput?: boolean
   maxItems?: number
   className?: string
+  /**
+   * Heading level for hotline names. The directory appears directly under the
+   * page h1 on the hotlines page and under a section h2 elsewhere, so the level
+   * has to follow its surroundings or screen reader heading navigation reports
+   * a structure with gaps in it.
+   */
+  headingLevel?: HeadingLevel
 }
 
-export function HotlineDirectory({ showZipInput = true, maxItems, className = '' }: HotlineDirectoryProps) {
+export function HotlineDirectory({
+  showZipInput = true,
+  maxItems,
+  className = '',
+  headingLevel = 3,
+}: HotlineDirectoryProps) {
   const { zip, updateZip, mounted } = useUserZip()
   const { language, t } = useLanguage()
   const [tempZip, setTempZip] = useState('')
@@ -161,7 +178,12 @@ export function HotlineDirectory({ showZipInput = true, maxItems, className = ''
       {/* Hotline List */}
       <div className="space-y-3">
         {displayHotlines.map((hotline) => (
-          <HotlineCard key={hotline.id} hotline={hotline} language={language} />
+          <HotlineCard
+              key={hotline.id}
+              hotline={hotline}
+              language={language}
+              headingLevel={headingLevel}
+            />
         ))}
       </div>
 

@@ -128,7 +128,7 @@ export default function GatewayPage() {
   }, [])
 
   return (
-    <div className="min-h-screen bg-black text-white relative overflow-hidden">
+    <main id="main-content" tabIndex={-1} className="min-h-screen bg-black text-white relative overflow-hidden">
       {/* Animated background */}
       <div className="absolute inset-0 bg-gradient-to-br from-black via-gray-900 to-black" />
       <div className="absolute inset-0 opacity-20">
@@ -251,6 +251,6 @@ export default function GatewayPage() {
           </p>
         </div>
       </div>
-    </div>
+    </main>
   )
 }

@@ -30,7 +30,7 @@ function FAQContent() {
 
   // Account for bottom nav (h-20 = 80px + safe area padding)
   return (
-    <div className="flex flex-col h-[calc(100vh-4rem-6rem)] max-h-[calc(100dvh-4rem-6rem)]">
+    <main id="main-content" tabIndex={-1} className="flex flex-col h-[calc(100vh-4rem-6rem)] max-h-[calc(100dvh-4rem-6rem)]">
       {/* Header */}
       <div className="flex items-center gap-3 p-4 border-b bg-background">
         <Link
@@ -53,7 +53,7 @@ function FAQContent() {
 
       {/* Chat Interface */}
       <FAQChat />
-    </div>
+    </main>
   )
 }
 

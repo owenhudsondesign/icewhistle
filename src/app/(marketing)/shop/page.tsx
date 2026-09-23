@@ -166,7 +166,7 @@ export default function ShopPage() {
   const [email, setEmail] = useState('')
 
   return (
-    <div className="min-h-screen bg-[#0A0A0B] text-white">
+    <main id="main-content" tabIndex={-1} className="min-h-screen bg-[#0A0A0B] text-white">
       {/* Navigation */}
       <nav className="sticky top-0 z-50 bg-[#0A0A0B]/80 backdrop-blur-xl border-b border-white/5">
         <div className="container mx-auto px-6 py-4 flex items-center justify-between">
@@ -368,6 +368,6 @@ export default function ShopPage() {
           </p>
         </div>
       </section>
-    </div>
+    </main>
   )
 }

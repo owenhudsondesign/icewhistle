@@ -35,11 +35,18 @@ const Alert = React.forwardRef<
 ))
 Alert.displayName = 'Alert'
 
+/**
+ * Rendered as a div rather than a heading. An alert's title is not part of the
+ * document outline, and emitting an <h5> here jumped the heading sequence on
+ * every page that shows an alert, which makes a screen reader's heading
+ * navigation report a structure the page does not actually have. The alert
+ * role already announces it.
+ */
 const AlertTitle = React.forwardRef<
-  HTMLParagraphElement,
-  React.HTMLAttributes<HTMLHeadingElement>
+  HTMLDivElement,
+  React.HTMLAttributes<HTMLDivElement>
 >(({ className, ...props }, ref) => (
-  <h5
+  <div
     ref={ref}
     className={cn('mb-1 font-medium leading-none tracking-tight', className)}
     {...props}

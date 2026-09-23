@@ -118,9 +118,9 @@ export function SearchBox({ initialQuery = '' }: SearchBoxProps) {
       {/* Suggested Searches */}
       {showSuggestions && !query && (
         <div className="mt-6">
-          <h3 className="text-sm font-medium text-muted-foreground mb-3">
+          <h2 className="text-sm font-medium text-muted-foreground mb-3">
             Common Questions
-          </h3>
+          </h2>
           <div className="space-y-2">
             {suggestedSearches.map((suggestion, index) => (
               <button
@@ -232,7 +232,7 @@ function SearchResultCard({ result }: { result: SearchResult }) {
                 href={url}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center gap-1 text-sm text-primary hover:underline"
+                className="inline-flex items-center gap-1 text-sm text-primary underline underline-offset-2"
               >
                 <ExternalLink className="h-3 w-3" />
                 {new URL(url).hostname.replace('www.', '')}

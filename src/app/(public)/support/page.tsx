@@ -2,6 +2,7 @@
 
 import Link from 'next/link'
 import { AppHeader } from '@/components/shared/AppHeader'
+import { SkipToContent } from '@/components/shared/SkipToContent'
 import { Card, CardContent } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { useLanguage } from '@/hooks/use-language'
@@ -36,9 +37,10 @@ export default function SupportPage() {
 
   return (
     <div className="min-h-screen bg-background pb-28">
+      <SkipToContent />
       <AppHeader />
 
-      <main className="container mx-auto px-4 py-8 max-w-2xl">
+      <main id="main-content" tabIndex={-1} className="container mx-auto px-4 py-8 max-w-2xl">
         {/* Header */}
         <div className="text-center mb-8">
           <h1 className="text-2xl font-bold mb-3">{support.title}</h1>

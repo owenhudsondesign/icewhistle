@@ -5,6 +5,7 @@ import { useEnhancedRecording } from '@/hooks/useEnhancedRecording'
 import { Button } from '@/components/ui/button'
 import { Video, Mic, Square, Pause, Play, Camera } from 'lucide-react'
 import { cn } from '@/lib/utils'
+import { Announcer } from '@/components/shared/Announcer'
 
 interface RecordingIndicatorProps {
   className?: string
@@ -45,6 +46,10 @@ export function RecordingIndicator({ className, onStopClick }: RecordingIndicato
     }
   }
 
+  const statusMessage = isPaused
+    ? 'Recording paused'
+    : `Recording ${recordingType === 'audio' ? 'audio' : 'video'}`
+
   return (
     <div
       className={cn(
@@ -56,9 +61,14 @@ export function RecordingIndicator({ className, onStopClick }: RecordingIndicato
         className
       )}
     >
+      {/* The pulsing dot and colour carry the recording state visually; this
+          puts the same state into the accessibility tree. */}
+      <Announcer message={statusMessage} politeness="assertive" />
+
       {/* Recording indicator dot */}
       <div className="flex items-center gap-2">
         <div
+          aria-hidden="true"
           className={cn(
             'w-3 h-3 rounded-full',
             isPaused ? 'bg-yellow-500' : 'bg-red-500 animate-pulse'
@@ -80,7 +90,10 @@ export function RecordingIndicator({ className, onStopClick }: RecordingIndicato
       )}
 
       {/* Time display */}
-      <span className="text-white font-mono text-sm min-w-[48px]">
+      <span
+        className="text-white font-mono text-sm min-w-[48px]"
+        aria-label={`Elapsed ${formatRecordingTime(recordingTime)}`}
+      >
         {formatRecordingTime(recordingTime)}
       </span>
 
@@ -89,7 +102,8 @@ export function RecordingIndicator({ className, onStopClick }: RecordingIndicato
         variant="ghost"
         size="sm"
         onClick={handlePauseResume}
-        className="h-8 w-8 p-0 text-white hover:bg-white/20"
+        aria-label={isPaused ? 'Resume recording' : 'Pause recording'}
+        className="h-11 w-11 p-0 text-white hover:bg-white/20"
       >
         {isPaused ? (
           <Play className="h-4 w-4" />
@@ -103,7 +117,8 @@ export function RecordingIndicator({ className, onStopClick }: RecordingIndicato
         variant="ghost"
         size="sm"
         onClick={handleStop}
-        className="h-8 w-8 p-0 text-red-400 hover:text-red-300 hover:bg-red-500/20"
+        aria-label="Stop recording"
+        className="h-11 w-11 p-0 text-red-400 hover:text-red-300 hover:bg-red-500/20"
       >
         <Square className="h-4 w-4 fill-current" />
       </Button>

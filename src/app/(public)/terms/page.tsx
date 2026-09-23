@@ -14,7 +14,7 @@ export default function TermsOfServicePage() {
   const effectiveDate = 'January 21, 2026'
 
   return (
-    <PageWrapper title="Terms of Service">
+    <PageWrapper>
       <div className="min-h-screen bg-background">
         <div className="container mx-auto px-4 py-8 max-w-3xl">
           <div className="flex items-center gap-3 mb-6">
@@ -297,7 +297,7 @@ export default function TermsOfServicePage() {
             <div className="p-4 rounded-lg bg-muted/30">
               <p className="text-sm">
                 <strong>ICEwhistle</strong><br />
-                Website: <a href="https://icewhistle.app" className="text-primary hover:underline">icewhistle.app</a><br />
+                Website: <a href="https://icewhistle.app" className="text-primary underline underline-offset-2">icewhistle.app</a><br />
                 Email: legal@icewhistle.app
               </p>
             </div>
@@ -308,7 +308,7 @@ export default function TermsOfServicePage() {
             <p className="text-sm text-muted-foreground italic">
               By using ICEwhistle, you acknowledge that you have read, understood, and agree
               to be bound by these Terms of Service and our{' '}
-              <Link href="/privacy" className="text-primary hover:underline">Privacy Policy</Link>.
+              <Link href="/privacy" className="text-primary underline underline-offset-2">Privacy Policy</Link>.
             </p>
           </section>
         </div>

@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useId, useState } from 'react'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import {
@@ -43,6 +43,7 @@ const translations = {
     defaultMessagePreview: 'Default message preview:',
     privacyNote: 'Contacts are stored only on your device - never sent to our servers',
     invalidPhone: 'Please enter a valid phone number',
+    nameRequired: 'Please enter a name',
     maxContacts: 'Maximum 5 contacts',
   },
   es: {
@@ -64,6 +65,7 @@ const translations = {
     defaultMessagePreview: 'Vista previa del mensaje:',
     privacyNote: 'Los contactos se guardan solo en tu dispositivo - nunca se envían a nuestros servidores',
     invalidPhone: 'Por favor ingresa un número de teléfono válido',
+    nameRequired: 'Por favor ingresa un nombre',
     maxContacts: 'Máximo 5 contactos',
   },
   pt: {
@@ -85,6 +87,7 @@ const translations = {
     defaultMessagePreview: 'Prévia da mensagem:',
     privacyNote: 'Os contatos são armazenados apenas no seu dispositivo - nunca enviados aos nossos servidores',
     invalidPhone: 'Por favor, insira um número de telefone válido',
+    nameRequired: 'Por favor, insira um nome',
     maxContacts: 'Máximo de 5 contatos',
   },
 }
@@ -108,11 +111,14 @@ export function EmergencyContactsManager() {
   const [newName, setNewName] = useState('')
   const [newPhone, setNewPhone] = useState('')
   const [error, setError] = useState('')
+  const nameFieldId = useId()
+  const phoneFieldId = useId()
+  const errorId = useId()
 
   const handleAdd = () => {
     setError('')
     if (!newName.trim()) {
-      setError(t.name)
+      setError(t.nameRequired)
       return
     }
     if (!isValidPhone(newPhone)) {
@@ -131,7 +137,7 @@ export function EmergencyContactsManager() {
   const handleUpdate = (id: string) => {
     setError('')
     if (!newName.trim()) {
-      setError(t.name)
+      setError(t.nameRequired)
       return
     }
     if (!isValidPhone(newPhone)) {
@@ -197,6 +203,8 @@ export function EmergencyContactsManager() {
                     value={newName}
                     onChange={e => setNewName(e.target.value)}
                     placeholder={t.namePlaceholder}
+                    aria-label={t.name}
+                    autoComplete="name"
                     className="h-9"
                   />
                   <Input
@@ -204,6 +212,9 @@ export function EmergencyContactsManager() {
                     onChange={e => setNewPhone(e.target.value)}
                     placeholder={t.phonePlaceholder}
                     type="tel"
+                    inputMode="tel"
+                    aria-label={t.phone}
+                    autoComplete="tel"
                     className="h-9"
                   />
                   <div className="flex gap-2">
@@ -261,32 +272,49 @@ export function EmergencyContactsManager() {
         {isAdding && (
           <div className="p-4 rounded-[12px] bg-[#00A6B4]/5 border border-[#00A6B4]/20 space-y-3">
             <div className="space-y-2">
-              <label className="text-small font-medium flex items-center gap-1">
-                <User className="h-3 w-3" />
+              <label
+                htmlFor={nameFieldId}
+                className="text-small font-medium flex items-center gap-1"
+              >
+                <User className="h-3 w-3" aria-hidden="true" />
                 {t.name}
               </label>
               <Input
+                id={nameFieldId}
                 value={newName}
                 onChange={e => setNewName(e.target.value)}
                 placeholder={t.namePlaceholder}
+                autoComplete="name"
+                aria-invalid={Boolean(error)}
+                aria-describedby={error ? errorId : undefined}
                 className="h-10"
               />
             </div>
             <div className="space-y-2">
-              <label className="text-small font-medium flex items-center gap-1">
-                <Phone className="h-3 w-3" />
+              <label
+                htmlFor={phoneFieldId}
+                className="text-small font-medium flex items-center gap-1"
+              >
+                <Phone className="h-3 w-3" aria-hidden="true" />
                 {t.phone}
               </label>
               <Input
+                id={phoneFieldId}
                 value={newPhone}
                 onChange={e => setNewPhone(e.target.value)}
                 placeholder={t.phonePlaceholder}
                 type="tel"
+                inputMode="tel"
+                autoComplete="tel"
+                aria-invalid={Boolean(error)}
+                aria-describedby={error ? errorId : undefined}
                 className="h-10"
               />
             </div>
             {error && (
-              <p className="text-small text-[#DC2626]">{error}</p>
+              <p id={errorId} role="alert" className="text-small text-[#DC2626]">
+                {error}
+              </p>
             )}
             <div className="flex gap-2">
               <Button onClick={handleAdd} className="flex-1 h-10 bg-[#00A6B4] hover:bg-[#00A6B4]/90">

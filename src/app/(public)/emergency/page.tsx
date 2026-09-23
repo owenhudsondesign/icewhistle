@@ -7,6 +7,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Button } from '@/components/ui/button'
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 import { AppHeader } from '@/components/shared/AppHeader'
+import { SkipToContent } from '@/components/shared/SkipToContent'
 import { LocalHotlineBanner } from '@/components/hotlines/LocalHotlineBanner'
 import {
   AlertTriangle,
@@ -1041,7 +1042,8 @@ function VehicleStopFlow({ location }: { location: string | null }) {
 
 export default function EmergencyPage() {
   return (
-    <div className="pb-28">
+    <main id="main-content" tabIndex={-1} className="pb-28">
+      <SkipToContent />
       <AppHeader />
       <Suspense fallback={
         <div className="container mx-auto px-4 py-8 text-center">
@@ -1050,6 +1052,6 @@ export default function EmergencyPage() {
       }>
         <EmergencyContent />
       </Suspense>
-    </div>
+    </main>
   )
 }

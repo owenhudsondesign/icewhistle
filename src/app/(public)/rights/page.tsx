@@ -444,7 +444,7 @@ export default function RightsPage() {
   }, [])
 
   return (
-    <PageWrapper title={t.pageTitle}>
+    <PageWrapper>
       <div className="container mx-auto px-4 py-8 max-w-5xl">
       <div className="mb-8">
         <h1 className="text-3xl font-bold mb-2">{t.pageTitle}</h1>
@@ -455,7 +455,7 @@ export default function RightsPage() {
 
       <Alert className="mb-8 border-amber-500/30 bg-amber-500/5">
         <AlertTriangle className="h-4 w-4 text-amber-600" />
-        <AlertTitle className="text-amber-700">{t.disclaimerTitle}</AlertTitle>
+        <AlertTitle className="text-amber-700 dark:text-amber-500">{t.disclaimerTitle}</AlertTitle>
         <AlertDescription>
           {t.disclaimerText}
         </AlertDescription>
@@ -606,7 +606,7 @@ export default function RightsPage() {
                     {step.number}
                   </div>
                   <div>
-                    <h4 className="font-medium">{step.title}</h4>
+                    <h3 className="font-medium">{step.title}</h3>
                     <p className="text-sm text-muted-foreground">{step.description}</p>
                   </div>
                 </div>

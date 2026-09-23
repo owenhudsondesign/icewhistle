@@ -338,7 +338,7 @@ export default function ResourcesPage() {
   }
 
   return (
-    <PageWrapper title={resources_t.pageTitle || 'Resources'}>
+    <PageWrapper>
       <div className="container mx-auto px-4 py-8 max-w-5xl">
         <div className="mb-8">
           <h1 className="text-3xl font-bold mb-2">{resources_t.pageTitle || 'Resources'}</h1>
@@ -530,7 +530,7 @@ export default function ResourcesPage() {
                   ) : (
                     <a
                       href={`tel:${hotline.phone.replace(/[^0-9]/g, '')}`}
-                      className="text-xl font-semibold text-primary hover:underline block"
+                      className="text-xl font-semibold text-primary underline underline-offset-2 block"
                     >
                       {hotline.phone}
                     </a>
@@ -543,7 +543,7 @@ export default function ResourcesPage() {
                       href={hotline.url}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="text-sm text-primary hover:underline flex items-center gap-1 mt-2"
+                      className="text-sm text-primary underline underline-offset-2 flex items-center gap-1 mt-2"
                     >
                       <Globe className="h-3 w-3" />
                       {resources_t.onlineLocator || 'Online locator'}
@@ -769,7 +769,7 @@ export default function ResourcesPage() {
         <section className="mb-12">
           <Card className="border-amber-500/30 bg-amber-500/5">
             <CardHeader>
-              <CardTitle className="flex items-center gap-2 text-amber-700">
+              <CardTitle className="flex items-center gap-2 text-amber-700 dark:text-amber-500">
                 <AlertTriangle className="h-5 w-5" />
                 {resources_t.fraudWarning || 'Warning: Notario Fraud'}
               </CardTitle>

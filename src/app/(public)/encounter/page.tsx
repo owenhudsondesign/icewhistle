@@ -12,6 +12,7 @@ import { useEnhancedRecording } from '@/hooks/useEnhancedRecording'
 import { useLanguage } from '@/hooks/use-language'
 import { useUserZip } from '@/hooks/use-user-zip'
 import { AppHeader } from '@/components/shared/AppHeader'
+import { SkipToContent } from '@/components/shared/SkipToContent'
 import { getHotlinesForZip, getLocationDisplay } from '@/data/hotlines'
 import { trackEncounterGuideView, trackHotlineCallClick } from '@/lib/analytics'
 import {
@@ -329,8 +330,9 @@ export default function EncounterPage() {
 
   return (
     <>
+      <SkipToContent />
       <AppHeader />
-      <div className="min-h-screen bg-background pb-28">
+      <main id="main-content" tabIndex={-1} className="min-h-screen bg-background pb-28">
         {/* Recording Indicator - Fixed at top */}
         <RecordingIndicator onStopClick={handleStopAndSave} />
 
@@ -657,7 +659,7 @@ export default function EncounterPage() {
           </Button>
         </div>
       </div>
-    </div>
+    </main>
     </>
   )
 }

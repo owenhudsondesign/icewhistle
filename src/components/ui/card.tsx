@@ -28,11 +28,17 @@ const CardHeader = React.forwardRef<
 ))
 CardHeader.displayName = 'CardHeader'
 
+/**
+ * Rendered as a div rather than an <h3>. A card title labels a container; it is
+ * not a level in the document outline, and hardcoding h3 skipped heading levels
+ * on pages whose cards sit directly under the h1. Pages that need a real
+ * heading render one themselves.
+ */
 const CardTitle = React.forwardRef<
-  HTMLParagraphElement,
-  React.HTMLAttributes<HTMLHeadingElement>
+  HTMLDivElement,
+  React.HTMLAttributes<HTMLDivElement>
 >(({ className, ...props }, ref) => (
-  <h3
+  <div
     ref={ref}
     className={cn(
       'text-2xl font-semibold leading-none tracking-tight',

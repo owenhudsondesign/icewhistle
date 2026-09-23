@@ -14,6 +14,7 @@ const faqTranslations = {
   en: {
     greeting: "Hi! I can help you find information about your rights. What would you like to know?",
     placeholder: 'Ask a question...',
+    send: 'Send question',
     noResults: "I couldn't find specific info on that. Try the United We Dream hotline for help:",
     learnMore: 'Learn more',
     hotlineNumber: '1-844-363-1423',
@@ -22,6 +23,7 @@ const faqTranslations = {
   es: {
     greeting: '¡Hola! Puedo ayudarte a encontrar información sobre tus derechos. ¿Qué te gustaría saber?',
     placeholder: 'Haz una pregunta...',
+    send: 'Enviar pregunta',
     noResults: 'No encontré información específica. Prueba la línea de ayuda de United We Dream:',
     learnMore: 'Saber más',
     hotlineNumber: '1-844-363-1423',
@@ -30,6 +32,7 @@ const faqTranslations = {
   pt: {
     greeting: 'Olá! Posso ajudá-lo a encontrar informações sobre seus direitos. O que você gostaria de saber?',
     placeholder: 'Faça uma pergunta...',
+    send: 'Enviar pergunta',
     noResults: 'Não encontrei informações específicas. Tente a linha de ajuda do United We Dream:',
     learnMore: 'Saiba mais',
     hotlineNumber: '1-844-363-1423',
@@ -134,7 +137,12 @@ export function FAQChat() {
   return (
     <div className="flex flex-col h-full">
       {/* Messages Area */}
-      <div className="flex-1 overflow-y-auto p-4 space-y-4">
+      <div
+        className="flex-1 overflow-y-auto p-4 space-y-4"
+        role="log"
+        aria-live="polite"
+        aria-atomic="false"
+      >
         {messages.map((message) => (
           <div
             key={message.id}
@@ -243,9 +251,10 @@ export function FAQChat() {
             type="submit"
             size="icon"
             disabled={!input.trim()}
-            className="rounded-full bg-[#00A6B4] hover:bg-[#00A6B4]/90 h-10 w-10"
+            aria-label={t.send}
+            className="rounded-full bg-[#00A6B4] hover:bg-[#00A6B4]/90 h-11 w-11"
           >
-            <Send className="h-4 w-4" />
+            <Send className="h-4 w-4" aria-hidden="true" />
           </Button>
         </div>
       </form>

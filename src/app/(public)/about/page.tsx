@@ -4,6 +4,7 @@ import Link from 'next/link'
 import { Button } from '@/components/ui/button'
 import { useLanguage } from '@/hooks/use-language'
 import { AppHeader } from '@/components/shared/AppHeader'
+import { SkipToContent } from '@/components/shared/SkipToContent'
 import {
   ChevronLeft,
   Shield,
@@ -75,8 +76,6 @@ const aboutTranslations = {
     mapsTitle: 'OpenFreeMap (Maps)',
     mapsDesc: 'We use OpenFreeMap with MapLibre to display maps. OpenFreeMap is privacy-focused: no tracking, no API keys, no data collection. Map tiles are served anonymously.',
     mapsPolicy: 'OpenFreeMap Info →',
-    supabaseTitle: 'Supabase (Database)',
-    supabaseDesc: 'Community report data and notification preferences are stored on Supabase servers. All data is encrypted in transit and at rest.',
 
     security: 'Security',
     encrypted: 'All connections encrypted (HTTPS/TLS)',
@@ -146,8 +145,6 @@ const aboutTranslations = {
     mapsTitle: 'OpenFreeMap (Mapas)',
     mapsDesc: 'Usamos OpenFreeMap con MapLibre para mostrar mapas. OpenFreeMap está enfocado en la privacidad: sin rastreo, sin claves API, sin recolección de datos. Los tiles del mapa se sirven de forma anónima.',
     mapsPolicy: 'Información de OpenFreeMap →',
-    supabaseTitle: 'Supabase (Base de datos)',
-    supabaseDesc: 'Los datos de alertas y preferencias de notificaciones se almacenan en servidores de Supabase. Todos los datos están encriptados en tránsito y en reposo.',
 
     security: 'Seguridad',
     encrypted: 'Todas las conexiones encriptadas (HTTPS/TLS)',
@@ -217,8 +214,6 @@ const aboutTranslations = {
     mapsTitle: 'OpenFreeMap (Mapas)',
     mapsDesc: 'Usamos OpenFreeMap com MapLibre para exibir mapas. OpenFreeMap é focado em privacidade: sem rastreamento, sem chaves de API, sem coleta de dados. Os tiles do mapa são servidos anonimamente.',
     mapsPolicy: 'Informações do OpenFreeMap →',
-    supabaseTitle: 'Supabase (Banco de dados)',
-    supabaseDesc: 'Dados de alertas e preferências de notificação são armazenados em servidores Supabase. Todos os dados são criptografados em trânsito e em repouso.',
 
     security: 'Segurança',
     encrypted: 'Todas as conexões criptografadas (HTTPS/TLS)',
@@ -238,8 +233,9 @@ export default function AboutPage() {
 
   return (
     <>
+      <SkipToContent />
       <AppHeader />
-      <div className="min-h-screen bg-background">
+      <main id="main-content" tabIndex={-1} className="min-h-screen bg-background">
         <div className="container mx-auto px-4 py-8 max-w-3xl">
           <div className="flex items-center gap-3 mb-6">
           <div className="p-2 rounded-lg bg-primary/10">
@@ -432,15 +428,10 @@ export default function AboutPage() {
                   href="https://openfreemap.org"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-sm text-primary hover:underline"
+                  className="text-sm text-primary underline underline-offset-2"
                 >
                   {t.mapsPolicy}
                 </a>
-              </div>
-
-              <div className="p-4 rounded-lg bg-muted/30">
-                <p className="font-medium mb-1">{t.supabaseTitle}</p>
-                <p className="text-sm text-muted-foreground">{t.supabaseDesc}</p>
               </div>
             </div>
           </section>
@@ -475,10 +466,10 @@ export default function AboutPage() {
           {/* Links */}
           <section className="pt-6 border-t border-border">
             <div className="flex flex-wrap gap-4">
-              <Link href="/privacy" className="text-primary hover:underline text-sm">
+              <Link href="/privacy" className="text-primary underline underline-offset-2 text-sm">
                 {t.fullPrivacy}
               </Link>
-              <Link href="/terms" className="text-primary hover:underline text-sm">
+              <Link href="/terms" className="text-primary underline underline-offset-2 text-sm">
                 {t.terms}
               </Link>
             </div>
@@ -490,7 +481,7 @@ export default function AboutPage() {
           </section>
         </div>
       </div>
-    </div>
+    </main>
     </>
   )
 }

@@ -2,6 +2,7 @@
 
 import { useEffect } from 'react'
 import { AppHeader } from '@/components/shared/AppHeader'
+import { SkipToContent } from '@/components/shared/SkipToContent'
 import { HotlineDirectory } from '@/components/hotlines/HotlineDirectory'
 import { useLanguage } from '@/hooks/use-language'
 import { Phone, Shield } from 'lucide-react'
@@ -16,9 +17,10 @@ export default function HotlinesPage() {
 
   return (
     <div className="min-h-screen bg-background pb-28">
+      <SkipToContent />
       <AppHeader />
 
-      <main className="container mx-auto px-4 py-6 max-w-2xl">
+      <main id="main-content" tabIndex={-1} className="container mx-auto px-4 py-6 max-w-2xl">
         {/* Header */}
         <div className="text-center mb-6">
           <div className="w-16 h-16 mx-auto rounded-full bg-[#DC2626]/10 flex items-center justify-center mb-4">
@@ -45,7 +47,7 @@ export default function HotlinesPage() {
         </div>
 
         {/* Hotline Directory */}
-        <HotlineDirectory showZipInput={true} />
+        <HotlineDirectory headingLevel={2} showZipInput={true} />
       </main>
     </div>
   )

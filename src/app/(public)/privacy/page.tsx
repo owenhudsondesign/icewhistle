@@ -13,7 +13,7 @@ export default function PrivacyPolicyPage() {
   const lastUpdated = 'January 22, 2025'
 
   return (
-    <PageWrapper title="Privacy Policy">
+    <PageWrapper>
       <div className="min-h-screen bg-background">
         <div className="container mx-auto px-4 py-8 max-w-3xl">
           <div className="flex items-center gap-3 mb-6">
@@ -189,7 +189,7 @@ export default function PrivacyPolicyPage() {
               <li>• <strong>Privacy-first:</strong> OpenFreeMap does not track users or require API keys</li>
               <li>• <strong>No data collection:</strong> Map tile requests are anonymous with no user identification</li>
               <li>• <strong>Open source:</strong> MapLibre is fully open-source mapping software</li>
-              <li>• Learn more: <a href="https://openfreemap.org" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">openfreemap.org</a></li>
+              <li>• Learn more: <a href="https://openfreemap.org" target="_blank" rel="noopener noreferrer" className="text-primary underline underline-offset-2">openfreemap.org</a></li>
             </ul>
 
             <h3 className="text-lg font-medium mt-4 mb-2">Supabase</h3>
@@ -276,7 +276,7 @@ export default function PrivacyPolicyPage() {
             <div className="p-4 rounded-lg bg-muted/30">
               <p className="text-sm">
                 <strong>ICEwhistle</strong><br />
-                Website: <a href="https://icewhistle.app" className="text-primary hover:underline">icewhistle.app</a><br />
+                Website: <a href="https://icewhistle.app" className="text-primary underline underline-offset-2">icewhistle.app</a><br />
                 Email: privacy@icewhistle.app
               </p>
             </div>

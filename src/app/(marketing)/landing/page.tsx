@@ -212,7 +212,7 @@ export default function LandingPage() {
   }, [])
 
   return (
-    <div className="min-h-screen bg-[#0A0A0B] text-white overflow-hidden">
+    <main id="main-content" tabIndex={-1} className="min-h-screen bg-[#0A0A0B] text-white overflow-hidden">
       {/* Navigation */}
       <nav className="fixed top-0 left-0 right-0 z-50 bg-[#0A0A0B]/80 backdrop-blur-xl border-b border-white/5">
         <div className="container mx-auto px-6 py-4 flex items-center justify-between">
@@ -247,7 +247,7 @@ export default function LandingPage() {
         <div className="absolute inset-0 overflow-hidden">
           <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-[#DC2626]/20 rounded-full blur-[128px] animate-pulse" />
           <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-[#00A6B4]/20 rounded-full blur-[128px] animate-pulse" style={{ animationDelay: '1s' }} />
-          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-[#8B5CF6]/10 rounded-full blur-[128px]" />
+          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-[#7C3AED]/10 rounded-full blur-[128px]" />
         </div>
 
         {/* Grid Pattern Overlay */}
@@ -488,6 +488,6 @@ export default function LandingPage() {
           </div>
         </div>
       </footer>
-    </div>
+    </main>
   )
 }

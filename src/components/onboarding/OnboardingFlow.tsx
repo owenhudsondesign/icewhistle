@@ -190,8 +190,13 @@ export function OnboardingFlow({ onComplete, onSkip }: OnboardingFlowProps) {
   }
 
   const handleSkipZip = () => {
+    // Clear the partially typed ZIP before advancing. Skipping used to call
+    // handleNext() with the half-typed value still in state, which failed the
+    // same validation that disables Continue -- leaving no way off this step.
     setZip('')
-    handleNext()
+    setZipEntries([{ zipCode: '', label: 'home' }])
+    setZipError('')
+    setStep((current) => Math.min(current + 1, totalSteps))
   }
 
   return (

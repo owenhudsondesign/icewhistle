@@ -289,11 +289,11 @@ export default function TransparencyPage() {
             {financialData.costs.map((cost, i) => {
               const Icon = getCostIcon(cost.category)
               return (
-                <div key={i} className="p-4 rounded-xl bg-white/[0.02] border border-white/5">
+                <main id="main-content" tabIndex={-1} key={i} className="p-4 rounded-xl bg-white/[0.02] border border-white/5">
                   <Icon className="h-5 w-5 text-white/40 mb-2" />
                   <p className="text-xs text-white/40 mb-1">{getCostLabel(cost.category)}</p>
                   <p className="text-xl font-bold">${cost.amount.toFixed(2)}</p>
-                </div>
+                </main>
               )
             })}
           </div>
