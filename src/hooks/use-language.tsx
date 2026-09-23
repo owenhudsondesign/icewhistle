@@ -1,5 +1,7 @@
 'use client'
 
+import enFallback from '@/data/en-fallback.json'
+
 import { useState, useEffect, createContext, useContext, ReactNode, useCallback } from 'react'
 
 // Supported languages - add new language codes here
@@ -118,64 +120,21 @@ export interface Translations {
   privacy: Record<string, string>
   terms: Record<string, string>
   disclaimer: Record<string, string>
+  /** ZIP-localized hotline and resource copy. */
+  local?: Record<string, string>
 }
 
 // Default/fallback translations (English) - loaded synchronously
-const defaultTranslations: Translations = {
-  common: {
-    loading: 'Loading...',
-    search: 'Search',
-    learnMore: 'Learn more',
-    back: 'Back',
-    close: 'Close',
-    save: 'Save',
-    cancel: 'Cancel',
-    submit: 'Submit',
-    confirm: 'Confirm',
-    delete: 'Delete',
-    edit: 'Edit',
-    seeAll: 'See all',
-    viewAll: 'View all',
-    available247: '24/7',
-    anonymous: 'Anonymous',
-    verified: 'Verified',
-    active: 'active',
-    share: 'Share',
-    download: 'Download',
-  },
-  nav: {
-    home: 'Home',
-    hotlines: 'Hotlines',
-    alerts: 'Alerts',
-    report: 'Report',
-    rights: 'Rights',
-    faq: 'FAQ',
-    emergency: 'Emergency',
-    about: 'About',
-    support: 'Support',
-    install: 'Install App',
-    iosTitle: 'Install on iPhone/iPad',
-    iosStep1: '1. Tap the Share button',
-    iosStep2: '2. Scroll down and tap "Add to Home Screen"',
-    iosStep3: '3. Tap "Add" to install',
-    gotIt: 'Got it',
-  },
-  home: {},
-  alerts: {},
-  rights: {},
-  faq: {},
-  emergency: {},
-  about: {},
-  support: {},
-  recording: {},
-  hotlines: {},
-  resources: {},
-  search: {},
-  offline: {},
-  privacy: {},
-  terms: {},
-  disclaimer: {},
-}
+/**
+ * English strings, bundled into the JavaScript rather than fetched.
+ *
+ * These used to be empty objects, which meant that until `/locales/en.json`
+ * came back over the network every emergency button rendered as a wordless
+ * coloured rectangle - and stayed that way if the request failed, which is
+ * exactly what happens on a poor connection. Bundling them guarantees the app
+ * always has readable, announceable text.
+ */
+const defaultTranslations = enFallback as unknown as Translations
 
 // Cache for loaded translations
 const translationsCache: Map<Language, Translations> = new Map()
@@ -192,6 +151,15 @@ const LanguageContext = createContext<LanguageContextType | null>(null)
 
 // Helper to load translations for a language
 async function loadTranslations(lang: Language): Promise<Translations> {
+  // English ships in the bundle, so there is nothing to fetch. This skips a
+  // network round trip for the most common language, makes its text appear on
+  // first paint instead of after a request, and means English works with no
+  // connection at all.
+  if (lang === 'en') {
+    translationsCache.set(lang, defaultTranslations)
+    return defaultTranslations
+  }
+
   // Check cache first
   const cached = translationsCache.get(lang)
   if (cached) return cached
@@ -222,6 +190,7 @@ async function preloadAllTranslations() {
 
   // Load each language file in the background
   for (const lang of SUPPORTED_LANGUAGES) {
+    if (lang === 'en') continue // Bundled; never needs fetching.
     if (!translationsCache.has(lang)) {
       try {
         const response = await fetch(`/locales/${lang}.json`)
