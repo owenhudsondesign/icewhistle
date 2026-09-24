@@ -344,7 +344,7 @@ export default function EncounterPage() {
             <div className="space-y-3">
               <Button
                 onClick={saveRecording}
-                className="w-full h-12 bg-[#84CC16] hover:bg-[#84CC16]/90 text-white"
+                className="w-full h-12 bg-[#00A6B4] hover:bg-[#00A6B4]/90 text-white"
               >
                 <Download className="h-5 w-5 mr-2" />
                 {t.stopAndSave}
@@ -514,20 +514,20 @@ export default function EncounterPage() {
         <Card className="mb-4">
           <CardHeader className="pb-2">
             <CardTitle className="flex items-center gap-2 text-base">
-              <Building className="h-5 w-5 text-[#FF8C42]" />
+              <Building className="h-5 w-5 text-muted-foreground" aria-hidden="true" />
               {t.detainedTitle}
             </CardTitle>
           </CardHeader>
           <CardContent className="space-y-3">
             <div className="flex gap-3">
-              <span className="flex-shrink-0 w-6 h-6 rounded-full bg-[#FF8C42] text-white flex items-center justify-center text-xs font-bold">1</span>
+              <span className="flex-shrink-0 w-6 h-6 rounded-full bg-muted text-foreground flex items-center justify-center text-xs font-bold">1</span>
               <div>
                 <p className="font-medium text-sm">{t.getANumber}</p>
                 <p className="text-xs text-muted-foreground">{t.aNumberDesc}</p>
               </div>
             </div>
             <div className="flex gap-3">
-              <span className="flex-shrink-0 w-6 h-6 rounded-full bg-[#FF8C42] text-white flex items-center justify-center text-xs font-bold">2</span>
+              <span className="flex-shrink-0 w-6 h-6 rounded-full bg-muted text-foreground flex items-center justify-center text-xs font-bold">2</span>
               <div>
                 <p className="font-medium text-sm">{t.useLocator}</p>
                 <div className="flex flex-wrap gap-2 mt-1">
@@ -549,7 +549,7 @@ export default function EncounterPage() {
               </div>
             </div>
             <div className="flex gap-3">
-              <span className="flex-shrink-0 w-6 h-6 rounded-full bg-[#FF8C42] text-white flex items-center justify-center text-xs font-bold">3</span>
+              <span className="flex-shrink-0 w-6 h-6 rounded-full bg-muted text-foreground flex items-center justify-center text-xs font-bold">3</span>
               <p className="font-medium text-sm">{t.contactLawyer}</p>
             </div>
             <Alert className="border-[#DC2626]/30 bg-[#DC2626]/5 py-2">

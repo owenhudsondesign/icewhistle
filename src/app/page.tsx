@@ -134,48 +134,48 @@ export default function Home() {
           {/* Traffic Stop - Bondi Blue */}
           <button
             onClick={() => handleEmergencyClick('vehicle')}
-            className="col-span-1 bg-[#00A6B4] text-white rounded-[16px] p-4 flex flex-col items-center justify-center gap-2 press-scale hover-scale shadow-lg hover:glow-bondi min-h-[120px]"
+            className="col-span-1 bg-card text-card-foreground border border-border border-t-[3px] rounded-[16px] p-4 flex flex-col items-center justify-center gap-2 press-scale hover:bg-accent/40 min-h-[120px]" style={{ borderTopColor: '#00A6B4' }}
           >
-            <Car className="h-8 w-8 flex-shrink-0" strokeWidth={2} />
+            <Car className="h-8 w-8 flex-shrink-0 text-[#00A6B4]" strokeWidth={2} aria-hidden="true" />
             <div className="text-center w-full">
               <div className="text-sm font-semibold leading-tight break-words">{home.trafficStop}</div>
-              <div className="text-xs text-white/80 leading-tight mt-0.5 break-words">{home.trafficStopSub}</div>
+              <div className="text-xs text-muted-foreground leading-tight mt-0.5 break-words">{home.trafficStopSub}</div>
             </div>
           </button>
 
           {/* Someone Taken - Tangerine */}
           <button
             onClick={() => handleEmergencyClick('taken')}
-            className="col-span-1 bg-[#FF8C42] text-white rounded-[16px] p-4 flex flex-col items-center justify-center gap-2 press-scale hover-scale shadow-lg hover:glow-tangerine min-h-[120px]"
+            className="col-span-1 bg-card text-card-foreground border border-border border-t-[3px] rounded-[16px] p-4 flex flex-col items-center justify-center gap-2 press-scale hover:bg-accent/40 min-h-[120px]" style={{ borderTopColor: '#FF8C42' }}
           >
-            <Building className="h-8 w-8 flex-shrink-0" strokeWidth={2} />
+            <Building className="h-8 w-8 flex-shrink-0 text-[#FF8C42]" strokeWidth={2} aria-hidden="true" />
             <div className="text-center w-full">
               <div className="text-sm font-semibold leading-tight break-words">{home.someoneTaken}</div>
-              <div className="text-xs text-white/80 leading-tight mt-0.5 break-words">{home.someoneTakenSub}</div>
+              <div className="text-xs text-muted-foreground leading-tight mt-0.5 break-words">{home.someoneTakenSub}</div>
             </div>
           </button>
 
           {/* My Emergency Plan - Grape */}
           <Link
             href="/emergency-contacts"
-            className="col-span-1 bg-[#7C3AED] text-white rounded-[16px] p-4 flex flex-col items-center justify-center gap-2 press-scale hover-scale shadow-lg hover:glow-grape min-h-[120px]"
+            className="col-span-1 bg-card text-card-foreground border border-border border-t-[3px] rounded-[16px] p-4 flex flex-col items-center justify-center gap-2 press-scale hover:bg-accent/40 min-h-[120px]" style={{ borderTopColor: '#7C3AED' }}
           >
-            <ClipboardList className="h-8 w-8 flex-shrink-0" strokeWidth={2} />
+            <ClipboardList className="h-8 w-8 flex-shrink-0 text-[#7C3AED]" strokeWidth={2} aria-hidden="true" />
             <div className="text-center w-full">
               <div className="text-sm font-semibold leading-tight break-words">{home.emergencyPlan}</div>
-              <div className="text-xs text-white/80 leading-tight mt-0.5 break-words">{home.emergencyPlanSub}</div>
+              <div className="text-xs text-muted-foreground leading-tight mt-0.5 break-words">{home.emergencyPlanSub}</div>
             </div>
           </Link>
 
           {/* Know Your Rights - Lime */}
           <Link
             href="/rights"
-            className="col-span-1 bg-[#84CC16] text-white rounded-[16px] p-4 flex flex-col items-center justify-center gap-2 press-scale hover-scale shadow-lg hover:glow-lime min-h-[120px]"
+            className="col-span-1 bg-card text-card-foreground border border-border border-t-[3px] rounded-[16px] p-4 flex flex-col items-center justify-center gap-2 press-scale hover:bg-accent/40 min-h-[120px]" style={{ borderTopColor: '#84CC16' }}
           >
-            <Shield className="h-8 w-8 flex-shrink-0" strokeWidth={2} />
+            <Shield className="h-8 w-8 flex-shrink-0 text-[#84CC16]" strokeWidth={2} aria-hidden="true" />
             <div className="text-center w-full">
               <div className="text-sm font-semibold leading-tight break-words">{home.knowRights}</div>
-              <div className="text-xs text-white/80 leading-tight mt-0.5 break-words">{home.knowRightsSub}</div>
+              <div className="text-xs text-muted-foreground leading-tight mt-0.5 break-words">{home.knowRightsSub}</div>
             </div>
           </Link>
         </div>
@@ -205,7 +205,7 @@ export default function Home() {
             href="/resources#legal"
             className="card-glass p-3 flex flex-col items-center justify-center gap-1.5 press-scale hover:bg-accent/50 min-h-[100px]"
           >
-            <Scale className="h-7 w-7 text-[#7C3AED] flex-shrink-0" strokeWidth={2} />
+            <Scale className="h-7 w-7 text-muted-foreground flex-shrink-0" strokeWidth={2} aria-hidden="true" />
             <div className="text-center w-full">
               <div className="text-xs font-semibold leading-tight break-words">{home.findLawyer}</div>
               <div className="text-[10px] text-muted-foreground leading-tight mt-0.5 break-words">{home.findLawyerSub}</div>
@@ -216,7 +216,7 @@ export default function Home() {
             href="/hotlines"
             className="card-glass p-3 flex flex-col items-center justify-center gap-1.5 press-scale hover:bg-accent/50 min-h-[100px]"
           >
-            <Phone className="h-7 w-7 text-[#DC2626] flex-shrink-0" strokeWidth={2} />
+            <Phone className="h-7 w-7 text-[#00A6B4] flex-shrink-0" strokeWidth={2} aria-hidden="true" />
             <div className="text-center w-full">
               <div className="text-xs font-semibold leading-tight break-words">{home.emergencyHotlines}</div>
               <div className="text-[10px] text-muted-foreground leading-tight mt-0.5 break-words">{common.available247}</div>
@@ -227,7 +227,7 @@ export default function Home() {
             href="/resources#bond"
             className="card-glass p-3 flex flex-col items-center justify-center gap-1.5 press-scale hover:bg-accent/50 min-h-[100px]"
           >
-            <Heart className="h-7 w-7 text-[#FF8C42] flex-shrink-0" strokeWidth={2} />
+            <Heart className="h-7 w-7 text-muted-foreground flex-shrink-0" strokeWidth={2} aria-hidden="true" />
             <div className="text-center w-full">
               <div className="text-xs font-semibold leading-tight break-words">{home.bondFunds}</div>
               <div className="text-[10px] text-muted-foreground leading-tight mt-0.5 break-words">{home.bondFundsSub}</div>
@@ -240,24 +240,24 @@ export default function Home() {
           <h2 className="text-headline mb-4 text-center">{home.howItWorks}</h2>
           <div className="grid grid-cols-3 gap-2">
             <div className="text-center">
-              <div className="w-10 h-10 mx-auto rounded-full bg-[#84CC16]/10 flex items-center justify-center mb-2">
-                <BookOpen className="h-5 w-5 text-[#84CC16]" strokeWidth={2} />
+              <div className="w-10 h-10 mx-auto rounded-full bg-muted flex items-center justify-center mb-2">
+                <BookOpen className="h-5 w-5 text-muted-foreground" strokeWidth={2} aria-hidden="true" />
               </div>
-              <div className="text-xs font-bold text-[#84CC16] leading-tight">{home.step1Title}</div>
+              <div className="text-xs font-bold text-foreground leading-tight">{home.step1Title}</div>
               <p className="text-[10px] text-muted-foreground mt-1 leading-tight break-words">{home.step1Desc}</p>
             </div>
             <div className="text-center">
-              <div className="w-10 h-10 mx-auto rounded-full bg-[#7C3AED]/10 flex items-center justify-center mb-2">
-                <ClipboardList className="h-5 w-5 text-[#7C3AED]" strokeWidth={2} />
+              <div className="w-10 h-10 mx-auto rounded-full bg-muted flex items-center justify-center mb-2">
+                <ClipboardList className="h-5 w-5 text-muted-foreground" strokeWidth={2} aria-hidden="true" />
               </div>
-              <div className="text-xs font-bold text-[#7C3AED] leading-tight">{home.step2Title}</div>
+              <div className="text-xs font-bold text-foreground leading-tight">{home.step2Title}</div>
               <p className="text-[10px] text-muted-foreground mt-1 leading-tight break-words">{home.step2Desc}</p>
             </div>
             <div className="text-center">
-              <div className="w-10 h-10 mx-auto rounded-full bg-[#00A6B4]/10 flex items-center justify-center mb-2">
-                <Users className="h-5 w-5 text-[#00A6B4]" strokeWidth={2} />
+              <div className="w-10 h-10 mx-auto rounded-full bg-muted flex items-center justify-center mb-2">
+                <Users className="h-5 w-5 text-muted-foreground" strokeWidth={2} aria-hidden="true" />
               </div>
-              <div className="text-xs font-bold text-[#00A6B4] leading-tight">{home.step3Title}</div>
+              <div className="text-xs font-bold text-foreground leading-tight">{home.step3Title}</div>
               <p className="text-[10px] text-muted-foreground mt-1 leading-tight break-words">{home.step3Desc}</p>
             </div>
           </div>
@@ -277,15 +277,15 @@ export default function Home() {
               <h2 className="text-sm font-semibold mb-1">{home.recordingFeature}</h2>
               <p className="text-xs text-muted-foreground mb-3 break-words">{home.recordingFeatureDesc}</p>
               <div className="flex flex-wrap gap-1.5">
-                <span className="inline-flex items-center gap-1 text-[10px] bg-[#00A6B4]/10 text-[#00A6B4] px-2 py-1 rounded-full">
+                <span className="inline-flex items-center gap-1 text-[10px] bg-muted text-muted-foreground px-2 py-1 rounded-full">
                   <Video className="h-3 w-3 flex-shrink-0" />
                   <span className="break-words">{home.recordingFeature1}</span>
                 </span>
-                <span className="inline-flex items-center gap-1 text-[10px] bg-[#84CC16]/10 text-[#84CC16] px-2 py-1 rounded-full">
+                <span className="inline-flex items-center gap-1 text-[10px] bg-muted text-muted-foreground px-2 py-1 rounded-full">
                   <CheckCircle className="h-3 w-3 flex-shrink-0" />
                   <span className="break-words">{home.recordingFeature2}</span>
                 </span>
-                <span className="inline-flex items-center gap-1 text-[10px] bg-[#7C3AED]/10 text-[#7C3AED] px-2 py-1 rounded-full">
+                <span className="inline-flex items-center gap-1 text-[10px] bg-muted text-muted-foreground px-2 py-1 rounded-full">
                   <FileCheck className="h-3 w-3 flex-shrink-0" />
                   <span className="break-words">{home.recordingFeature3}</span>
                 </span>
@@ -298,7 +298,7 @@ export default function Home() {
         <div className="card-glass p-4 mb-4">
           <div className="flex items-center justify-between mb-1">
             <div className="flex items-center gap-2">
-              <span className="px-2 py-0.5 bg-[#DC2626] text-white text-[10px] font-bold rounded-full tracking-wide">
+              <span className="px-2 py-0.5 bg-muted text-muted-foreground text-[10px] font-bold rounded-full tracking-wide">
                 {home.badgeHotlines}
               </span>
               {mounted && hasLocal && (
@@ -315,7 +315,7 @@ export default function Home() {
             )}
           </div>
           <h2 className="text-sm font-semibold mb-1 flex items-center gap-2">
-            <Phone className="h-5 w-5 text-[#DC2626] flex-shrink-0" strokeWidth={2} />
+            <Phone className="h-5 w-5 text-muted-foreground flex-shrink-0" strokeWidth={2} aria-hidden="true" />
             <span className="break-words">{home.emergencyHotlines}</span>
           </h2>
           <p className="text-xs text-muted-foreground mb-3">{hotlines.callFree247}</p>
@@ -325,7 +325,8 @@ export default function Home() {
               const name = language === 'es' && hotline.nameEs ? hotline.nameEs : hotline.name
               const desc = language === 'es' && hotline.descriptionEs ? hotline.descriptionEs : hotline.description
               const isLocal = hotline.type === 'local' || hotline.type === 'state'
-              const color = isLocal ? 'bg-[#00A6B4]' : hotline.type === 'national' ? 'bg-[#DC2626]' : 'bg-[#FF8C42]'
+              // Teal marks a line local to this ZIP; everything else is neutral.
+              const color = isLocal ? 'bg-[#00A6B4]' : 'bg-muted-foreground/40'
 
               return (
                 <a
@@ -365,12 +366,12 @@ export default function Home() {
         {/* Quick Rights Reminder - Structured Q&A style */}
         <div className="card-glass p-4 mb-4">
           <div className="flex items-center gap-2 mb-1">
-            <span className="px-2 py-0.5 bg-[#84CC16] text-white text-[10px] font-bold rounded-full tracking-wide">
+            <span className="px-2 py-0.5 bg-muted text-muted-foreground text-[10px] font-bold rounded-full tracking-wide">
               {home.badgeRights}
             </span>
           </div>
           <h2 className="text-sm font-semibold mb-3 flex items-center gap-2">
-            <Shield className="h-5 w-5 text-[#84CC16] flex-shrink-0" strokeWidth={2} />
+            <Shield className="h-5 w-5 text-muted-foreground flex-shrink-0" strokeWidth={2} aria-hidden="true" />
             <span className="break-words">{home.knowRights}</span>
           </h2>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
